@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<CeSecurityPolicyFile Description="ShellCore policy definitions and rules" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.00" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">
+
+  <Macro Id="SID_MTF_SERVER" Description="MTF Server SID" Value="S-1-5-112-0-0X20-0X0000000B"></Macro>
+
+  <Macro Id="MTF_SERVER_FRIENDLY_NAME" Description="Windows Mobile MTF Server account" Value="LOC_ACCOUNT_FRIENDLY_NAME_MTF_SERVER"></Macro>
+
+  <Account Id="$(SID_MTF_SERVER)" FriendlyName="$(MTF_SERVER_FRIENDLY_NAME)" Description="Local System" Type="User">
+    <MemberOfGroup GroupAccountId="$(STANDARD_RIGHTS_CHAMBER_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+  <Rule Description="Protect IMM Layout Registry" ResourceIri="$(HKLM)/SYSTEM/CURRENTCONTROLSET/CONTROL/LAYOUTS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Description="Protect IMM HKL Registry" ResourceIri="$(HKCU)/KEYBOARD%20LAYOUT/PRELOAD/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Description="Protect IMM HKL cache Registry" ResourceIri="$(HKCU)/KEYBOARD%20LAYOUT/CACHE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Protect IMM HotKey HKL Registry" ResourceIri="$(HKCU)/CONTROL%20PANEL/INPUT%20METHOD/HOT%20KEYS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <!-- Allow MTF_SERVER account to post the registered message -->
+  <Rule Description="Allow MTF_SERVER acctount to post the registered message" ResourceIri="policy:/RESOURCES/(+)/GWEWINMSG/REGISTERWINMSG" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(SID_MTF_SERVER)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Allow MTF_SERVER to post thread messages cross process -->
+  <Rule Description="Allow MTF_SERVER account to post thread messages cross process" ResourceIri="policy:/RESOURCES/(+)/GWETHREADMSGCROSSPROC" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(SID_MTF_SERVER)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+  </Rule>
+
+
+  <Rule Action="CreateNew" Description="Grant MTF device handle open access to everyone" ResourceIri="$(DEVICEMANAGER_DEVICE)/MTF/0" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+
+    <Authorize>
+      <Match Action="Add" AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Action="CreateOrReplace" Description="Protect MTFInputType registry key" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/MTFInputType/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Action="CreateOrReplace" Description="Protect MTFFuzzyFactors registry key" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/MTFFuzzyFactors/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Action="CreateOrReplace" Description="Protect IHDS registry key" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/IHDS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Action="CreateOrReplace" Description="Protect IHDS input history files" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/IHDS.DAT" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(SID_MTF_SERVER)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Action="CreateOrReplace" Description="Protect Live Search IHDS input history files" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/LIVEIHDS.DAT" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(SID_MTF_SERVER)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Description="MSCOREE reads folder paths such as My document in LPC" ResourceIri="$(HKLM)/SYSTEM/EXPLORER/SHELL%20FOLDERS" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+      <Authorize>
+          <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+      </Authorize>
+  </Rule>
+
+  <Rule Description="Allow everyone to log to the touch log channel" ResourceIri="$(GLOBAL_RESOURCES)/EVENTLOG_CHANNEL/Microsoft-WindowsMobile-TouchLogPublisher-Channel" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+     <Authorize>
+          <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="GENERIC_READ, GENERIC_WRITE"></Match>
+     </Authorize>
+  </Rule>
+
+</CeSecurityPolicyFile>

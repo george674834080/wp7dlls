@@ -1,0 +1,39 @@
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+
+<wap-provisioningdoc>
+  <characteristic type="FileOperation">
+    <characteristic type="%CE19%\Microsoft\Office Mobile\OneNote Mobile\v14\Meta" translation="install">
+      <characteristic type="MakeDir" />
+      <characteristic type="hierarchy.sdf" translation="install">
+        <characteristic type="Copy">
+          <parm name="Source" value="\Windows\hierarchy.sdf" translation="install" />
+          <parm name="RemoveAttributes" value="R" />
+          <parm name="RemoveAttributes" value="S" />
+        </characteristic>
+      </characteristic>
+    </characteristic>
+      
+    <!--Create the %CE5%\OneNote Notebooks folder-->
+    <characteristic type="%CE5%\OneNote Notebooks" translation="install">
+      <characteristic type="MakeDir" />
+    </characteristic>
+      
+    <!--Create the %CE5%\OneNote Notebooks\Personal folder-->
+    <characteristic type="%CE5%\OneNote Notebooks\Personal" translation="install">
+      <characteristic type="MakeDir" />
+    </characteristic>
+
+    <!--Create the %CE5%\OneNote Notebooks\Misplaced Sections folder-->
+    <characteristic type="%CE5%\OneNote Notebooks\Misplaced Sections" translation="install">
+      <characteristic type="MakeDir" />
+    </characteristic>
+  </characteristic>
+
+  <characteristic type="AppMetadata">
+    <characteristic type="{5B04B775-356B-4AA0-AAF8-6491FFEA561B}">
+      <parm name="Manifest" value="\Windows\OnenoteStartToken.xml"/>
+    </characteristic>
+  </characteristic>
+</wap-provisioningdoc>

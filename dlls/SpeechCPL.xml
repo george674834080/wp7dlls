@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<Provisioning xmlns="http://dbPreProvisioning"
+  RuntimeType="Native"
+  Title="@SpeechCPLRes.dll,-201"
+  DisplayOnAppList="false"
+  Version="1.0"
+  Genre=""
+  ProductID="{5B04B775-356B-4AA0-AAF8-6491FFEA5624}"
+  SingleInstanceHost="true">
+  <IconPath xmlns="">res://StartMenu!AppIconGeneric.png</IconPath>
+  <ImagePath xmlns="">\Windows\SpeechCPL.exe</ImagePath>
+  <ImageParams xmlns=""></ImageParams>
+  <Tasks xmlns="">
+    <DefaultTask Name="_default" NavigationPage="Home"/>
+    <ExtendedTask Name="Dictate" NavigationPage="Dictation" ActivationPolicy="Replace" />
+  </Tasks>
+</Provisioning>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<Provisioning xmlns="http://dbPreProvisioning"
+  RuntimeType="Native"
+  Title="@SettingsRes.dll, -206"
+  Version="1.0"
+  Genre=""
+  ProductID="{5B04B775-356B-4AA0-AAF8-6491FFEA5621}"
+  SingleInstanceHost="true" 
+  DisplayOnAppList="false">
+  <ImagePath xmlns="">\Windows\flightmode.exe</ImagePath>
+  <ImageParams xmlns=""></ImageParams>
+  <Tasks xmlns="">
+    <DefaultTask Name="_default" NavigationPage="FMMain" ActivationPolicy="Resume" />
+  </Tasks>
+  <Tokens xmlns="">
+    <PrimaryToken TokenID="_default"
+           TaskName="_default"
+           TaskParameters=""
+           Pinned="false">
+      <TemplateType2>
+        <BackgroundImageURI></BackgroundImageURI>
+        <Title>Airplane Mode</Title>
+      </TemplateType2>
+    </PrimaryToken>
+  </Tokens>
+</Provisioning>

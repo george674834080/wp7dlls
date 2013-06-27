@@ -1,0 +1,233 @@
+ oal
+
+ Timestamp is f512cf1d                           
+
+ Preferred load address is 00010000
+
+ Start         Length     Name                   Class
+ 0001:00000000 00000688H .rdata                  CODE
+ 0001:00000688 00000020H .rdata$debug            CODE
+ 0001:000006b0 00000008H .rdata$sxdata           CODE
+ 0001:000006c0 000041d2H .text                   CODE
+ 0001:00004898 000000c8H .xdata$x                CODE
+ 0001:00004960 00000000H .edata                  CODE
+ 0002:00000000 00001274H .data                   DATA
+ 0002:00001280 000017acH .bss                    DATA
+ 0003:00000000 00002000H .KDATA                  DATA
+
+  Address         Publics by Value              Rva+Base       Lib:Object
+
+ 0000:00000002       ___safe_se_handler_count   00000002     <absolute>
+ 0001:0000004e       _XDE_CASCADE_SYSTEMIRQ     0001104e     oal:intr.obj
+ 0001:00000050       _k_szDeviceName            00011050     oal:ioctl.obj
+ 0001:00000054       _k_dwTargetBuildTrackerID  00011054     oal:oeminit.obj
+ 0001:00000058       _g_oalIoCtlTable           00011058     oal:globals.obj
+ 0001:00000178       _XDE_DEVICESHAREDMEM_DBGSTRINGBUFFER_BASEPA 00011178     oal:debug.obj
+ 0001:0000017c       _XDE_DEVICESHAREDMEM_DBGSTRINGBUFFER_SIZE 0001117c     oal:debug.obj
+ 0001:00000180       _XDE_DEVICESHAREDMEM_VTT_BASEPA 00011180     oal:debug.obj
+ 0001:00000184       _XDE_DEVICESHAREDMEM_RNG_BASEPA 00011184     oal:debug.obj
+ 0001:00000188       _LoaderPoolTarget          00011188     oemmain:oemconst.obj
+ 0001:0000018c       _FilePoolTarget            0001118c     oemmain:oemconst.obj
+ 0001:00000190       _PageOutLow                00011190     oemmain:oemconst.obj
+ 0001:00000194       _PageOutHigh               00011194     oemmain:oemconst.obj
+ 0001:00000198       _pTOC                      00011198     nkldr:ldrcmn.obj
+ 0001:0000019c       _RomExt                    0001119c     nkldr:ldrcmn.obj
+ 0001:000001c8       _BootGDTBase               000111c8     nkldr:x86init.obj
+ 0001:000001d0       ??_C@_0L@CPPPICDM@kernel?4dll?$AA@ 000111d0     nkldr:ldrcmn.obj
+ 0001:000001dc       ??_C@_19NGJMHAJ@?$AAi?$AA4?$AA8?$AA6?$AA?$AA@ 000111dc     oal:globals.obj
+ 0001:000001e8       ??_C@_1CA@PBPIOLKE@?$AAX?$AAD?$AAe?$AAv?$AAi?$AAc?$AAe?$AAE?$AAm?$AAu?$AAl?$AAa?$AAt?$AAo?$AAr?$AA?$AA@ 000111e8     oal:globals.obj
+ 0001:00000208       ??_C@_1CM@DAMKCELK@?$AAM?$AAi?$AAc?$AAr?$AAo?$AAs?$AAo?$AAf?$AAt?$AA?5?$AAC?$AAo?$AAr?$AAp?$AAo?$AAr?$AAa?$AAt?$AAi?$AAo?$AAn?$AA?$AA@ 00011208     oal:globals.obj
+ 0001:00000234       ??_C@_1BO@HMEODHF@?$AAX?$AAD?$AAE?$AA_?$AAD?$AAe?$AAv?$AAi?$AAc?$AAe?$AA_?$AA0?$AA0?$AA1?$AA?$AA@ 00011234     oal:ioctl.obj
+ 0001:00000254       ??_C@_1BK@BNFDFNJN@?$AAA?$AAu?$AAt?$AAh?$AAe?$AAn?$AAt?$AAi?$AAc?$AAA?$AAM?$AAD?$AA?$AA@ 00011254     oal:procinfo.obj
+ 0001:00000270       ??_C@_1BC@MDGINKJI@?$AAA?$AAM?$AAD?$AA?5?$AAI?$AAn?$AAc?$AA?4?$AA?$AA@ 00011270     oal:procinfo.obj
+ 0001:00000284       ??_C@_1BK@HMEKFOJD@?$AAG?$AAe?$AAn?$AAu?$AAi?$AAn?$AAe?$AAI?$AAn?$AAt?$AAe?$AAl?$AA?$AA@ 00011284     oal:procinfo.obj
+ 0001:000002a0       ??_C@_1BI@LDBLBNOK@?$AAI?$AAn?$AAt?$AAe?$AAl?$AA?5?$AAC?$AAo?$AAr?$AAp?$AA?4?$AA?$AA@ 000112a0     oal:procinfo.obj
+ 0001:000002b8       ??_C@_1BK@EOAFCFCP@?$AAG?$AAe?$AAo?$AAd?$AAe?$AA?5?$AAb?$AAy?$AA?5?$AAA?$AAM?$AAD?$AA?$AA@ 000112b8     oal:procinfo.obj
+ 0001:000002d4       ??_C@_1BK@BCBKNPPF@?$AAC?$AAe?$AAn?$AAt?$AAa?$AAu?$AAr?$AAH?$AAa?$AAu?$AAl?$AAs?$AA?$AA@ 000112d4     oal:procinfo.obj
+ 0001:000002f0       ??_C@_1CO@CDKOOFBD@?$AAV?$AAI?$AAA?$AA?5?$AAT?$AAe?$AAc?$AAh?$AAn?$AAo?$AAl?$AAo?$AAg?$AAi?$AAe?$AAs?$AA?0?$AA?5?$AAI?$AAn?$AAc?$AA?4?$AA?$AA@ 000112f0     oal:procinfo.obj
+ 0001:00000320       ??_C@_11LOCGONAA@?$AA?$AA@ 00011320     oal_ioctl:deviceinfo.obj
+ 0001:00000324       ??_C@_1BO@MIPEKPNN@?$AAS?$AAP?$AAI?$AA_?$AAG?$AAE?$AAT?$AAO?$AAE?$AAM?$AAI?$AAN?$AAF?$AAO?$AA?$AA@ 00011324     oal_ioctl:deviceinfo.obj
+ 0001:00000348       ??_C@_1EK@NBNIOPEG@?$AA?2?$AAS?$AAy?$AAs?$AAt?$AAe?$AAm?$AA?2?$AAP?$AAl?$AAa?$AAt?$AAf?$AAo?$AAr?$AAm?$AA?2?$AAD?$AAe?$AAv?$AAi?$AAc?$AAe?$AAT?$AAa?$AAr?$AAg?$AAe?$AAt?$AAi?$AAn?$AAg@ 00011348     oal_ioctl:deviceinfo.obj
+ 0001:00000394       ??_C@_1BA@PMKGIGGL@?$AAO?$AAE?$AAM?$AAN?$AAa?$AAm?$AAe?$AA?$AA@ 00011394     oal_ioctl:deviceinfo.obj
+ 0001:000003a4       ??_C@_1DI@FDAPMMPA@?$AAS?$AAP?$AAI?$AA_?$AAG?$AAE?$AAT?$AAP?$AAL?$AAA?$AAT?$AAF?$AAO?$AAR?$AAM?$AAM?$AAA?$AAN?$AAU?$AAF?$AAA?$AAC?$AAT?$AAU?$AAR?$AAE?$AAR?$AA?$AA@ 000113a4     oal_ioctl:deviceinfo.obj
+ 0001:000003dc       ??_C@_1CG@NCDPNLLL@?$AAS?$AAP?$AAI?$AA_?$AAG?$AAE?$AAT?$AAP?$AAR?$AAO?$AAJ?$AAE?$AAC?$AAT?$AAN?$AAA?$AAM?$AAE?$AA?$AA@ 000113dc     oal_ioctl:deviceinfo.obj
+ 0001:00000404       ??_C@_1CI@BNCCNAEN@?$AAS?$AAP?$AAI?$AA_?$AAG?$AAE?$AAT?$AAP?$AAL?$AAA?$AAT?$AAF?$AAO?$AAR?$AAM?$AAN?$AAA?$AAM?$AAE?$AA?$AA@ 00011404     oal_ioctl:deviceinfo.obj
+ 0001:0000042c       ??_C@_1BK@BMACMMFP@?$AAM?$AAO?$AAD?$AAe?$AAv?$AAi?$AAc?$AAe?$AAN?$AAa?$AAm?$AAe?$AA?$AA@ 0001142c     oal_ioctl:deviceinfo.obj
+ 0001:00000448       ??_C@_1CE@JLAPMINP@?$AAS?$AAP?$AAI?$AA_?$AAG?$AAE?$AAT?$AAB?$AAO?$AAO?$AAT?$AAM?$AAE?$AAN?$AAA?$AAM?$AAE?$AA?$AA@ 00011448     oal_ioctl:deviceinfo.obj
+ 0001:0000046c       ??_C@_1CO@KIDBHCEF@?$AAD?$AAe?$AAv?$AAi?$AAc?$AAe?$AAH?$AAa?$AAr?$AAd?$AAw?$AAa?$AAr?$AAe?$AAR?$AAe?$AAv?$AAi?$AAs?$AAi?$AAo?$AAn?$AA?$AA@ 0001146c     oal_ioctl:dip.obj
+ 0001:0000049c       ??_C@_1CM@EJLPHGLB@?$AAR?$AAa?$AAd?$AAi?$AAo?$AAH?$AAa?$AAr?$AAd?$AAw?$AAa?$AAr?$AAe?$AAR?$AAe?$AAv?$AAi?$AAs?$AAi?$AAo?$AAn?$AA?$AA@ 0001149c     oal_ioctl:dip.obj
+ 0001:000004c8       ??_C@_1CE@FEDAHGJI@?$AAB?$AAo?$AAo?$AAt?$AAl?$AAo?$AAa?$AAd?$AAe?$AAr?$AAV?$AAe?$AAr?$AAs?$AAi?$AAo?$AAn?$AA?$AA@ 000114c8     oal_ioctl:dip.obj
+ 0001:000004ec       ??_C@_1CM@MOIHFBCA@?$AAR?$AAa?$AAd?$AAi?$AAo?$AAS?$AAo?$AAf?$AAt?$AAw?$AAa?$AAr?$AAe?$AAR?$AAe?$AAv?$AAi?$AAs?$AAi?$AAo?$AAn?$AA?$AA@ 000114ec     oal_ioctl:dip.obj
+ 0001:00000518       ??_C@_1BG@KFMBEAPM@?$AAS?$AAo?$AAC?$AAV?$AAe?$AAr?$AAs?$AAi?$AAo?$AAn?$AA?$AA@ 00011518     oal_ioctl:dip.obj
+ 0001:00000530       ??_C@_1BA@OJFOBGOM@?$AA0?$AA?4?$AA0?$AA?4?$AA0?$AA?4?$AA0?$AA?$AA@ 00011530     oal_ioctl:dip.obj
+ 0001:00000540       ??_C@_1O@GPGKPODL@?$AA0?$AA0?$AA0?$AA?9?$AA0?$AA0?$AA?$AA@ 00011540     oal_ioctl:dip.obj
+ 0001:00000550       ??_C@_1BI@DDCIPBMI@?$AAC?$AAh?$AAa?$AAs?$AAs?$AAi?$AAs?$AAT?$AAy?$AAp?$AAe?$AA?$AA@ 00011550     oal_ioctl:dip.obj
+ 0001:00000568       ??_C@_1BG@LBDIGGLO@?$AAR?$AAO?$AAM?$AAV?$AAe?$AAr?$AAs?$AAi?$AAo?$AAn?$AA?$AA@ 00011568     oal_ioctl:dip.obj
+ 0001:00000580       ??_C@_1BI@HGDGHNBM@?$AAR?$AAO?$AAM?$AAL?$AAa?$AAn?$AAg?$AAu?$AAa?$AAg?$AAe?$AA?$AA@ 00011580     oal_ioctl:dip.obj
+ 0001:00000598       ??_C@_1BO@ELCDOAFO@?$AAM?$AAo?$AAb?$AAi?$AAl?$AAe?$AAO?$AAp?$AAe?$AAr?$AAa?$AAt?$AAo?$AAr?$AA?$AA@ 00011598     oal_ioctl:dip.obj
+ 0001:000005b8       ??_C@_1CC@CKAHLAAM@?$AAF?$AAi?$AAr?$AAm?$AAw?$AAa?$AAr?$AAe?$AAR?$AAe?$AAv?$AAi?$AAs?$AAi?$AAo?$AAn?$AA?$AA@ 000115b8     oal_ioctl:dip.obj
+ 0001:000005dc       ??_C@_1BK@NEFNLDAB@?$AAS?$AAu?$AAp?$AAp?$AAo?$AAr?$AAt?$AAP?$AAh?$AAo?$AAn?$AAe?$AA?$AA@ 000115dc     oal_ioctl:dip.obj
+ 0001:000005f8       ??_C@_1BG@JPIJJECC@?$AAS?$AAu?$AAp?$AAp?$AAo?$AAr?$AAt?$AAU?$AAR?$AAL?$AA?$AA@ 000115f8     oal_ioctl:dip.obj
+ 0001:00000610       ??_C@_1BM@NLFFLIMM@?$AAO?$AAE?$AAM?$AAD?$AAe?$AAv?$AAi?$AAc?$AAe?$AAN?$AAa?$AAm?$AAe?$AA?$AA@ 00011610     oal_ioctl:dip.obj
+ 0001:0000062c       ??_C@_1O@LOFAKFJA@?$AAM?$AAO?$AAN?$AAa?$AAm?$AAe?$AA?$AA@ 0001162c     oal_ioctl:dip.obj
+ 0001:00000640       __load_config_used         00011640     fulllibc:loadcfg.obj
+ 0001:000006b0       ___safe_se_handler_table   000116b0     <linker-defined>
+ 0001:000006c0       _x86Init                   000116c0 f   nkldr:x86init.obj
+ 0001:0000071e       _KernelRelocate            0001171e f   nkldr:ldrcmn.obj
+ 0001:00000778       _FindKernelEntry           00011778 f   nkldr:ldrcmn.obj
+ 0001:00000808       _SetOsAxsDataBlockPointer  00011808 f   nkldr:kdinfo.obj
+ 0001:0000081d       _ReturnFalse               0001181d f   oemmain:oemglobal.obj
+ 0001:0000081d       _OEMGetExtensionDRAM       0001181d f   oal:memory.obj
+ 0001:00000820       _ReturnSelf                00011820 f   oemmain:oemglobal.obj
+ 0001:00000830       _OEMInitGlobals            00011830 f   oemmain:oemglobal.obj
+ 0001:0000088a       _OEMCacheRangeFlush        0001188a f   oal_cache_x86:flush.obj
+ 0001:000008b3       _OALUnknownIRQHandler      000118b3 f   oal_intr_refcount:map_refcount.obj
+ 0001:000008fe       _OALIntrRequestSysIntr     000118fe f   oal_intr_refcount:map_refcount.obj
+ 0001:00000965       _OEMInterruptEnable        00011965 f   oal_intr_refcount:map_refcount.obj
+ 0001:000009bd       _OEMInterruptDisable       000119bd f   oal_intr_refcount:map_refcount.obj
+ 0001:00000a0f       _OEMInterruptMask          00011a0f f   oal_intr_refcount:map_refcount.obj
+ 0001:00000a76       _OEMInterruptDone          00011a76 f   oal_intr_refcount:map_refcount.obj
+ 0001:00000a9a       _DoOEMIoControlWithCS      00011a9a f   oal_ioctl:ioctl.obj
+ 0001:00000b11       _OEMIoControl              00011b11 f   oal_ioctl:ioctl.obj
+ 0001:00000bc6       _OEMPowerOff               00011bc6 f   oal_power_x86:power.obj
+ 0001:00000ce4       _x86PowerIoctl             00011ce4 f   oal_power_x86:power.obj
+ 0001:00000d97       _OEMGetRealTime            00011d97 f   oal_rtc_x86:rtc.obj
+ 0001:00000dc5       _OEMSetRealTime            00011dc5 f   oal_rtc_x86:rtc.obj
+ 0001:00000df3       _OEMSetAlarmTime           00011df3 f   oal_rtc_x86:rtc.obj
+ 0001:00000e21       _x86IoCtlHalInitRTC        00011e21 f   oal_rtc_x86:rtc.obj
+ 0001:00000e33       _CMOS_Write                00011e33 f   oal_rtc_x86:cmos.obj
+ 0001:00000e55       _CMOS_Read                 00011e55 f   oal_rtc_x86:cmos.obj
+ 0001:00000e74       _Bare_GetRealTime          00011e74 f   oal_rtc_x86:cmos.obj
+ 0001:0000104d       _Bare_SetRealTime          0001204d f   oal_rtc_x86:cmos.obj
+ 0001:000011d2       _Bare_SetAlarmTime         000121d2 f   oal_rtc_x86:cmos.obj
+ 0001:00001295       _OALPAtoVA                 00012295 f   oal:memory.obj
+ 0001:000012bb       _OEMGetOEMRamTable         000122bb f   oal:memory.obj
+ 0001:00001735       _OEMInitDebugSerial        00012735 f   oal:debug.obj
+ 0001:00001745       _OEMWriteDebugByte         00012745 f   oal:debug.obj
+ 0001:00001757       _OEMReadDebugByte          00012757 f   oal:debug.obj
+ 0001:0000176e       _OEMWriteDebugString       0001276e f   oal:debug.obj
+ 0001:000017b2       _DefaultInitInterlockedFuncs 000127b2 f   oemmain:oemglobal.obj
+ 0001:000017b2       _OEMNMIHandler             000127b2 f   oal:intr.obj
+ 0001:0000192e       _x86InitPICs               0001292e f   oal:intr.obj
+ 0001:000019ac       _PICEnableInterrupt        000129ac f   oal:intr.obj
+ 0001:000019de       _OALIntrInit               000129de f   oal:intr.obj
+ 0001:00001b1f       _InitClock                 00012b1f f   oal:timer.obj
+ 0001:00001bc0       _OEMIdle                   00012bc0 f   oal:timer.obj
+ 0001:00001c3d       _OEMGetTickCount           00012c3d f   oal:timer.obj
+ 0001:00001c63       _OEMUpdateRescheduleTime   00012c63 f   oal:timer.obj
+ 0001:00001c74       _XDEQueryPerformanceCounter 00012c74 f   oal:timer.obj
+ 0001:00001ca0       _XDEQueryPerformanceFrequency 00012ca0 f   oal:timer.obj
+ 0001:00001d54       _OEMInit                   00012d54 f   oal:oeminit.obj
+ 0001:00001e00       _x86IoCtlPostInit          00012e00 f   oal:oeminit.obj
+ 0001:00001e48       _XDEIoCtlHalReboot         00012e48 f   oal:ioctl.obj
+ 0001:00001e69       _XDEIoCtlQueryDispSettings 00012e69 f   oal:ioctl.obj
+ 0001:00001f08       _XDEIoCtlGetFastCounter    00012f08 f   oal:fastcnt.obj
+ 0001:00001faa       _XDEIoCtlGetFastCounterInfo 00012faa f   oal:fastcnt.obj
+ 0001:0000205c       _x86IoCtlProcessorInfo     0001305c f   oal:procinfo.obj
+ 0001:00002250       _XDEIoCtlHalGetRandomSeed  00013250 f   oal:randomseed.obj
+ 0001:000022f4       _HookInterrupt             000132f4 f   nkstub:nkstub.obj
+ 0001:00002300       _NKRegOpenKeyExW           00013300 f   nkstub:nkstub.obj
+ 0001:00002322       _NKwcslen                  00013322 f   nkstub:nkstub.obj
+ 0001:00002331       ___report_gsfailure        00013331 f   nkstub:nkstub.obj
+ 0001:0000233c       ?MapCacheAssoc@@YAKK@Z     0001333c f   oal_cache_x86:ioctl.obj
+ 0001:00002a00       _x86IoCtlHalGetCacheInfo   00013a00 f   oal_cache_x86:ioctl.obj
+ 0001:00002c81       _OALIoCtlHalRequestSysIntr 00013c81 f   oal_intr_refcount:ioctl.obj
+ 0001:00002d2d       _OALIoCtlHalReleaseSysIntr 00013d2d f   oal_intr_refcount:ioctl.obj
+ 0001:00002d89       _OALIoCtlHalRequestIrq     00013d89 f   oal_intr_refcount:ioctl.obj
+ 0001:00002dc3       _OALIoCtlHalDdkCall        00013dc3 f   oal_io:ioctl.obj
+ 0001:00002e6f       _OALIoCtlHalGetDeviceInfo  00013e6f f   oal_ioctl:deviceinfo.obj
+ 0001:0000357a       _OALIoCtlHalGetUUID        0001457a f   oal_ioctl:uuid.obj
+ 0001:000035c1       _OALIoCtlHalUpdateMode     000145c1 f   oal_ioctl:imgupd.obj
+ 0001:000035ed       _OALIoCtlHalGetDeviceId    000145ed f   oal_ioctl:deviceid.obj
+ 0001:00003763       _OALIoCtlHalInitRegistry   00014763 f   oal_ioctl:reginit.obj
+ 0001:0000376c       _OALIoCtlHalGetRandomSeed  0001476c f   oal_ioctl:randomseed.obj
+ 0001:0000387e       _UpdateDipHwValue          0001487e f   oal_ioctl:dip.obj
+ 0001:000038b0       _InitDipPlatformInfo       000148b0 f   oal_ioctl:dip.obj
+ 0001:00003a2f       _InitDipDwordValue         00014a2f f   oal_ioctl:dip.obj
+ 0001:00003a9f       _InitDipStringValue        00014a9f f   oal_ioctl:dip.obj
+ 0001:00003b40       _InitDIPRegistryKeysToDefaultValues 00014b40 f   oal_ioctl:dip.obj
+ 0001:00003e40       _StartUp                   00014e40 f   oal:startup.obj
+ 0001:00003e60       _OEMAddressTable           00014e60     oal:startup.obj
+ 0001:00003e60       _g_oalAddressTable         00014e60     oal:startup.obj
+ 0001:00003e68       _dwOEMTotalRAM             00014e68     oal:startup.obj
+ 0001:00003ea0       _IdentifyCpu               00014ea0 f   oal:cpuid.obj
+ 0001:00003f9c       _KernelInitialize          00014f9c f   nkldr:x86start.obj
+ 0001:00003f9c       _KernelStart               00014f9c     nkldr:x86start.obj
+ 0001:000041a0       _RebootHandler             000151a0 f   oal:reboot.obj
+ 0001:000042b9       _GetDS                     000152b9 f   oal:reboot.obj
+ 0001:000042bc       @__security_check_cookie@4 000152bc f   fulllibc:x86secgs.obj
+ 0001:000042e2       _tolower                   000152e2 f   fulllibc:tolower.obj
+ 0001:000042f8       _memset                    000152f8 f   fulllibc:memset.obj
+ 0001:00004350       __SEH_prolog4_GS           00015350 f   fulllibc:sehprolg4gs.obj
+ 0001:00004398       __SEH_epilog4_GS           00015398 f   fulllibc:sehprolg4gs.obj
+ 0001:000043a7       __except_handler4          000153a7 f   fulllibc:chandler4gs.obj
+ 0001:000043cc       __SEH_prolog4              000153cc f   fulllibc:sehprolg4.obj
+ 0001:00004411       __SEH_epilog4              00015411 f   fulllibc:sehprolg4.obj
+ 0001:00004428       _memcpy                    00015428 f   fulllibc:memcpy.obj
+ 0001:00004640       __except_handler4_common   00015640 f   fulllibc:chandler4.obj
+ 0001:00004790       __local_unwind4            00015790 f   fulllibc:exsup4.obj
+ 0001:00004854       @_EH4_CallFilterFunc@8     00015854 f   fulllibc:exsup4.obj
+ 0001:0000486b       @_EH4_TransferToHandler@8  0001586b f   fulllibc:exsup4.obj
+ 0001:0000487b       @_EH4_LocalUnwind@16       0001587b f   fulllibc:exsup4.obj
+ 0002:00000040       _initialOALLogZones        00016040     oal_log:debug.obj
+ 0002:00000044       _g_pPlatformManufacturer   00016044     oal:globals.obj
+ 0002:00000048       _dpCurSettings             00016048     oal_log:debug.obj
+ 0002:0000048c       _g_oalIoCtlPlatformGuidPattern 0001648c     oal_ioctl:deviceinfo.obj
+ 0002:0000049c       _g_pPlatformName           0001649c     oal:globals.obj
+ 0002:000004a0       _AMDTable                  000164a0     oal:procinfo.obj
+ 0002:000008d8       _IntelTable                000168d8     oal:procinfo.obj
+ 0002:00000f08       _GeodeTable                00016f08     oal:procinfo.obj
+ 0002:00000f50       _VIATable                  00016f50     oal:procinfo.obj
+ 0002:00000f98       _g_oalIoCtlPlatformOEM     00016f98     oal:globals.obj
+ 0002:00000f9c       _g_pszDfltProcessorName    00016f9c     oal:globals.obj
+ 0002:00000fa0       _dwOEMDrWatsonSize         00016fa0     oal:oeminit.obj
+ 0002:00000fb4       _DefaultThreadQuantum      00016fb4     oemmain:oemglobal.obj
+ 0002:00001154       _g_pOemGlobal              00017154     oemmain:oemglobal.obj
+ 0002:00001180       _OsAxsDataBlock_2          00017180     nkldr:kdinfo.obj
+ 0002:00001200       _OsAxsHwTrap               00017200     nkldr:kdinfo.obj
+ 0002:0000126c       ___security_cookie_complement 0001726c     nkstub:nkstub.obj
+ 0002:00001270       ___security_cookie         00017270     nkstub:nkstub.obj
+ 0002:00002800       _g_oalCacheInfo            00018800     oal_cache_x86:global.obj
+ 0002:00002864       _g_pVTTRegs                00018864     oal:timer.obj
+ 0002:00002868       _g_pVTTSharedData          00018868     oal:timer.obj
+ 0002:0000286c       _g_pRNGRegs                0001886c     oal:randomseed.obj
+ 0002:00002870       _g_pRNGSharedData          00018870     oal:randomseed.obj
+ 0002:00002874       _g_oalIoCtlPlatformManufacturer 00018874     oal_ioctl:deviceinfo.obj
+ 0002:00002878       _g_oalIoCtlPlatformName    00018878     oal_ioctl:deviceinfo.obj
+ 0002:0000287c       __pDestructExceptionObject 0001887c     <common>
+ 0002:00002880       _g_pNKGlobal               00018880     <common>
+ 0002:00002884       _dwRebootAddress           00018884     <common>
+ 0002:000028a0       _g_oalIrqSignaled          000188a0     <common>
+ 0002:000029a0       _g_oalSysIntrIntialized    000189a0     <common>
+ 0002:00002a00       _pagePoolParams            00018a00     <common>
+
+ entry point at        0001:00003e40
+
+ Static symbols
+
+ 0001:00000828       _FakeCalcPage              00011828 f    CIL library: CIL module
+ 0001:000012f5       _CheckExistingMTRR         000122f5 f    CIL library: CIL module
+ 0001:000013fc       _MTRRSetMemoryAttributes   000123fc f    CIL library: CIL module
+ 0001:000015b8       _OEMSetMemoryAttributes    000125b8 f    CIL library: CIL module
+ 0001:00001618       _InitializePATAndMTRR      00012618 f    CIL library: CIL module
+ 0001:000017b3       _PeRPISR                   000127b3 f    CIL library: CIL module
+ 0001:00001cc1       _InitDisplay               00012cc1 f    CIL library: CIL module
+ 0001:00001def       _OEMIsProcessorFeaturePresent 00012def f    CIL library: CIL module
+ 0001:000023b8       ?ProcessDescriptorByte@@YAHABE@Z 000133b8 f    CIL library: CIL module
+ 0001:000024b5       ?x86InterpretCPUIDValue@@YAHABI@Z 000134b5 f    CIL library: CIL module
+ 0001:0000251d       ?x86InitializeCPUIDTable@@YAXXZ 0001351d f    CIL library: CIL module
+ 0001:0000302a       ?GetOEMInfo@@YAHPAXIPAIPAPBG@Z 0001402a f    CIL library: CIL module
+ 0001:0000318a       ?GetPlatformManufacturer@@YAHPAXIPAIPAPBG@Z 0001418a f    CIL library: CIL module
+ 0001:000032f6       ?GetProjectName@@YAHPAXIPAIPAPBG@Z 000142f6 f    CIL library: CIL module
+ 0001:00003347       ?GetPlatformName@@YAHPAXIPAIPAPBG@Z 00014347 f    CIL library: CIL module
+ 0001:000034b3       ?GetBootMeName@@YAHPAXIPAIPAPBG@Z 000144b3 f    CIL library: CIL module
+ 0001:0000353e       ?CheckBufferSize@@YAHPBXABIPAI1PBG@Z 0001453e f    CIL library: CIL module
+ 0001:00003ec0       VaFromPa                   00014ec0 f   nkldr:x86start.obj
+ 0001:00003ee3       PaFromVa                   00014ee3 f   nkldr:x86start.obj
+ 0001:00003f03       FillPD4M                   00014f03 f   nkldr:x86start.obj
+ 0001:00003f35       FillPTE                    00014f35 f   nkldr:x86start.obj
+ 0001:00003f55       FillPD4K                   00014f55 f   nkldr:x86start.obj
+ 0001:00003f92       ZeroData                   00014f92 f   nkldr:x86start.obj
+ 0001:00004580       @_except_finish4@16        00015580 f   fulllibc:chandler4.obj
+ 0001:00004620       __except_finish4_thunk     00015620 f   fulllibc:chandler4.obj
+ 0001:0000480e       __unwind_handler4          0001580e f   fulllibc:exsup4.obj

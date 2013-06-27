@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<Provisioning xmlns="http://dbPreProvisioning"
+  RuntimeType="Native"
+  Title="@SettingsRes.dll,-227"
+  Version="1.0"
+  Genre=""
+  ProductID="{25BB0297-A723-479c-BDC8-9274FC6C6470}"
+  SingleInstanceHost="false"
+  DisplayOnAppList="false">
+  <IconPath xmlns="">res://StartMenu!AppIconGeneric.png</IconPath>
+  <ImagePath xmlns="">\Windows\BGProcessingCPL.exe</ImagePath>
+  <ImageParams xmlns=""></ImageParams>
+  <Tasks xmlns="">
+    <DefaultTask Name="_default"
+                 NavigationPage="Home"
+                 ActivationPolicy="Resume"/>
+  </Tasks>
+</Provisioning>

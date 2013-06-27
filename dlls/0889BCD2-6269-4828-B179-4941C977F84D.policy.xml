@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<CeSecurityPolicyFile Description="loader verifier security policy for RPC Servers running in the self isolated chamber" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.00" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">
+
+  <Macro Id="MULTIMEDIA_SUPERVISOR_SELF_ISOLATED" Description="Supervisor Self Isolated Chamber to run Multimedia processes" Value="S-1-5-112-0-0X11-0X00000003"></Macro>
+  <Macro Id="MULTIMEDIA_SUPERVISOR_SELF_ISOLATED_USER_FRIENDLY_NAME" Description="Self Isolated Chamber account to run various Multimedia RPC servers" Value="Multimedia RPC Self Isolated Chamber"></Macro>
+
+  <!-- Create the Multimedia Self Isolated Supervisor Chamber -->
+  <Account Id="$(MULTIMEDIA_SUPERVISOR_SELF_ISOLATED)" FriendlyName="$(MULTIMEDIA_SUPERVISOR_SELF_ISOLATED_USER_FRIENDLY_NAME)" Description="Multimedia Isolated Account" Type="User">
+      <MemberOfGroup GroupAccountId="$(SELF_ISOLATED_ELEVATED_RIGHTS_CHAMBER_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+  <!-- Rule for XDrmRemoteServ RPC server (for XDrm helper) -->
+  
+<!--Begin Generated accounts and routing/authz rules for $(MULTIMEDIA_SUPERVISOR_SELF_ISOLATED) -->
+
+<!--Begin Generated routing/authz rules for XDRMREMOTESERV.EXE -->
+<Rule Description="Route XDRMREMOTESERV.EXE" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/XDRMREMOTESERV.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(MULTIMEDIA_SUPERVISOR_SELF_ISOLATED)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize XDRMREMOTESERV.EXE be loadable to $(MULTIMEDIA_SUPERVISOR_SELF_ISOLATED) and  chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/XDRMREMOTESERV.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(MULTIMEDIA_SUPERVISOR_SELF_ISOLATED)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for XDRMREMOTESERV.EXE -->
+<!--End Generated accounts and routing/authz rules for $(MULTIMEDIA_SUPERVISOR_SELF_ISOLATED) -->
+
+
+  <!-- Rule for MultimediaLauncher which is used to launch XDrmRemote server at the right time during boot -->
+  
+<!--Begin Generated accounts and routing/authz rules for $(SYSTEM_USER_NAME) -->
+
+<!--Begin Generated routing/authz rules for MULTIMEDIALAUNCHER.EXE -->
+<Rule Description="Route MULTIMEDIALAUNCHER.EXE" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/MULTIMEDIALAUNCHER.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize MULTIMEDIALAUNCHER.EXE be loadable to $(SYSTEM_USER_NAME) and $(SYSTEM_IDENTITY_GROUP_NAME) chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/MULTIMEDIALAUNCHER.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+<Match AccountId="$(SYSTEM_IDENTITY_GROUP_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for MULTIMEDIALAUNCHER.EXE -->
+<!--End Generated accounts and routing/authz rules for $(SYSTEM_USER_NAME) -->
+
+
+  <Rule Description="Rule to only allow TCB to launch this process" ResourceIri="policy:/LOADERVERIFIER/ACCOUNT/$(MULTIMEDIA_SUPERVISOR_SELF_ISOLATED)/ACCOUNT_CAN_LAUNCH/NONE/NONE/PRIMARY/WINDOWS/XDRMREMOTESERV.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <!-- RPC Server Endpoint rule -->
+  <Rule Description="Authorize a server from the Multimedia Self Isolated chamber to register the endpoint name 'XDrm'." ResourceIri="$(RPC_SERVER_ENDPOINT)/XDrm" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(MULTIMEDIA_SUPERVISOR_SELF_ISOLATED)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <!-- RPC Client Interface rule -->
+  <Rule Description="Authorize clients from all chambers to call into the XDrmRemote interface." ResourceIri="$(RPC_CLIENT_INTERFACE)/a5cb6a59-33c5-4b3c-ab7e-502f3143a059/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Action="CreateNew" Description="XDRM Remove Server ready event used to signal that the server is ready" ResourceIri="policy:/KERNEL/EVENT/GLOBAL/XDrmRemoteServer_Ready" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <!-- ISV Camera capability -->
+  
+<!--Begin generating capability accounts and authorization rules for ID_CAP_ISV_CAMERA -->
+<Macro Id="CAPMACRO_ID_CAP_ISV_CAMERA" Value="S-1-5-112-0-0X70-0X49445F4341505F4953565F43414D455241" />
+<Account Id="$(CAPMACRO_ID_CAP_ISV_CAMERA)" FriendlyName="ID_CAP_ISV_CAMERA:Provides access to the ISV camera" Description="Autogenerated group for capability ID_CAP_ISV_CAMERA" Type="Group">
+<MemberOfGroup GroupAccountId="$(PUBLIC_CAPABILITIES_GROUP_NAME)" />
+</Account>
+<Rule Description="Authorization rule for capability ID_CAP_ISV_CAMERA" ResourceIri="$(GLOBAL_RESOURCES)/ISV_CAMERA/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_ISV_CAMERA)" AuthorizationIds="GENERIC_ALL" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_ISV_CAMERA" ResourceIri="$(GLOBAL_RESOURCES)/CAMERA/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_ISV_CAMERA)" AuthorizationIds="GENERIC_ALL" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_ISV_CAMERA" ResourceIri="$(DEVICEMANAGER_DEVICE)/CAM/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_ISV_CAMERA)" AuthorizationIds="ALL_ACCESS" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_ISV_CAMERA" ResourceIri="$(DEVICEMANAGER_DEVICE)/PIN/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_ISV_CAMERA)" AuthorizationIds="ALL_ACCESS" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_ISV_CAMERA" ResourceIri="$(DEVICEMANAGER_ICLASS)/720A9E4D-DB84-4e90-892A-41ED3EB1C242" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_ISV_CAMERA)" AuthorizationIds="ALL_ACCESS" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_ISV_CAMERA" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/DIRECTX/AVRESOURCE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_ISV_CAMERA)" AuthorizationIds="ALL_ACCESS" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_ISV_CAMERA" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/CAMERA/READWRITESETTINGS" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_ISV_CAMERA)" AuthorizationIds="ALL_ACCESS" />
+</Authorize>
+</Rule>
+<!--End generating capability accounts and authorization rules for ID_CAP_ISV_CAMERA -->
+
+
+  <!-- Camera capability -->
+  
+<!--Begin generating capability accounts and authorization rules for ID_CAP_CAMERA -->
+<Macro Id="CAPMACRO_ID_CAP_CAMERA" Value="S-1-5-112-0-0X70-0X49445F4341505F43414D455241" />
+<Account Id="$(CAPMACRO_ID_CAP_CAMERA)" FriendlyName="ID_CAP_CAMERA:Provides access to the camera" Description="Autogenerated group for capability ID_CAP_CAMERA" Type="Group">
+<MemberOfGroup GroupAccountId="$(PUBLIC_CAPABILITIES_GROUP_NAME)" />
+</Account>
+<Rule Description="Authorization rule for capability ID_CAP_CAMERA" ResourceIri="$(GLOBAL_RESOURCES)/CAMERA/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_CAMERA)" AuthorizationIds="GENERIC_ALL" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_CAMERA" ResourceIri="$(GLOBAL_RESOURCES)/CAMERA_RESTRICTEDPROPERTIES/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_CAMERA)" AuthorizationIds="GENERIC_ALL" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_CAMERA" ResourceIri="$(DEVICEMANAGER_DEVICE)/CAM/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_CAMERA)" AuthorizationIds="ALL_ACCESS" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_CAMERA" ResourceIri="$(DEVICEMANAGER_DEVICE)/PIN/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_CAMERA)" AuthorizationIds="ALL_ACCESS" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_CAMERA" ResourceIri="$(DEVICEMANAGER_ICLASS)/720A9E4D-DB84-4e90-892A-41ED3EB1C242" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_CAMERA)" AuthorizationIds="ALL_ACCESS" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_CAMERA" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/DIRECTX/AVRESOURCE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_CAMERA)" AuthorizationIds="ALL_ACCESS" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_CAMERA" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/CAMERA/READWRITESETTINGS" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_CAMERA)" AuthorizationIds="ALL_ACCESS" />
+</Authorize>
+</Rule>
+<!--End generating capability accounts and authorization rules for ID_CAP_CAMERA -->
+
+
+  <!-- Camera rules -->
+  <Rule Description="Grant standard rights access to camera" ResourceIri="$(GLOBAL_RESOURCES)/CAMERA/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule Description="Grant standard rights access to camera restricted properties" ResourceIri="$(GLOBAL_RESOURCES)/CAMERA_RESTRICTEDPROPERTIES/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule Description="Grant standard rights access to camera driver" ResourceIri="$(DEVICEMANAGER_DEVICE)/CAM/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+  <Rule Description="Grant standard rights access to camera driver pin devices" ResourceIri="$(DEVICEMANAGER_DEVICE)/PIN/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+  <Rule Description="Grant standard rights access to drivers used by the camera pipeline" ResourceIri="$(DEVICEMANAGER_ICLASS)/720A9E4D-DB84-4e90-892A-41ED3EB1C242" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <!--Video Transcoder Rules-->
+  <Rule Description="Allow access to the QVD" ResourceIri="$(DEVICEMANAGER_DEVICE)/QVD/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Allow access to the VPE" ResourceIri="$(DEVICEMANAGER_DEVICE)/VPE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+  
+
+
+</CeSecurityPolicyFile>

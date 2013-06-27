@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<!--
+Use of this source code is subject to the terms of the Microsoft
+premium shared source license agreement under which you licensed
+this source code. If you did not accept the terms of the license
+agreement, you are not authorized to use this source code.
+For the terms of the license, please see the license agreement
+signed by you and Microsoft.
+THE SOURCE CODE IS PROVIDED "AS IS", WITH NO WARRANTIES OR INDEMNITIES.
+-->
+
+<wap-provisioningdoc>
+    <characteristic type="FileOperation">
+        <!--
+          Launch Dw.exe after the system is up by adding it to the StartUp directory
+          %CE4% is \Windows\StartUp.
+        -->
+        <characteristic type="%CE4%" translation="install">
+            <characteristic type="Dw.lnk" translation="install">
+                <characteristic type="Copy">
+                    <parm name="Source" value="\Windows\Dw.lnk" translation="install" />
+                </characteristic>
+            </characteristic>
+        </characteristic>
+    </characteristic>
+
+    <characteristic type="FileOperation">
+      <!-- 
+      create the non-ETW log directory 
+      -->
+      <characteristic type="\Windows\NonEtw_Logs" translation="install">
+        <characteristic type="MakeDir" />
+      </characteristic>
+    </characteristic>
+  
+</wap-provisioningdoc>

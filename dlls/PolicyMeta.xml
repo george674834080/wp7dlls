@@ -1,0 +1,701 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<CeSecurityPolicyFile Description="Defines ID_CAP_DEBUG for emulator" FileVersion="0.0.0.0" RequiredOSVersion="7.0.0.0" Vendor="Microsoft" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">
+<Macro Id="CAPMACRO_ID_CAP_DEBUG" Value="S-1-5-112-0-0X70-0X49445F4341505F4445425547" />
+
+<Macro Id="OFFICE_MOBILE_CHAMBER" Value="S-1-5-112-0-0X20-0X00000009" />
+
+<Macro Id="TCB_CA" Description="SHA1 Hash of TCB CA" Value="CERTIFICATES/HASH/SHA1/4E719A55C9DA0A922AA1338B5C700CCDBCA96FEE" />
+
+<Macro Id="CORPCERT_23" Description="SHA1 Hash of Corp Cert 23" Value="CERTIFICATES/HASH/SHA1/3036E3B25B88A55B86FC90E6E9EAAD5081445166" />
+
+<Macro Id="CORPCERT_X" Description="Microsoft Code Signing PCA2" Value="CERTIFICATES/HASH/SHA1/D07EA64088A80085F01BD40AA4EAD82F470482A6" />
+
+<Macro Id="ISSER_OF_CERT10006" Description="Microsoft Code Signing PCA" Value="CERTIFICATES/HASH/SHA1/FDD1314ED3268A95E198603BA8316FA63CBCD82D" />
+
+<Macro Id="RESTRICTED_CA" Description="SHA1 Hash of restricted CA" Value="CERTIFICATES/HASH/SHA1/F0A83A051E32BEAC46C140B977657CCEA5A9A741" />
+
+<Macro Id="LPC_CA" Description="SHA1 Hash of LPC CA" Value="CERTIFICATES/HASH/SHA1/6A1ECA944B42125B18435B788A74D1B5EFB0057C" />
+
+<Macro Id="STANDARD_CA" Description="SHA1 Hash of Standard Rights CA" Value="CERTIFICATES/HASH/SHA1/7B0E7B6D3825CDAC34F2148BD785412B57F6BD28" />
+
+<Macro Id="ELEVATED_CA" Description="SHA1 Hash of Elevated Rights CA" Value="CERTIFICATES/HASH/SHA1/2C11ADB8F577C47480E66580A4714DB90A3C0C07" />
+
+<Macro Id="MMSTRANS_USER_NAME" Description="MMS transport user SID" Value="S-1-5-112-0-0X20-0X0000002E" />
+
+<Macro Id="MMSTRANS_USER_FRIENDLY_NAME" Description="MMS transport" Value="LOC_ACCOUNT_FRIENDLY_NAME_MMSTRANS_USER" />
+
+<Macro Id="CAPMACRO_ID_CAP_GAMERSERVICES" Value="S-1-5-112-0-0X70-0X49445F4341505F47414D45525345525649434553" />
+
+<Macro Id="MULTIMEDIA_SUPERVISOR_SELF_ISOLATED" Description="Supervisor Self Isolated Chamber to run Multimedia processes" Value="S-1-5-112-0-0X11-0X00000003" />
+
+<Macro Id="HFAHOST_EXE_SID" Value="S-1-5-112-0-0X10-0X0000034" />
+
+<Macro Id="ALL_DM_ACCOUNTS_GROUP_NAME" Description="SID representing all device management accounts on a device" Value="S-1-5-112-700" />
+
+<Macro Id="ALL_DM_ACCOUNTS_FRIENDLY_NAME" Description="All DM accounts group" Value="All DM Chamber Group" />
+
+<Macro Id="DM_OPERATOR_GROUP_NAME" Description="SECROLE_OPERATOR" Value="S-1-5-112-0-0X41" />
+
+<Macro Id="DM_OPERATOR_GROUP_FRIENDLY_NAME" Description="Operator device management security role" Value="ACCOUNT_FRIENDLY_NAME_DM_OPERATOR_GROUP" />
+
+<Macro Id="DM_MANAGER_GROUP_NAME" Description="SECROLE_MANAGER" Value="S-1-5-112-0-0X42" />
+
+<Macro Id="DM_MANAGER_GROUP_FRIENDLY_NAME" Description="Manager device management security role" Value="ACCOUNT_FRIENDLY_NAME_DM_MANAGER_GROUP" />
+
+<Macro Id="DM_USER_AUTH_GROUP_NAME" Description="SECROLE_USER_AUTH" Value="S-1-5-112-0-0X43" />
+
+<Macro Id="DM_USER_AUTH_GROUP_FRIENDLY_NAME" Description="Device management security role for users who are not device managers" Value="ACCOUNT_FRIENDLY_NAME_DM_USER_AUTH_GROUP" />
+
+<Macro Id="ENTERPRISE_GROUP_NAME" Description="Enterprise IT administrator device management group" Value="S-1-5-112-0-0X4C" />
+
+<Macro Id="DM_USER_UNAUTH_GROUP_NAME" Description="SECROLE_USER_UNAUTH" Value="S-1-5-112-0-0X45" />
+
+<Macro Id="DM_USER_UNAUTH_GROUP_FRIENDLY_NAME" Description="Device management security role for users who are not authenticated on the device" Value="ACCOUNT_FRIENDLY_NAME_DM_USER_UNAUTH_GROUP" />
+
+<Macro Id="DM_OPERATOR_TPS_GROUP_NAME" Description="SECROLE_OPERATOR_TPS" Value="S-1-5-112-0-0X46" />
+
+<Macro Id="DM_OPERATOR_TPS_GROUP_FRIENDLY_NAME" Description="Trusted provisioning server device management security role" Value="ACCOUNT_FRIENDLY_NAME_DM_OPERATOR_TPS_GROUP" />
+
+<Macro Id="DM_KNOWN_PPG_GROUP_NAME" Description="SECROLE_KNOWN_PPG" Value="S-1-5-112-0-0X47" />
+
+<Macro Id="DM_KNOWN_PPG_GROUP_FRIENDLY_NAME" Description="Known push proxy gateway device management security role" Value="ACCOUNT_FRIENDLY_NAME_DM_KNOWN_PPG_GROUP" />
+
+<Macro Id="DM_TRUSTED_PPG_GROUP_NAME" Description="SECROLE_TRUSTED_PPG" Value="S-1-5-112-0-0X48" />
+
+<Macro Id="DM_TRUSTED_PPG_GROUP_FRIENDLY_NAME" Description="Device trusted push proxy gateway device management security role" Value="ACCOUNT_FRIENDLY_NAME_DM_TRUSTED_PPG_GROUP" />
+
+<Macro Id="DM_PPG_AUTH_GROUP_NAME" Description="SECROLE_PPG_AUTH" Value="S-1-5-112-0-0X49" />
+
+<Macro Id="DM_PPG_AUTH_GROUP_FRIENDLY_NAME" Description="Authenticated push initiator device management security role" Value="ACCOUNT_FRIENDLY_NAME_DM_PPG_AUTH_GROUP" />
+
+<Macro Id="DM_PPG_TRUSTED_GROUP_NAME" Description="SECROLE_PPG_TRUSTED" Value="S-1-5-112-0-0X4A" />
+
+<Macro Id="DM_PPG_TRUSTED_GROUP_FRIENDLY_NAME" Description="Trusted push proxy gateway device management security role" Value="ACCOUNT_FRIENDLY_NAME_DM_PPG_TRUSTED_GROUP" />
+
+<Macro Id="DM_ANY_PUSH_SOURCE_GROUP_NAME" Description="SECROLE_ANY_PUSH_SOURCE" Value="S-1-5-112-0-0X4B" />
+
+<Macro Id="DM_ANY_PUSH_SOURCE_GROUP_FRIENDLY_NAME" Description="Push router device management security role" Value="ACCOUNT_FRIENDLY_NAME_DM_ANY_PUSH_SOURCE_GROUP" />
+
+<Macro Id="LOADERVERIFIER_CERTIFICATES_SHA1" Description="Base path for all of the loader verifier rules that apply across all chambers" Value="policy:/LOADERVERIFIER/GLOBAL/CERTIFICATES/HASH/SHA1" />
+
+<Macro Id="DATETIMECPL_EXE_SID" Value="S-1-5-112-0-0X10-0X00000021" />
+
+<Macro Id="THEMECPL_EXE_SID" Value="S-1-5-112-0-0X10-0X00000025" />
+
+<Macro Id="BRIGHTNESSCPL_EXE_SID" Value="S-1-5-112-0-0X10-0X00000023" />
+
+<Macro Id="SOUNDCPL_EXE_SID" Value="S-1-5-112-0-0X10-0X00000024" />
+
+<Macro Id="AUTOTIMEUPDATE_EXE_SID" Value="S-1-5-112-0-0X10-0X00000032" />
+
+<Macro Id="SETTINGS3_EXE_SID" Value="S-1-5-112-0-0X10-0X0000000D" />
+
+<Macro Id="REGIONCPL_EXE_SID" Value="S-1-5-112-0-0X10-0X00000022" />
+
+<Macro Id="ACCESSIBILITYCPL_EXE_SID" Value="S-1-5-112-0-0X10-0X00000031" />
+
+<Macro Id="ABOUTCPL_EXE_SID" Value="S-1-5-112-0-0X10-0X00000035" />
+
+<Macro Id="BGPROCESSINGCPL_EXE_SID" Value="S-1-5-112-0-0X10-0X00000039" />
+
+<Macro Id="SID_MEUX_STANDARD" Description="Media applications SID" Value="S-1-5-112-0-0X20-0X00000022" />
+
+<Macro Id="MEDIAAPPS_USER_FRIENDLY_NAME" Description="Media apps" Value="LOC_ACCOUNT_FRIENDLY_NAME_MEDIAAPPS_USER" />
+
+<Macro Id="SID_ZMF_CHAMBER" Description="ZMF Chamber SID" Value="S-1-5-112-0-0X20-0X00000022" />
+
+<Macro Id="CAPMACRO_ID_CAP_RINGTONE_ADD" Value="S-1-5-112-0-0X70-0X49445F4341505F52494E47544F4E455F414444" />
+
+<Macro Id="CAPMACRO_ID_CAP_MEDIALIB" Value="S-1-5-112-0-0X70-0X49445F4341505F4D454449414C4942" />
+
+<Macro Id="OOBE_EXE_SID" Value="S-1-5-112-0-0X10-0X0000000A" />
+
+<Macro Id="ALARMS_EXE_SID" Value="S-1-5-112-0-0X20-0X0000002D" />
+
+<Macro Id="CLOCKNOT_EXE_SID" Value="S-1-5-112-0-0X20-0X0000000A" />
+
+<Macro Id="OOBE_ACCOUNT_ID" Description="oobe.exe account id" Value="S-1-5-112-0-0X10-0X0000000A" />
+
+<Macro Id="NCRYPT_SUPERVISOR_SELF_ISOLATED" Description="Supervisor Self Isolated Chamber to run CNG Key Storage service" Value="S-1-5-112-0-0X11-0X00000004" />
+
+<Namespace Prefix="/GWES" />
+
+<Macro Id="BNS_ENDPOINT_NAME" Description="Backgroud notification service endpoint name." Value="bnssvc" />
+
+<Macro Id="BNS_INTERFACE_UUID" Description="Backgroud notification service interface uuid." Value="50113647-7d82-4b36-bd27-b4ff64642ad4" />
+
+<Macro Id="BNS_INTERFACE_I_UUID" Description="Backgroud notification service internal interface uuid." Value="c5615769-8095-4678-a351-770b5f78e4c6" />
+
+<Macro Id="PUSH_ENDPOINT_NAME" Description="Push endpoint name." Value="mspushsvc" />
+
+<Macro Id="PUSH_AUTO_ENDPOINT_NAME" Description="Push endpoint name with auto bind." Value="mspushsvcauto" />
+
+<Macro Id="MPM_ENDPOINT_NAME" Description="Managed Push Manager name." Value="mpmsvc" />
+
+<Macro Id="PUSH_INTERFACE_UUID" Description="Push interface uuid." Value="a7244ed4-d9ce-47fd-9a4b-1f75f32b3a5a" />
+
+<Macro Id="PUSH_AUTO_INTERFACE_UUID" Description="Push interface uuid with auto bind." Value="258df392-65ec-4e58-ba36-235f4d657174" />
+
+<Macro Id="MPM_INTERFACE_UUID" Description="Push interface uuid." Value="d150cca1-5eb2-4564-a49d-da3b92f253b2" />
+
+<Macro Id="SID_LIVE_TOKEN" Description="SID of LIVE TOKEN APP" Value="S-1-5-112-0-0X21-0X00000005" />
+
+<Macro Id="SID_PACMANINSTALLER" Description="SID of PACMANINSTALLER" Value="S-1-5-112-0-0X21-0X0000000A" />
+
+<Macro Id="CAPMACRO_ID_CAP_PUSH_NOTIFICATION" Value="S-1-5-112-0-0X70-0X49445F4341505F505553485F4E4F54494649434154494F4E" />
+
+<Macro Id="PUSHSVCRELAUNCH_EXE_SID" Value="S-1-5-112-0-0X10-0X0000037" />
+
+<Macro Id="NSI_ENDPOINT_NAME" Description="NSI RPC endpoint name." Value="NSIRpcServer" />
+
+<Macro Id="NSI_INTERFACE_UUID" Description="NSI RPC server interface uuid." Value="7ea70bcf-48af-4f6a-8968-6a440754d5fa" />
+
+<Macro Id="CAPMACRO_ID_CAP_NETWORKING" Value="S-1-5-112-0-0X70-0X49445F4341505F4E4554574F524B494E47" />
+
+<Macro Id="CAPMACRO_ID_CAP_NETWORKING_ADMIN" Value="S-1-5-112-0-0X70-0X49445F4341505F4E4554574F524B494E475F41444D494E" />
+
+<Macro Id="BFE_ENDPOINT_NAME" Description="BFE RPC endpoint name." Value="BFERpcServer" />
+
+<Macro Id="BFE_INTERFACE_UUID" Description="BFE RPC server interface uuid." Value="dd490425-5325-4565-b774-7e27d6c09c24" />
+
+<Macro Id="IKE_ENDPOINT_NAME" Description="IKE RPC endpoint name." Value="IKERpcServer" />
+
+<Macro Id="IKE_INTERFACE_UUID" Description="IKE RPC server interface uuid." Value="a398e520-d59a-4bdd-aa7a-3c1e0303a511" />
+
+<Macro Id="IKE_ELEVATED_SELF_ISOLATED" Description="Elevated Self Isolated Chamber to run IKE service" Value="S-1-5-112-0-0X11-0X00000009" />
+
+<Macro Id="ICS_SERVICE_SID" Description="Internet connection sharing service for SoftAP" Value="S-1-5-112-0-0X10-0X00000051" />
+
+<Macro Id="DSSVC_STANDARD_SELF_ISOLATED" Description="Standard Self Isolated Chamber to run data sharing service" Value="S-1-5-112-0-0X21-0X00000006" />
+
+<Macro Id="DSSVC_STANDARD_SELF_ISOLATED_USER_FRIENDLY_NAME" Description="Self Isolated Chamber account to run data sharing RPC servers" Value="DataSharing RPC Self Isolated Chamber" />
+
+<Macro Id="SID_MTF_SERVER" Description="MTF Server SID" Value="S-1-5-112-0-0X20-0X0000000B" />
+
+<Macro Id="MTF_SERVER_FRIENDLY_NAME" Description="Windows Mobile MTF Server account" Value="LOC_ACCOUNT_FRIENDLY_NAME_MTF_SERVER" />
+
+<Macro Id="WIFIUXSPLASH_EXE_SID" Value="S-1-5-112-0-0X10-0X00000017" />
+
+<Macro Id="CELLUXCPL_EXE_SID" Value="S-1-5-112-0-0X10-0X00000018" />
+
+<Macro Id="FLIGHTMODE_EXE_SID" Value="S-1-5-112-0-0X10-0X00000020" />
+
+<Macro Id="BTUXCPL_EXE_SID" Value="S-1-5-112-0-0X10-0X0000001A" />
+
+<Macro Id="SOFTAP_EXE_SID" Value="S-1-5-112-0-0X10-0X00000042" />
+
+<Namespace Prefix="/RESOURCES" Description="Resources Namespace">
+<Authorization Id="SCHEDULE_GENERIC_ACCESS" Bitmask="0x00008000" Description="Access to a Schedule Group" />
+
+<Authorization Id="SCHEDULE_CREATE_PERSISTENT" Bitmask="0x00000001" Description="Permission to Create a Persistent Schedule Group" />
+
+<Authorization Id="SCHEDULE_ALL_ACCESS" Bitmask="0x00008001" Description="Unrestricted Access to a Schedule Group" />
+
+<Authorization Id="MESSAGE_SEND" Bitmask="0x00000001" />
+
+<Authorization Id="MESSAGE_RECEIVE" Bitmask="0x00000002" />
+
+<Authorization Id="PROCESS_QUERY_INFORMATION" Bitmask="0x00000400" />
+
+<Authorization Id="PROCESS_DUP_HANDLE" Bitmask="0x00000440" />
+</Namespace>
+
+<Macro Id="TASKSCHEDULERRPCINTERFACEGUID" Description="Task Scheduler RPC Interface GUID" Value="c0a76887-64af-44bc-9edd-b9350abada79" />
+
+<Namespace Prefix="/TEMPLATES">
+<Authorization Id="SCHEDULE_GENERIC_ACCESS" Bitmask="0x00008000" Description="Access to a Schedule Group" />
+
+<Authorization Id="SCHEDULE_CREATE_PERSISTENT" Bitmask="0x00000001" Description="Permission to Create a Persistent Schedule Group" />
+
+<Authorization Id="SCHEDULE_ALL_ACCESS" Bitmask="0x00008001" Description="Unrestricted Access to a Schedule Group" />
+</Namespace>
+
+<Macro Id="CPROG_EXE_SID" Value="S-1-5-112-0-0X10-0X00000005" />
+
+<Macro Id="CHDIALERHOST_EXE_SID" Value="S-1-5-112-0-0X20-0X00000027" />
+
+<Macro Id="CALLSETTINGSHOST_EXE_SID" Value="S-1-5-112-0-0X20-0X00000029" />
+
+<Macro Id="FIELDTESTAPP_EXE_SID" Value="S-1-5-112-0-0X11-0X00000030" />
+
+<Macro Id="SAVERINGTONE_EXE_SID" Value="S-1-5-112-0-0X10-0X00000040" />
+
+<Macro Id="SQMEVENT_EXE_SID" Value="S-1-5-112-0-0X11-0X00000005" />
+
+<Macro Id="ONBOOTSQM_EXE_SID" Value="S-1-5-112-0-0X11-0X00000006" />
+
+<Namespace Prefix="/CM_CONNECTION">
+<Authorization Id="CM_ACQUIRE_NON_ROAMING" Bitmask="0x00000001" />
+
+<Authorization Id="CM_ACQUIRE_ROAMING" Bitmask="0x00000002" />
+
+<Authorization Id="CM_ACQUIRE" Bitmask="0x00000003" />
+
+<Authorization Id="CM_CREATE" Bitmask="0x00000004" />
+
+<Authorization Id="CM_DISCONNECT" Bitmask="0x00000008" />
+
+<Authorization Id="CM_CONNECT_NON_ROAMING" Bitmask="0x00000010" />
+
+<Authorization Id="CM_CONNECT_ROAMING" Bitmask="0x00000020" />
+
+<Authorization Id="CM_CONNECT" Bitmask="0x00000030" />
+
+<Authorization Id="CM_ALL" Bitmask="0xc000003f" />
+</Namespace>
+
+<Macro Id="CM_CONNECTION" Description="Connection manager connection namespace" Value="policy:/CM_CONNECTION" />
+
+<Macro Id="CMCD_CELLULAR" Description="Cellular connection type" Value="F9A53167-4016-4198-9B41-86D9522DC019" />
+
+<Macro Id="CM_SERVICE_CHAMBER_SID" Description="Connection Manager service chamber for Always Connected connections" Value="S-1-5-112-0-0X10-0X00000033" />
+
+<Macro Id="HOTSPOT_SERVICE_WIFI_SID" Description="Hotspot service SID for probing WIFI connections" Value="S-1-5-112-0-0X10-0X00000050" />
+
+<Macro Id="PROXYSVC_ENDPOINT_NAME" Description="Proxy database server endpoint name." Value="proxydb" />
+
+<Macro Id="PROXYSVC_INTERFACE_UUID" Description="Proxy database server interface uuid." Value="242adefb-e360-49a6-a86a-1601727bfa6c" />
+
+<Macro Id="CCA_CALL" Description="CellCore Assets - voice call operation" Value="policy:/RESOURCES/GLOBAL/CN_CALL" />
+
+<Macro Id="CCA_NETWORK" Description="CellCore Assets - cellular network operation" Value="policy:/RESOURCES/GLOBAL/CN_NETWORK" />
+
+<Macro Id="CCA_SUPPLEMTARY_SERVICE" Description="CellCore Assets - supplemtary service operation" Value="policy:/RESOURCES/GLOBAL/CN_SUPP" />
+
+<Macro Id="CCA_RADIO_DEVICE" Description="CellCore Assets - radio device operation" Value="policy:/RESOURCES/GLOBAL/CN_RADIO" />
+
+<Macro Id="CCA_WAP_MESSAGE" Description="CellCore Assets - wap message operation" Value="policy:/RESOURCES/GLOBAL/CN_WAP" />
+
+<Macro Id="CCA_SMS_MESSAGE" Description="CellCore Assets - sms message operation" Value="policy:/RESOURCES/GLOBAL/SMS_MESSAGE" />
+
+<Macro Id="CCA_SIM_PHONEBOOK" Description="CellCore Assets - sim phonebook operation" Value="policy:/RESOURCES/GLOBAL/SIM_PHONEBOOK" />
+
+<Macro Id="CCA_SIM_MESSAGE" Description="CellCore Assets - sim message operation" Value="policy:/RESOURCES/GLOBAL/SIM_MESSAGE" />
+
+<Macro Id="CCA_SIM_INFO" Description="CellCore Assets - sim information operation" Value="policy:/RESOURCES/GLOBAL/SIM_INFO" />
+
+<Macro Id="CCA_SIM_PIN" Description="CellCore Assets - sim pin operation" Value="policy:/RESOURCES/GLOBAL/SIM_PIN" />
+
+<Macro Id="CCA_SIM_FILE" Description="CellCore Assets - sim file operation" Value="policy:/RESOURCES/GLOBAL/SIM_FILE" />
+
+<Macro Id="CCA_RIL" Description="CellCore Assets - cellular RIL operation" Value="policy:/RESOURCES/GLOBAL/RIL" />
+
+<Macro Id="CCA_PACKET_DATA" Description="CellCore Assets - cellular data connection operation" Value="policy:/RESOURCES/GLOBAL/CN_PACKET" />
+
+<Macro Id="CAPMACRO_ID_CAP_SIM" Value="S-1-5-112-0-0X71-0X49445F4341505F53494D" />
+
+<Macro Id="CAPMACRO_ID_CAP_SMS" Value="S-1-5-112-0-0X71-0X49445F4341505F534D53" />
+
+<Macro Id="CAPMACRO_ID_CAP_WAP" Value="S-1-5-112-0-0X71-0X49445F4341505F574150" />
+
+<Macro Id="SIREP_USER_NAME" Value="S-1-5-112-0-0X20-0X0000002C" />
+
+<Macro Id="WLIDSVC_STANDARD_SELF_ISOLATED" Description="Standard Self Isolated Chamber to run WLID service" Value="S-1-5-112-0-0X21-0X00000001" />
+
+<Macro Id="WLIDSVC_STANDARD_SELF_ISOLATED_USER_FRIENDLY_NAME" Description="Self Isolated Chamber account to run wlid RPC servers" Value="WLID RPC Self Isolated Chamber" />
+
+<Macro Id="IEXPLORER_CHAMBER_SID" Value="S-1-5-112-0-0X80-0X7B35423034423737352D333536422D344141302D414146382D3634393146464541353636307D" />
+
+<Macro Id="CAPMACRO_ID_CAP_IE" Value="S-1-5-112-0-0X71-0X49445F4341505F4945" />
+
+<Namespace Prefix="/FILESYS" ForceUppercase="true">
+<Authorization Id="FILE_ALL_ACCESS" Bitmask="0x001f01ff" />
+
+<Authorization Id="FILE_GENERIC_READ" Bitmask="0x00120089" />
+
+<Authorization Id="FILE_GENERIC_WRITE" Bitmask="0x00120116" />
+
+<Authorization Id="FILE_GENERIC_EXECUTE" Bitmask="0x001200a0" />
+
+<Authorization Id="FILE_READ_ATTRIBUTES" Bitmask="0x00000080" />
+
+<Authorization Id="FILE_WRITE_ATTRIBUTES" Bitmask="0x00000100" />
+
+<Authorization Id="FILE_LIST_DIRECTORY" Bitmask="0x00000001" />
+</Namespace>
+
+<Macro Id="FILESYS_ROOT" Description="Root of the file system namespace" Value="policy:/FILESYS" />
+
+<Macro Id="FILESYS_PRIMARY_ROOT" Description="Root directory of the internal root and ROM file systems" Value="policy:/FILESYS/PRIMARY" />
+
+<Macro Id="WINDOWS_DIRECTORY_PATH" Description="Windows root directory" Value="policy:/FILESYS/PRIMARY/WINDOWS" />
+
+<Macro Id="DOCUMENTS_AND_SETTINGS_DIRECTORY_PATH" Description="Documents and Settings root directory" Value="policy:/FILESYS/PRIMARY/DOCUMENTS%20AND%20SETTINGS" />
+
+<Namespace Prefix="/REGISTRY" ForceUppercase="true">
+<Authorization Id="KEY_ALL_ACCESS" Bitmask="0x000f003f" />
+
+<Authorization Id="KEY_READ" Bitmask="0x00020019" />
+
+<Authorization Id="KEY_WRITE" Bitmask="0x00020006" />
+
+<Authorization Id="KEY_EXECUTE" Bitmask="0x00020019" />
+</Namespace>
+
+<Macro Id="HKLM" Description="Root of the HKEY_LOCAL_MACHINE registry path" Value="policy:/REGISTRY/HKLM" />
+
+<Macro Id="HKCU" Description="Root of the HKKEY_CURRENT_USER registry path" Value="policy:/REGISTRY/HKCU" />
+
+<Macro Id="HKCR" Description="Root of the HKEY_CLASSES_ROOT registry path" Value="policy:/REGISTRY/HKCR" />
+
+<Macro Id="HKU" Description="Root of the HKEY_USERS registry path" Value="policy:/REGISTRY/HKU" />
+
+<Namespace Prefix="/oalioctl" Description="Generic rights that apply to all namespaces" />
+
+<Macro Id="OAL_IOCTL_IRI" Description="Device Manager Bus Name Access" Value="policy:/RESOURCES/GLOBAL/OALIOCTL" />
+
+<Macro Id="IOCTL_HAL_GET_CACHE_INFO" Value="01010108" />
+
+<Macro Id="IOCTL_HAL_GET_CELOG_PARAMETERS" Value="01010150" />
+
+<Macro Id="IOCTL_HAL_GET_DEVICE_INFO" Value="01010004" />
+
+<Macro Id="IOCTL_HAL_GET_DEVICEID" Value="01010054" />
+
+<Macro Id="IOCTL_HAL_GET_POWERONREASON" Value="010100C8" />
+
+<Macro Id="IOCTL_HAL_GET_UUID" Value="01010034" />
+
+<Macro Id="IOCTL_PROCESSOR_INFORMATION" Value="01010064" />
+
+<Macro Id="IOCTL_HAL_UPDATE_MODE" Value="01010134" />
+
+<Namespace Prefix="/KERNEL" />
+
+<Macro Id="CAPMACRO_ID_CAP_IDENTITY_DEVICE" Value="S-1-5-112-0-0X70-0X49445F4341505F4944454E544954595F444556494345" />
+
+<Macro Id="OM_USER_NAME" Description="Outlook mobile user SID" Value="S-1-5-112-0-0X10-0X00000006" />
+
+<Macro Id="OM_USER_FRIENDLY_NAME" Description="Windows Mobile Outlook mobile apps" Value="LOC_ACCOUNT_FRIENDLY_NAME_OM_USER" />
+
+<Macro Id="CAPMACRO_ID_CAP_CONTACTS" Value="S-1-5-112-0-0X70-0X49445F4341505F434F4E5441435453" />
+
+<Macro Id="CAPMACRO_ID_CAP_APPOINTMENTS" Value="S-1-5-112-0-0X70-0X49445F4341505F4150504F494E544D454E5453" />
+
+<Macro Id="EAPHOSTSVC_ENDPOINT_NAME" Description="EAPHOST RPC server endpoint name." Value="EapHostPeerSessionApis" />
+
+<Macro Id="EAPHOSTSVC_INTERFACE_UUID" Description="EAPHOST RPC server interface uuid." Value="a89e7a81-1c2d-42fc-b6a2-2d765dc3c947" />
+
+<Macro Id="THIRDPARTYSVC_ENDPOINT_NAME" Description="EAPHOST Third Party RPC server endpoint name." Value="ThirdPartyProxyRemote" />
+
+<Macro Id="THIRDPARTYSVC_INTERFACE_UUID" Description="EAPHOST Third Party RPC server interface uuid." Value="24dedf1b-a5a1-4244-9766-4ad9277f2c08" />
+
+<Macro Id="WLAN_SECURE_PERMIT_LIST" Description="WLAN securable object" Value="0" />
+
+<Macro Id="WLAN_SECURE_DENY_LIST" Description="WLAN securable object" Value="1" />
+
+<Macro Id="WLAN_SECURE_AC_ENABLED" Description="WLAN securable object" Value="2" />
+
+<Macro Id="WLAN_SECURE_BC_SCAN_ENABLED" Description="WLAN securable object" Value="3" />
+
+<Macro Id="WLAN_SECURE_BSS_TYPE" Description="WLAN securable object" Value="4" />
+
+<Macro Id="WLAN_SECURE_SHOW_DENIED" Description="WLAN securable object" Value="5" />
+
+<Macro Id="WLAN_SECURE_INTERFACE_PROPERTIES" Description="WLAN securable object" Value="6" />
+
+<Macro Id="WLAN_SECURE_IHV_CONTROL" Description="WLAN securable object" Value="7" />
+
+<Macro Id="WLAN_SECURE_ALL_USER_PROFILES_ORDER" Description="WLAN securable object" Value="8" />
+
+<Macro Id="WLAN_SECURE_ADD_NEW_ALL_USER_PROFILES" Description="WLAN securable object" Value="9" />
+
+<Macro Id="WLAN_SECURE_ADD_NEW_PER_USER_PROFILES" Description="WLAN securable object" Value="10" />
+
+<Macro Id="WLAN_SECURE_MEDIA_STREAMING_MODE_ENABLED" Description="WLAN securable object" Value="11" />
+
+<Macro Id="WLAN_SECURE_CURRENT_OPERATION_MODE" Description="WLAN securable object" Value="12" />
+
+<Macro Id="WLAN_SECURE_HOSTED_NETWORK" Description="WLAN securable object" Value="13" />
+
+<Macro Id="WLAN_PROTECT_WLAN_SECURITY_SETTINGS" Description="Internal WLAN securable object" Value="14" />
+
+<Macro Id="WLAN_PROTECT_XP_STYLE_ALL_USER_PROFILES" Description="Internal WLAN securable object" Value="15" />
+
+<Macro Id="ACM_ENDPOINT_NAME" Description="ACM RPC server endpoint name." Value="acrpcserver" />
+
+<Macro Id="ACM_INTERFACE_UUID" Description="ACM RPC server interface UUID." Value="266f33b4-c7c1-4bd1-8f52-ddb8f2214ea9" />
+
+<Macro Id="IHV_ENDPOINT_NAME" Description="IHV RPC server endpoint name." Value="WLANIhv" />
+
+<Macro Id="IHV_INTERFACE_UUID" Description="IHV RPC server interface UUID." Value="98e96949-bc59-47f1-92d1-8c25b46f85c7" />
+
+<Macro Id="MSMAPI_ENDPOINT_NAME" Description="MSMAPI RPC server endpoint name." Value="IhvExtRpcServer" />
+
+<Macro Id="MSMAPI_INTERFACE_UUID" Description="MSMAPI RPC server interface UUID." Value="c3f42c6e-d4cc-4e5a-938b-9c5e8a5d8c2e" />
+
+<Macro Id="WLANEXT_EXE_SID" Value="S-1-5-112-0-0X20-0X00000006" />
+
+<Macro Id="WISPR_SERVICE_CHAMBER_SID" Description="WISPr service chamber" Value="S-1-5-112-0-0X10-0X00000036" />
+
+<Macro Id="SSUPDATE_EXE_SID" Value="S-1-5-112-0-0X10-0X00000014" />
+
+<Macro Id="CAPMACRO_ID_CAP_WEBBROWSERCOMPONENT" Value="S-1-5-112-0-0X70-0X49445F4341505F57454242524F57534552434F4D504F4E454E54" />
+
+<Macro Id="CAPMACRO_ID_CAP_IDENTITY_USER" Value="S-1-5-112-0-0X70-0X49445F4341505F4944454E544954595F55534552" />
+
+<Macro Id="CAPMACRO_ID_CAP_PHONEDIALER" Value="S-1-5-112-0-0X70-0X49445F4341505F50484F4E454449414C4552" />
+
+<Macro Id="CAPMACRO_ID_CAP_FILEVIEWER" Value="S-1-5-112-0-0X70-0X49445F4341505F46494C45564945574552" />
+
+<Macro Id="CAPMACRO_ID_CAP_OEMPUBLICDIRECTORY" Value="S-1-5-112-0-0X70-0X49445F4341505F4F454D5055424C49434449524543544F5259" />
+
+<Macro Id="CAPMACRO_ID_CAP_INTEROPSERVICES" Value="S-1-5-112-0-0X70-0X49445F4341505F494E5445524F505345525649434553" />
+
+<Macro Id="TASKHOST_CHAMBER_SID" Value="S-1-5-112-0-0X80-0X00000001" />
+
+<Namespace Prefix="/DEVICEMANAGER" Description="Generic rights that apply to all namespaces" ForceUppercase="true" />
+
+<Macro Id="SID_UDEVICE_STANDARD" Value="S-1-5-112-0-0X20-0X00000001" />
+
+<Macro Id="DEVICEMANAGER_BUS" Description="Device Manager Bus Name Access" Value="policy:/DEVICEMANAGER/BUS" />
+
+<Macro Id="DEVICEMANAGER_DEVICE" Description="Device Manager Device Name Access" Value="policy:/DEVICEMANAGER/DEVICE" />
+
+<Macro Id="DEVICEMANAGER_ICLASS" Description="Device Manager IClass Name Access" Value="policy:/DEVICEMANAGER/ICLASS" />
+
+<Macro Id="SID_UDEVICE_ELEVATED" Value="S-1-5-112-0-0X10-0X00000001" />
+
+<Namespace Prefix="/METABASE">
+<Authorization Id="METABASE_ALL" Bitmask="0xc0000000" />
+
+<Authorization Id="METABASE_READ" Bitmask="0x80000000" />
+
+<Authorization Id="METABASE_WRITE" Bitmask="0x40000000" />
+</Namespace>
+
+<Macro Id="DM_TREE_ROOT" Description="Root node of DM tree" Value="policy:/METABASE/%2E" />
+
+<Macro Id="MS_NODE_PATH" Description="Root node of Microsoft-specific sub-tree" Value="policy:/METABASE/%2E/VENDOR/MSFT" />
+
+<Macro Id="DEVICEFEEDBACKCPL_EXE_SID" Value="S-1-5-112-0-0X10-0X0000000B" />
+
+<Macro Id="CFLAUNCHER_EXE_SID" Value="S-1-5-112-0-0X20-0X0000000E" />
+
+<Macro Id="GPS_START_FIX" Description="GPS device parameter to start and continue querying position" Value="0" />
+
+<Macro Id="GPS_STOP_FIX" Description="GPS device parameter to stop querying position" Value="1" />
+
+<Macro Id="GPS_CONFIG_FIX_MODE" Description="GPS device parameter to get/set mode used by GPS device in fixes" Value="2" />
+
+<Macro Id="GPS_CONFIG_FIX_RATE" Description="GPS device parameter to get/set fix rate GPS device" Value="3" />
+
+<Macro Id="GPS_CONFIG_FIX_QOS" Description="GPS device parameter to get/set fix rate GPS QOS" Value="4" />
+
+<Macro Id="GPS_CONFIG_OEM_CUSTOM" Description="GPS device parameter that OEM has implemented as an add-on" Value="256" />
+
+<Macro Id="MYPHONE_ACCOUNT_ID" Value="S-1-5-112-0-0X11-0X0000004C" />
+
+<Macro Id="CERTINSTALLER_EXE_SID" Value="S-1-5-112-0-0X20-0X00000012" />
+
+<Macro Id="CORECON_USER_NAME" Description="SID for corecon binaries" Value="S-1-5-112-0-0X11-0X0000000A" />
+
+<Macro Id="CORECON_DEPLOY_LOCATION" Description="Location where corecon binaries are deployed" Value="PRIMARY/APPLICATION%20DATA/PHONE%20TOOLS/10.0/CORECON/BIN" />
+
+<Macro Id="PE_AUTHZ_PREFIX" Value="policy:/LOADERVERIFIER/GLOBAL/AUTHORIZATION/PE_AUTHZ/(+)/(+)" />
+
+<Macro Id="BTS_ENDPOINT_NAME" Description="Background transfer service endpoint name." Value="btsserv" />
+
+<Macro Id="BTS_API_INTERFACE_UUID" Description="Background transfer service client interface uuid." Value="eda02478-d508-46e2-b742-1acb85afb609" />
+
+<Macro Id="BTS_MGMT_INTERFACE_UUID" Description="Background transfer service management client interface uuid." Value="60916721-c841-46fa-9834-6b6e1e2dcb57" />
+
+<Macro Id="MULTIMEDIA_SUPERVISOR_SELF_ISOLATED_USER_FRIENDLY_NAME" Description="Self Isolated Chamber account to run various Multimedia RPC servers" Value="Multimedia RPC Self Isolated Chamber" />
+
+<Macro Id="CAPMACRO_ID_CAP_ISV_CAMERA" Value="S-1-5-112-0-0X70-0X49445F4341505F4953565F43414D455241" />
+
+<Macro Id="CAPMACRO_ID_CAP_CAMERA" Value="S-1-5-112-0-0X70-0X49445F4341505F43414D455241" />
+
+<Macro Id="STARTHOST_EXE_SID" Description="StartHost user SID" Value="S-1-5-112-0-0X20-0X00000015" />
+
+<Macro Id="STARTHOST_EXE_FRIENDLY_NAME" Description="Windows Phone Start Host Application" Value="LOC_ACCOUNT_FRIENDLY_NAME_STARTHOST_EXE" />
+
+<Macro Id="SMSETTINGS_EXE_SID" Value="S-1-5-112-0-0x20-0x0000002A" />
+
+<Macro Id="WEBSEARCH_EXE_SID" Value="S-1-5-112-0-0X20-0X00000028" />
+
+<Macro Id="RPC_SERVER_ENDPOINT" Description="Represents the endpoint name class for RPC policy checks." Value="policy:/RPC/SERVER/ENDPOINT" />
+
+<Macro Id="RPC_CLIENT_INTERFACE" Description="Represents the client-side interface UUID string class for RPC policy checks." Value="policy:/RPC/CLIENT/INTERFACE" />
+
+<Macro Id="KEYBOARDCPL_EXE_SID" Value="S-1-5-112-0-0X10-0X00000030" />
+
+<Macro Id="CAPMACRO_ID_CAP_MICROPHONE" Value="S-1-5-112-0-0X70-0X49445F4341505F4D4943524F50484F4E45" />
+
+<Macro Id="LS_REPORT_LATLON_EMERGENCY_GUID" Value="5BB93A3C-2874-4195-8DEA-C6A89F89F584" />
+
+<Macro Id="CAPMACRO_ID_CAP_LOCATION" Value="S-1-5-112-0-0X70-0X49445F4341505F4C4F434154494F4E" />
+
+<Macro Id="SID_SAPISVR" Value="S-1-5-112-0-0X21-0X00000002" />
+
+<Macro Id="SID_SPEECHCPL" Value="S-1-5-112-0-0X20-0X0000002B" />
+
+<Macro Id="SID_TELLMEWINDOWSERVICE" Description="Tws.dll user SID" Value="S-1-5-112-0-0X10-0X00000001" />
+
+<Macro Id="SID_SHORTMSGPLUGIN" Description="Short Message Plugin Service" Value="S-1-5-112-0-0X10-0X00000006" />
+
+<Macro Id="SID_ACCESSIBILITY_CPL" Description="Accessibility CPL" Value="S-1-5-112-0-0X10-0X00000031" />
+
+<Macro Id="DLLHOST_EXE_SID" Value="S-1-5-112-0-0X10-0X00000011" />
+
+<Namespace Prefix="*" Description="Generic rights that apply to all namespaces">
+<Authorization Id="GENERIC_READ" Bitmask="0x80000000" />
+
+<Authorization Id="GENERIC_WRITE" Bitmask="0x40000000" />
+
+<Authorization Id="GENERIC_EXECUTE" Bitmask="0x20000000" />
+
+<Authorization Id="GENERIC_ALL" Bitmask="0x10000000" />
+
+<Authorization Id="DELETE" Bitmask="0x00010000" />
+
+<Authorization Id="READ_CONTROL" Bitmask="0x00020000" />
+
+<Authorization Id="WRITE_DAC" Bitmask="0x00040000" />
+
+<Authorization Id="WRITE_OWNER" Bitmask="0x00080000" />
+
+<Authorization Id="SYNCHRONIZE" Bitmask="0x00100000" />
+
+<Authorization Id="STANDARD_RIGHTS_REQUIRED" Bitmask="0x000f0000" />
+
+<Authorization Id="SPECIFIC_RIGHTS_ALL" Bitmask="0x0000ffff" />
+
+<Authorization Id="ALL_ACCESS" Bitmask="0xffffffff" />
+</Namespace>
+
+<PriorityCategory Id="PRIORITY_HIGH" Description="Rules that must be applied before all others" Order="251658240" />
+
+<PriorityCategory Id="PRIORITY_ELEVATED" Description="Rules that work in tandem with high priority rules" Order="218103808" />
+
+<PriorityCategory Id="PRIORITY_SELF_ISOLATED_DELEGATION" Description="Rules to delegate specific resources to self-isolated chambers" Order="142606336" />
+
+<PriorityCategory Id="PRIORITY_STANDARD" Description="Rules to apply if the underlying resources were not already delegated" Order="134217728" />
+
+<PriorityCategory Id="PRIORITY_BASIC" Description="Rules to apply if the priority should be between PRIORITY_STANDARD and PRIORITY_LOW" Order="67108864" />
+
+<PriorityCategory Id="PRIORITY_LOW" Description="Rules to apply only if all else falls through" Order="16777216" />
+
+<Macro Id="RESOURCES" Description="Resources namespace root" Value="policy:/RESOURCES" />
+
+<Macro Id="GLOBAL_RESOURCES" Description="Global resources root" Value="policy:/RESOURCES/GLOBAL" />
+
+<Macro Id="TEMPLATE_USER_NAME" Description="No principal" Value="S-1-5-112-0-0-0" />
+
+<Macro Id="TEMPLATE_USER_FRIENDLY_NAME" Description="None" Value="Template User Account" />
+
+<Macro Id="EVERYONE_GROUP_NAME" Description="Everyone group SID" Value="S-1-5-112-0-0XFF" />
+
+<Macro Id="EVERYONE_GROUP_FRIENDLY_NAME" Description="Everyone group" Value="Everyone Group" />
+
+<Macro Id="STANDARD_RIGHTS_IDENTITY_GROUP_NAME" Description="Standard Rights Identity Group SID" Value="S-1-5-112-0-0X22" />
+
+<Macro Id="STANDARD_RIGHTS_RESOURCE_GROUP_NAME" Description="Standard Rights Resource Group SID" Value="S-1-5-112-0-0X23" />
+
+<Macro Id="ELEVATED_RIGHTS_IDENTITY_GROUP_NAME" Description="Elevated Rights Identity Group SID" Value="S-1-5-112-0-0X13" />
+
+<Macro Id="ELEVATED_RIGHTS_RESOURCE_GROUP_NAME" Description="Elevated Rights Resource Group SID" Value="S-1-5-112-0-0X14" />
+
+<Macro Id="SYSTEM_IDENTITY_GROUP_NAME" Description="TCB Identity Group SID" Value="S-1-5-112-0-0X01" />
+
+<Macro Id="SYSTEM_RESOURCE_GROUP_NAME" Description="TCB Resource Group SID" Value="S-1-5-112-0-0X02" />
+
+<Macro Id="STANDARD_RIGHTS_CHAMBER_GROUP_NAME" Description="Standard Rights Chamber Group" Value="S-1-5-112-0-0X20" />
+
+<Macro Id="STANDARD_RIGHTS_GROUP_FRIENDLY_NAME" Description="Standard Rights Windows Mobile Applications" Value="Standard Rights Chamber Group" />
+
+<Macro Id="ELEVATED_RIGHTS_CHAMBER_GROUP_NAME" Description="Elevated Rights Chamber Chamber Group" Value="S-1-5-112-0-0X10" />
+
+<Macro Id="ELEVATED_RIGHTS_GROUP_FRIENDLY_NAME" Description="Privileged Windows Mobile Applications" Value="Elevated Rights Chamber Group" />
+
+<Macro Id="SELF_ISOLATED_ELEVATED_RIGHTS_CHAMBER_GROUP_NAME" Description="Self Isolated Elevated Rights Chamber Group" Value="S-1-5-112-0-0X11" />
+
+<Macro Id="SELF_ISOLATED_ELEVATED_RIGHTS_CHAMBER_GROUP_FRIENDLY_NAME" Description="Isolated, elevated rights chamber group" Value="Self Isolated Elevated Rights Chamber Group" />
+
+<Macro Id="SELF_ISOLATED_STANDARD_RIGHTS_CHAMBER_GROUP_NAME" Description="Self isolated standard rights chamber group" Value="S-1-5-112-0-0X21" />
+
+<Macro Id="SELF_ISOLATED_STANDARD_RIGHTS_GROUP_FRIENDLY_NAME" Description="Self-Isolated, standard rights chamber group" Value="Self-Isolated Standard Rights Chamber Group" />
+
+<Macro Id="SYSTEM_CHAMBER_GROUP_NAME" Description="TCB Chamber Group" Value="S-1-5-112-0-0X00" />
+
+<Macro Id="SYSTEM_CHAMBER_GROUP_FRIENDLY_NAME" Description="TCB Chamber Group" Value="TCB Chamber Group" />
+
+<Macro Id="SYSTEM_USER_NAME" Description="TCB user SID" Value="S-1-5-112-0-0-1" />
+
+<Macro Id="SYSTEM_USER_FRIENDLY_NAME" Description="TCB Chamber" Value="TCB" />
+
+<Macro Id="PUBLIC_CAPABILITIES_GROUP_NAME" Description="Public capabilities group" Value="S-1-5-112-0-0X70" />
+
+<Macro Id="PRIVATE_CAPABILITIES_GROUP_NAME" Description="Private capabilities group" Value="S-1-5-112-0-0X71" />
+
+<Macro Id="LEAST_PRIVILEGE_CHAMBER_GROUP_NAME" Description="Least Privilege Chamber Group" Value="S-1-5-112-0-0X80" />
+
+<Macro Id="LEAST_PRIVILEGE_IDENTITY_GROUP_NAME" Description="Least Privilege Identity Group" Value="S-1-5-112-0-0X81" />
+
+<Macro Id="ISOLATED_ELEVATED_RIGHTS_TEST_CHAMBER_SID" Value="S-1-5-112-0-0X11-0X10000001" />
+
+<Macro Id="ISOLATED_ELEVATED_RIGHTS_TEST_CHAMBER_SID2" Value="S-1-5-112-0-0X11-0X10000002" />
+
+<Macro Id="ELEVATED_RIGHTS_TEST_CHAMBER_SID" Value="S-1-5-112-0-0X10-0X10000001" />
+
+<Macro Id="ELEVATED_RIGHTS_TEST_CHAMBER_SID2" Value="S-1-5-112-0-0X10-0X10000002" />
+
+<Macro Id="STANDARD_RIGHTS_TEST_CHAMBER_SID" Value="S-1-5-112-0-0X20-0X10000001" />
+
+<Macro Id="STANDARD_RIGHTS_TEST_CHAMBER_SID2" Value="S-1-5-112-0-0X20-0X10000002" />
+
+<Macro Id="LEAST_PRIVILEGE_TEST_CHAMBER_SID" Value="S-1-5-112-0-0X80-0X10000001" />
+
+<Macro Id="LEAST_PRIVILEGE_TEST_CHAMBER_SID2" Value="S-1-5-112-0-0X80-0X10000002" />
+
+<Macro Id="DYNAMIC_LPC_TEST_CHAMBER_SID" Value="S-1-5-112-0-0X80-0X10000003" />
+
+<Macro Id="DYNAMIC_LPC_TEST_CHAMBER_SID2" Value="S-1-5-112-0-0X80-0X10000004" />
+
+<Macro Id="CAPMACRO_ID_CAP_TESTPUBLIC1" Value="S-1-5-112-0-0X70-0X49445F4341505F544553545055424C494331" />
+
+<Macro Id="CAPMACRO_ID_CAP_TESTPUBLIC2" Value="S-1-5-112-0-0X70-0X49445F4341505F544553545055424C494332" />
+
+<Macro Id="CAPMACRO_ID_CAP_TESTPRIVATE1" Value="S-1-5-112-0-0X71-0X49445F4341505F544553545052495641544531" />
+
+<Macro Id="CAPMACRO_ID_CAP_TESTPRIVATE2" Value="S-1-5-112-0-0X71-0X49445F4341505F544553545052495641544532" />
+
+<Namespace Prefix="/LOADERVERIFIER">
+<Authorization Id="LV_ACCESS_ALLOW" Bitmask="0x00000001" />
+
+<Authorization Id="LV_ACCESS_BLOCK" Bitmask="0x00000002" />
+
+<Authorization Id="LV_ACCESS_LOAD" Bitmask="0x00000004" />
+
+<Authorization Id="LV_ACCESS_EXECUTE" Bitmask="0x00000008" />
+</Namespace>
+
+<Macro Id="LOADERVERIFIER_GLOBAL" Description="Base path for all of the loader verifier rules that apply across all chambers" Value="policy:/LOADERVERIFIER/GLOBAL" />
+
+<Macro Id="LOADERVERIFIER_ACCOUNT_CAN_LAUNCH" Description="Base path for all of the loader verifier rules that apply across all chambers" Value="policy:/LOADERVERIFIER/ACCOUNT/(+)/ACCOUNT_CAN_LAUNCH" />
+
+<Macro Id="LOADERVERIFIER_ACCOUNT_CAN_LAUNCH_INROM_ROOT" Description="Base path for all of the loader verifier rules that apply across all chambers" Value="policy:/LOADERVERIFIER/ACCOUNT/(+)/ACCOUNT_CAN_LAUNCH/NONE/NONE/PRIMARY" />
+
+<Macro Id="LOADERVERIFIER_ROUTE_BY_NAME" Description="Base path for all of the loader verifier rules that apply across all chambers" Value="policy:/LOADERVERIFIER/GLOBAL/ROUTE_TO_ACCOUNT/(+)/(+)" />
+
+<Macro Id="LOADERVERIFIER_ROUTE_BY_NAME_ROM_ONLY" Description="Base path for all of the loader verifier rules that apply across all chambers" Value="policy:/LOADERVERIFIER/GLOBAL/ROUTE_TO_ACCOUNT/NONE/NONE" />
+
+<Macro Id="LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT" Description="Base path for ROM EXE authorization" Value="policy:/LOADERVERIFIER/GLOBAL/AUTHORIZATION/PE_AUTHZ/NONE/NONE/PRIMARY" />
+
+<Macro Id="LOADERVERIFIER_DLL_AUTHZ_INROM_ROOT" Description="Base path for ROM DLL authorization" Value="policy:/LOADERVERIFIER/GLOBAL/AUTHORIZATION/DLL_AUTHZ/NONE/NONE/PRIMARY" />
+
+<Macro Id="CAPMACRO_ID_CAP_LOADUNSIGNEDMANAGEDDLL" Value="S-1-5-112-0-0X71-0X49445F4341505F4C4F4144554E5349474E45444D414E41474544444C4C" />
+
+<Macro Id="CAPMACRO_ID_CAP_LOADUNSIGNEDNATIVEDLL" Value="S-1-5-112-0-0X71-0X49445F4341505F4C4F4144554E5349474E45444E4154495645444C4C" />
+
+<Macro Id="CAPMACRO_ID_CAP_SENSORS" Value="S-1-5-112-0-0X70-0X49445F4341505F53454E534F5253" />
+
+<Macro Id="DUASVC_ACCOUNT_DETECTION_IMPERSONATED" Description="Device Update Agent private service account for detection" Value="S-1-5-112-0-0X11-0X00000007" />
+
+<Macro Id="DUA_RPC_ENDPOINT_NAME" Description="Device Update Agent RPC endpoint name" Value="DeviceUpdateAgentRpcEndPoint" />
+
+<Macro Id="DUA_RPC_INTERFACE_UUID" Description="Device Update Agent RPC interface UUID." Value="2f98654b-71e3-4b95-92bb-029dd866882e" />
+
+<Macro Id="DUA_CLIENT_EXECUTABLE" Value="S-1-5-112-0-0X20-0X0000000C" />
+</CeSecurityPolicyFile>

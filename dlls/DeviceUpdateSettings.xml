@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<Provisioning xmlns="http://dbPreProvisioning"
+  RuntimeType="Native"
+  Title="@SettingsRes.dll,-232"
+  Version="1.0"
+  Genre=""
+  ProductID="{5B04B775-356B-4AA0-AAF8-6491FFEA5640}"
+  SingleInstanceHost="true"
+  DisplayOnAppList="false">
+  <IconPath xmlns="">res://StartMenu!AppIconGeneric.png</IconPath>
+  <ImagePath xmlns="">\Windows\duaclient.exe</ImagePath>
+  <ImageParams xmlns="">/settings</ImageParams>
+  <Tasks xmlns="">
+    <DefaultTask Name="Default"/>
+  </Tasks>
+  <Tokens xmlns="">
+    <PrimaryToken TokenID="Default"
+           TaskName="Default"
+           TaskParameters=""
+           Pinned="false">
+      <TemplateType6>
+        <BackgroundImageURI></BackgroundImageURI>
+        <Title>DeviceUpdateSettings</Title>
+      </TemplateType6>
+    </PrimaryToken>
+  </Tokens>
+</Provisioning>

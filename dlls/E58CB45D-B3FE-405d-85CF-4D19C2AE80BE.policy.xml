@@ -1,0 +1,556 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<!--
+Use of this source code is subject to the terms of the Microsoft
+premium shared source license agreement under which you licensed
+this source code. If you did not accept the terms of the license
+agreement, you are not authorized to use this source code.
+For the terms of the license, please see the license agreement
+signed by you and Microsoft.
+THE SOURCE CODE IS PROVIDED "AS IS", WITH NO WARRANTIES OR INDEMNITIES.
+-->
+<CeSecurityPolicyFile Description="Policies for netcore package" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.00" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">
+
+  <!-- - - - - - - - - - - - - - - - NDIS - - - - - - - - - - - - - - - -->  
+  <Rule Description="Allow only the group having elevated rights to activate an NDIS device in any chamber" ResourceIri="$(GLOBAL_RESOURCES)/NDIS/ACTIVATEDEVICE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_EXECUTE"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <!-- - - - - - - - - - - - - - - - NSI - - - - - - - - - - - - - - - -->
+  <!-- Macros for the RPC endpoint and interface UUID -->
+  <Macro Id="NSI_ENDPOINT_NAME" Description="NSI RPC endpoint name." Value="NSIRpcServer"></Macro>
+
+  <Macro Id="NSI_INTERFACE_UUID" Description="NSI RPC server interface uuid." Value="7ea70bcf-48af-4f6a-8968-6a440754d5fa"></Macro>
+
+  <!-- Rules protecting access to NSI RPC server and client interface -->
+  <!-- Only Elevated rights can register the NSI server -->
+  <Rule Description="NSI RPC endpoint name registration rule" ResourceIri="$(RPC_SERVER_ENDPOINT)/$(NSI_ENDPOINT_NAME)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Only Standard rights can call in to the NSI RPC server -->
+  <Rule Description="NSI RPC client interface registration rule" ResourceIri="$(RPC_CLIENT_INTERFACE)/$(NSI_INTERFACE_UUID)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Rules protecting access to the NSI registry entries -->
+  <!-- Exception rule to IPV4 Echo request of NSI to enable ping to be run in standard chamber -->
+  <Rule Description="Access to NSI IPV4 echo request" ResourceIri="$(HKLM)/SYSTEM/CURRENTCONTROLSET/CONTROL/NSI/%7BEB004A00-9B1A-11D4-9123-0050047759BC%7D/4" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <!-- Exception rule to IPV6 Echo request of NSI to enable ping to be run in standard chamber -->
+  <Rule Description="Access to NSI IPV6 echo request" ResourceIri="$(HKLM)/SYSTEM/CURRENTCONTROLSET/CONTROL/NSI/%7BEB004A01-9B1A-11D4-9123-0050047759BC%7D/4" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Description="Acess to NSI Parameters" ResourceIri="$(HKLM)/SYSTEM/CURRENTCONTROLSET/CONTROL/NSI/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <!-- Rules protecting access to the NSI IOCTLs -->
+  <Rule Description="NSI driver IOCTL policy" ResourceIri="policy:/DEVICEMANAGER/DEVICE/NSI/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <!-- - - - - - - - - - - - - - - - TAPI - - - - - - - - - - - - - - - -->
+  <Rule Description="Acess to TAPI Dial Locations and Toll Lists" ResourceIri="$(HKCU)/CONTROLPANEL/DIAL/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Description="Acess to TAPI Line API" ResourceIri="$(GLOBAL_RESOURCES)/TAPI/LINE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Description="Acess to TAPI Phone API" ResourceIri="$(GLOBAL_RESOURCES)/TAPI/PHONE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <!-- - - - - - - - - - - - - - - - RAS - - - - - - - - - - - - - - - -->
+
+  <Rule Description="Access to RAS Phonebook entries" ResourceIri="$(HKCU)/COMM/RASBOOK/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+
+  <Rule Description="Access to RAS HangUp()" ResourceIri="$(GLOBAL_RESOURCES)/RAS/HANG_UP" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+
+ <!-- - - - - - - - - - - - - - - - NETWORKING Capability (capability to use networking resources)  - - - - - - - - - - - - - - - -->
+
+ 
+<!--Begin generating capability accounts and authorization rules for ID_CAP_NETWORKING -->
+<Macro Id="CAPMACRO_ID_CAP_NETWORKING" Value="S-1-5-112-0-0X70-0X49445F4341505F4E4554574F524B494E47" />
+<Account Id="$(CAPMACRO_ID_CAP_NETWORKING)" FriendlyName="ID_CAP_NETWORKING:Capability for using networking resources" Description="Autogenerated group for capability ID_CAP_NETWORKING" Type="Group">
+<MemberOfGroup GroupAccountId="$(PUBLIC_CAPABILITIES_GROUP_NAME)" />
+</Account>
+<Rule Description="Authorization rule for capability ID_CAP_NETWORKING" ResourceIri="policy:/DEVICEMANAGER/DEVICE/CMS/0" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_NETWORKING)" AuthorizationIds="ALL_ACCESS" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_NETWORKING" ResourceIri="policy:/CM_CONNECTION/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_NETWORKING)" AuthorizationIds="CM_ACQUIRE, CM_DISCONNECT, CM_CONNECT" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_NETWORKING" ResourceIri="$(GLOBAL_RESOURCES)/CM_NOTIFICATIONS_LISTENER" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_NETWORKING)" AuthorizationIds="GENERIC_READ" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_NETWORKING" ResourceIri="$(HKLM)/COMM/CONNMGR" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_NETWORKING)" AuthorizationIds="KEY_READ" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_NETWORKING" ResourceIri="$(GLOBAL_RESOURCES)/CM_ROAMING_CONNECTIONS_POLICY" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_NETWORKING)" AuthorizationIds="GENERIC_READ" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_NETWORKING" ResourceIri="$(GLOBAL_RESOURCES)/CM_DISABLED_CONNECTIONS_POLICY" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_NETWORKING)" AuthorizationIds="GENERIC_READ" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_NETWORKING" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/WINDOWS/CURRENTVERSION/INTERNET%20SETTINGS/LPC/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_NETWORKING)" AuthorizationIds="KEY_ALL_ACCESS" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_NETWORKING" ResourceIri="$(GLOBAL_RESOURCES)/WINSOCK/CONNECT" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_NETWORKING)" AuthorizationIds="GENERIC_ALL" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_NETWORKING" ResourceIri="$(GLOBAL_RESOURCES)/WINSOCK/LISTEN" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_NETWORKING)" AuthorizationIds="GENERIC_ALL" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_NETWORKING" ResourceIri="$(GLOBAL_RESOURCES)/WINSOCK/ACCEPT" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_NETWORKING)" AuthorizationIds="GENERIC_ALL" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_NETWORKING" ResourceIri="$(GLOBAL_RESOURCES)/WINSOCK/SERVICE_PROVIDER_CHAIN" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_NETWORKING)" AuthorizationIds="GENERIC_READ" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_NETWORKING" ResourceIri="$(RPC_CLIENT_INTERFACE)/$(PROXYSVC_INTERFACE_UUID)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_NETWORKING)" AuthorizationIds="GENERIC_ALL" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_NETWORKING" ResourceIri="$(HKLM)/COMM/PROXYDATABASE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_NETWORKING)" AuthorizationIds="KEY_READ" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_NETWORKING" ResourceIri="$(DEVICEMANAGER_DEVICE)/NSI/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_NETWORKING)" AuthorizationIds="ALL_ACCESS" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_NETWORKING" ResourceIri="$(HKLM)/SYSTEM/CURRENTCONTROLSET/CONTROL/NSI/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_NETWORKING)" AuthorizationIds="KEY_READ" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_NETWORKING" ResourceIri="$(HKLM)/COMM/(+)/PARMS/TCPIP/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_NETWORKING)" AuthorizationIds="KEY_READ" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_NETWORKING" ResourceIri="$(HKLM)/COMM/(+)/(+)/PARMS/TCPIP/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_NETWORKING)" AuthorizationIds="KEY_READ" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_NETWORKING" ResourceIri="$(HKLM)/COMM/TCPIP/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_NETWORKING)" AuthorizationIds="KEY_READ" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_NETWORKING" ResourceIri="$(HKCU)/COMM/SECURITY/SYSTEMCERTIFICATES/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_NETWORKING)" AuthorizationIds="KEY_READ" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_NETWORKING" ResourceIri="$(HKLM)/COMM/SECURITY/SYSTEMCERTIFICATES/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_NETWORKING)" AuthorizationIds="KEY_READ" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_NETWORKING" ResourceIri="$(HKLM)/COMM/SECURITYPROVIDERS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_NETWORKING)" AuthorizationIds="KEY_READ" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_NETWORKING" ResourceIri="$(HKLM)/COMM/SECURITY/CRYPTO" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_NETWORKING)" AuthorizationIds="KEY_READ" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_NETWORKING" ResourceIri="$(GLOBAL_RESOURCES)/EVENTLOG_CHANNEL/Microsoft-WindowsMobile-Urlmon-Channel" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_NETWORKING)" AuthorizationIds="GENERIC_WRITE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_NETWORKING" ResourceIri="$(GLOBAL_RESOURCES)/EVENTLOG_CHANNEL/Microsoft-WindowsCE-ConnMgrLogPublisher-Channel" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_NETWORKING)" AuthorizationIds="GENERIC_WRITE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_NETWORKING" ResourceIri="$(RPC_CLIENT_INTERFACE)/$(BTS_API_INTERFACE_UUID)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_NETWORKING)" AuthorizationIds="GENERIC_ALL" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_NETWORKING" ResourceIri="policy:/RESOURCES/$(SID_UDEVICE_STANDARD)/DEVICEMANAGER/ACTIVATEDEVICE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_NETWORKING)" AuthorizationIds="ALL_ACCESS" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_NETWORKING" ResourceIri="$(RPC_CLIENT_INTERFACE)/$(ACM_INTERFACE_UUID)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_NETWORKING)" AuthorizationIds="GENERIC_ALL" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_NETWORKING" ResourceIri="$(GLOBAL_RESOURCES)/PACKAGEMANAGER/LIVETOKENAPI" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_NETWORKING)" AuthorizationIds="ALL_ACCESS" />
+</Authorize>
+</Rule>
+<!--End generating capability accounts and authorization rules for ID_CAP_NETWORKING -->
+
+
+  <!-- - - - - - - - - - - - - - - - NETWORKING ADMIN Capability (capability needed to change some networking settings)  - - - - - - - - - - - - - - - -->
+  <!-- - - - - - - - - - - - - - - - This capability is not superset of ID_CAP_NETWORKING capability, so if an app wants to both use networking  - - - - - - - - - - - - - - - -->
+  <!-- - - - - - - - - - - - - - - - and change network settings, it should have both ID_CAP_NETWORKING and ID_CAP_NETWORKING_ADMIN capabilities  - - - - - - - - - - - - - - - -->
+
+  
+<!--Begin generating capability accounts and authorization rules for ID_CAP_NETWORKING_ADMIN -->
+<Macro Id="CAPMACRO_ID_CAP_NETWORKING_ADMIN" Value="S-1-5-112-0-0X70-0X49445F4341505F4E4554574F524B494E475F41444D494E" />
+<Account Id="$(CAPMACRO_ID_CAP_NETWORKING_ADMIN)" FriendlyName="ID_CAP_NETWORKING_ADMIN:Capability for networking admin" Description="Autogenerated group for capability ID_CAP_NETWORKING_ADMIN" Type="Group">
+<MemberOfGroup GroupAccountId="$(PUBLIC_CAPABILITIES_GROUP_NAME)" />
+</Account>
+<Rule Description="Authorization rule for capability ID_CAP_NETWORKING_ADMIN" ResourceIri="$(HKLM)/SYSTEM/CURRENTCONTROLSET/CONTROL/NSI/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_NETWORKING_ADMIN)" AuthorizationIds="KEY_ALL_ACCESS" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_NETWORKING_ADMIN" ResourceIri="$(RPC_CLIENT_INTERFACE)/$(NSI_INTERFACE_UUID)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_NETWORKING_ADMIN)" AuthorizationIds="ALL_ACCESS" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_NETWORKING_ADMIN" ResourceIri="$(HKLM)/COMM/(+)/PARMS/TCPIP/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_NETWORKING_ADMIN)" AuthorizationIds="KEY_ALL_ACCESS" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_NETWORKING_ADMIN" ResourceIri="$(HKLM)/COMM/(+)/(+)/PARMS/TCPIP/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_NETWORKING_ADMIN)" AuthorizationIds="KEY_ALL_ACCESS" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_NETWORKING_ADMIN" ResourceIri="$(HKLM)/COMM/TCPIP/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_NETWORKING_ADMIN)" AuthorizationIds="KEY_ALL_ACCESS" />
+</Authorize>
+</Rule>
+<!--End generating capability accounts and authorization rules for ID_CAP_NETWORKING_ADMIN -->
+
+
+  <!-- - - - - - - - - - - - - - - - WINSOCK - - - - - - - - - - - - - - - -->
+  <Rule Description="Acess to Winsock Service Provider Installation and Enumeration" ResourceIri="$(GLOBAL_RESOURCES)/WINSOCK/SERVICE_PROVIDER_CHAIN" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Description="Acess to Winsock listen operation" ResourceIri="$(GLOBAL_RESOURCES)/WINSOCK/LISTEN" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+
+  <Rule Description="Acess to Winsock accept operation" ResourceIri="$(GLOBAL_RESOURCES)/WINSOCK/ACCEPT" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Description="Acess to Winsock connect operation" ResourceIri="$(GLOBAL_RESOURCES)/WINSOCK/CONNECT" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+      <Match AccountId="$(SID_MEUX_STANDARD)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Description="Acess to Winsock Raw sockets" ResourceIri="$(GLOBAL_RESOURCES)/WINSOCK/RAWSOCKET" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <!-- Macros for the RPC endpoint and interface UUID -->
+  <Macro Id="BFE_ENDPOINT_NAME" Description="BFE RPC endpoint name." Value="BFERpcServer"></Macro>
+
+  <Macro Id="BFE_INTERFACE_UUID" Description="BFE RPC server interface uuid." Value="dd490425-5325-4565-b774-7e27d6c09c24"></Macro>
+
+  <Macro Id="IKE_ENDPOINT_NAME" Description="IKE RPC endpoint name." Value="IKERpcServer"></Macro>
+
+  <Macro Id="IKE_INTERFACE_UUID" Description="IKE RPC server interface uuid." Value="a398e520-d59a-4bdd-aa7a-3c1e0303a511"></Macro>
+
+  <!-- Rules protecting access to BFE RPC server and client interface -->
+
+  <Rule Description="BFE RPC endpoint name registration rule" ResourceIri="$(RPC_SERVER_ENDPOINT)/$(BFE_ENDPOINT_NAME)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="BFE RPC client interface registration rule" ResourceIri="$(RPC_CLIENT_INTERFACE)/$(BFE_INTERFACE_UUID)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Rules protecting access to the registry store where BFE stores persistent and boot time objects -->
+
+  <Rule Description="Rule controlling access to the BFE registry store" ResourceIri="$(HKLM)/DRIVERS/BUILTIN/BFE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+<!-- Security policies for IKE service -->
+
+  <!-- Account for IKE service -->
+  <Macro Id="IKE_ELEVATED_SELF_ISOLATED" Description="Elevated Self Isolated Chamber to run IKE service" Value="S-1-5-112-0-0X11-0X00000009"></Macro>
+
+  <!-- Create the IKE service Self Isolated Supervisor Chamber -->
+  <Account Id="$(IKE_ELEVATED_SELF_ISOLATED)" FriendlyName="IKE service Self Isolated Chamber" Description="IKE service Isolated Account" Type="User">
+        <MemberOfGroup GroupAccountId="$(SELF_ISOLATED_ELEVATED_RIGHTS_CHAMBER_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+  <!-- Rules protecting access to IKE RPC server and client interface -->
+  <Rule Description="IKE RPC endpoint name registration rule" ResourceIri="$(RPC_SERVER_ENDPOINT)/$(IKE_ENDPOINT_NAME)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(IKE_ELEVATED_SELF_ISOLATED)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="IKE RPC client interface registration rule" ResourceIri="$(RPC_CLIENT_INTERFACE)/$(IKE_INTERFACE_UUID)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Rules protecting access to the registry store where IKE stores persistent and boot time objects -->
+
+  <Rule Description="Rule controlling access to the IKE registry store" ResourceIri="$(HKLM)/DRIVERS/BUILTIN/IKE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(IKE_ELEVATED_SELF_ISOLATED)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <!-- Rule granting IKE service access to the machine key store for it to authenticate using Certificates -->
+  <Rule Description="Restrict access to TCB crypto keys" ResourceIri="$(GLOBAL_RESOURCES)/CRYPTOKEYS/TCB" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(IKE_ELEVATED_SELF_ISOLATED)" AuthorizationIds="ALL_ACCESS"></Match>
+        </Authorize>
+  </Rule>
+
+
+  <!-- Rules protecting access to the BFE IOCTLs, Preventing supervisor and normal apps from sending IOCTLS to BFE -->
+
+  <Rule Description="BFE IOCTL policy" ResourceIri="policy:/DEVICEMANAGER/DEVICE/BFE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <!-- Rules protecting access to the IKE IOCTLs, Preventing normal apps from sending IOCTLS to IKE -->
+  <Rule Description="BFE IOCTL policy" ResourceIri="policy:/DEVICEMANAGER/DEVICE/IKE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <!-- Rules protecting access to the WFP IOCTLs -->
+
+  <Rule Description="WFP driver IOCTL policy" ResourceIri="policy:/DEVICEMANAGER/DEVICE/WFP/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+
+  <!-- Rules protecting access to the Ipsec IOCTLs -->
+
+  <Rule Description="IpSec driver IOCTL policy" ResourceIri="policy:/DEVICEMANAGER/DEVICE/IPS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  
+  <!-- Taskhost is running in LPC, which require cxport.dll to be loaded in startup.
+       Taskhost.exe->npctrl.dll (Silverlight control) -> iphlpapi.dll -> cxport.dll
+  -->
+  <Rule Description="TASKHOST!CXcpControlHost::CreateXcpControl need to read the registry value" ResourceIri="$(HKLM)/COMM/CXPORT" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+      <Authorize>
+          <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+      </Authorize>
+  </Rule>
+
+  <!-- - - - - - - - - - - SOFT AP - - - - - - - - - - -->
+  
+  <!-- Account for ICS Servce -->
+  
+  <Macro Id="ICS_SERVICE_SID" Description="Internet connection sharing service for SoftAP" Value="S-1-5-112-0-0X10-0X00000051"></Macro>
+
+  <Account Id="$(ICS_SERVICE_SID)" FriendlyName="ICS service SID" Description="ICS service SID" Type="User">
+    <MemberOfGroup GroupAccountId="$(ELEVATED_RIGHTS_CHAMBER_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+  <!-- Access to ICS service -->
+
+  <Rule Description="Access rights for ICS service device driver" ResourceIri="policy:/DEVICEMANAGER/DEVICE/ICS/0" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Access rights to private ICS registry keys -->
+
+  <Rule Description="ICS private registry key" ResourceIri="$(HKLM)/COMM/INTERNETSHARING/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Access rights to ICS service sharing state -->
+
+  <Rule Description="Access rights for ICS sharing state" ResourceIri="$(GLOBAL_RESOURCES)/ICS_SERVICE/SHARING_STATE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ, GENERIC_WRITE"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Access rights to ICS service configuration -->
+
+  <Rule Description="Access rights for ICS configuration" ResourceIri="$(GLOBAL_RESOURCES)/ICS_SERVICE/CONFIGURATION" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ, GENERIC_WRITE"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Access rights ICS service client information -->
+
+  <Rule Description="Access rights for ICS client information" ResourceIri="$(GLOBAL_RESOURCES)/ICS_SERVICE/CLIENT_INFORMATION" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Access rights ICS service notification mechanism -->
+
+  <Rule Description="Access rights for ICS notification mechanism" ResourceIri="$(GLOBAL_RESOURCES)/ICS_SERVICE/NOTIFY" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ"></Match>
+    </Authorize>
+  </Rule>
+
+</CeSecurityPolicyFile>

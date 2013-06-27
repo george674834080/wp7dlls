@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<Provisioning xmlns="http://dbPreProvisioning"
+  RuntimeType="Native"
+  Title="@GameRes.dll,-10060"
+  Version="1.0"
+  Genre=""
+  ProductID="{5B04B775-356B-4AA0-AAF8-6491FFEA5634}"
+  SingleInstanceHost="false">
+  <IconPath xmlns="">res://StartMenu!AppIconGames.png</IconPath>
+  <ImagePath xmlns="">\Windows\GamesUX.exe</ImagePath>
+  <ImageParams xmlns=""></ImageParams>
+  <Tasks xmlns="">
+    <!-- Each task should have an explicit activation policy.  Default is "Resume" -->
+    <DefaultTask  Name="Hub"                NavigationPage="Hub"                ActivationPolicy="Replace"/>
+    <ExtendedTask Name="ComposeMessage"     NavigationPage="ComposeMessage"     ActivationPolicy="Replace"/>
+    <ExtendedTask Name="GamerProfile"       NavigationPage="GamerProfile"       ActivationPolicy="Replace"          DehydrationSuppressing="true"/>
+    <ExtendedTask Name="Invite"             NavigationPage="Invite"             ActivationPolicy="Multisession"     DehydrationSuppressing="true"/>
+    <ExtendedTask Name="LaunchGame"         NavigationPage="LaunchGame"         ActivationPolicy="Replace"/>
+    <ExtendedTask Name="LaunchMarketplace"  NavigationPage="LaunchMarketplace"  ActivationPolicy="Replace"/>
+    <ExtendedTask Name="GamesCPL"           NavigationPage="GamesCPL"           ActivationPolicy="Resume"/>
+  </Tasks>  
+  <Tokens xmlns="">
+    <!-- If you change these values, you must change the corresponding values in private\mediaapps\zmx\foundation\games\GameTokenManager.cpp -->
+    <PrimaryToken TokenID="Default"
+           TaskName="Hub"
+           TaskParameters=""
+           DisplayPosition="6"
+           Pinned="true">
+      <TemplateType3>
+        <ImageURI>res://StartMenu!token.xboxlive.png</ImageURI>
+        <BackgroundImageUri>res://StartMenu!token.xboxlive.background.png</BackgroundImageUri>
+        <Title>@GameRes.dll,-10060</Title>
+      </TemplateType3>
+    </PrimaryToken>
+  </Tokens>
+</Provisioning>

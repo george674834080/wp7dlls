@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<!--
+Use of this sample source code is subject to the terms of the Microsoft
+license agreement under which you licensed this sample source code. If
+you did not accept the terms of the license agreement, you are not
+authorized to use this sample source code. For the terms of the license,
+please see the license agreement between you and Microsoft or, if applicable,
+see the LICENSE.RTF on your install media or the root of your tools installation.
+THE SAMPLE SOURCE CODE IS PROVIDED "AS IS", WITH NO WARRANTIES OR INDEMNITIES.
+-->
+
+<FMProperty>
+  <Profile Name="8 Valid Stations">
+    <TuneDelay>50</TuneDelay>
+    <ApiReturnDelay>10</ApiReturnDelay>
+    <Station     Frequency="88.5"  Rssi="43"  Stereo="0"   Wav="\windows\88500.wma" Rds="\windows\88500.rds"> </Station>
+    <Station     Frequency="89.5"  Rssi="110" Stereo="1"   Wav="\windows\89500.wma" Rds="\windows\89500.rds"> </Station>
+    <Station     Frequency="91.3"  Rssi="125" Stereo="0"   Wav="\windows\91300.wma" Rds="\windows\91300.rds"> </Station>
+    <Station     Frequency="93.3"  Rssi="106" Stereo="1"   Wav="\windows\93300.wma" Rds="\windows\93300.rds"> </Station>
+    <Station     Frequency="96.5"  Rssi="22"  Stereo="1"   Wav="\windows\96500.wma" Rds="\windows\96500.rds"> </Station>
+    <Station     Frequency="101.5" Rssi="42"  Stereo="1"   Wav="\windows\101500.wma" Rds="\windows\101500.rds"> </Station>
+    <Station     Frequency="105.3" Rssi="41"  Stereo="1"   Wav="\windows\105300.wma" Rds="\windows\105300.rds"> </Station>
+    <Station     Frequency="106.9" Rssi="44"  Stereo="1"   Wav="\windows\106900.wma" Rds="\windows\106900.rds"> </Station>
+  </Profile>
+
+  <Profile Name="2 Valid Stations">
+    <TuneDelay>50</TuneDelay>
+    <ApiReturnDelay>10</ApiReturnDelay>
+    <Station     Frequency="88.5"  Rssi="43"  Stereo="1"   Rds="\windows\88500.rds"> </Station>
+    <Station     Frequency="101.5" Rssi="42"  Stereo="1"   Rds="\windows\101500.rds"> </Station>
+  </Profile>
+
+  <Profile Name="FM Radio Test Stations">
+     <TuneDelay>100</TuneDelay>
+     <ApiReturnDelay>10</ApiReturnDelay>
+     <Station
+         Frequency="96.5"
+         Rssi="22"
+         Stereo="1"
+         Wav="\release\fm_test_96500.wav"
+         Rds="\release\fm_test_96500.rds">
+     </Station>
+     <Station
+         Frequency="105.3"
+         Rssi="41"
+         Stereo="1"
+         Wav="\release\fm_test_105300.wav"
+         Rds="\release\fm_test_105300.rds">
+     </Station>
+     <Station
+         Frequency="101.5"
+         Rssi="42"
+         Stereo="0"
+         Wav="\release\fm_test_101500.wav"
+         Rds="\release\fm_test_101500.rds">
+     </Station>
+     <Station
+         Frequency="88.5"
+         Rssi="99"
+         Stereo="1"
+         Wav="\release\fm_test_88500.wav"
+         Rds="\release\fm_test_88500.rds">
+     </Station>
+     <Station
+         Frequency="106.9"
+         Rssi="44"
+         Stereo="0"
+         Wav="\release\fm_test_106900.wav"
+         Rds="\release\fm_test_106900.rds">
+     </Station>
+  </Profile>
+</FMProperty>

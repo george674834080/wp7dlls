@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<CeSecurityPolicyFile Description="taskscheduler: Task Scheduler Security Policies;templates.taskscheduler: Task Scheduler Template Policies;tskschrdf: Task Scheduler Radio Events Filter Driver Policies;" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.00" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">
+<!-- taskscheduler: Task Scheduler Security Policies -->
+
+  <!-- Add scheduler access types to the resources namespace -->
+  <Namespace Prefix="/RESOURCES">
+
+    <Authorization Id="SCHEDULE_GENERIC_ACCESS" Bitmask="0x00008000" Description="Access to a Schedule Group"></Authorization>
+
+    <Authorization Id="SCHEDULE_CREATE_PERSISTENT" Bitmask="0x00000001" Description="Permission to Create a Persistent Schedule Group"></Authorization>
+
+    <Authorization Id="SCHEDULE_ALL_ACCESS" Bitmask="0x00008001" Description="Unrestricted Access to a Schedule Group"></Authorization>
+
+  </Namespace>
+
+
+
+  <!-- Secure scheduler registry entries -->
+
+  <Rule Description="Task Scheduler Registry" PriorityCategoryId="PRIORITY_HIGH" ResourceIri="$(HKLM)/SERVICES/TASKSCHEDULER/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)">
+
+
+      <!-- we want only TCB to have this access         -->
+      <!-- and TCB always has full access to everything -->
+      <!-- no need for an explicit rule                 -->
+
+    <Stop>
+
+      <!-- Deny semantics on Everyone -->
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+
+    </Stop>
+
+  </Rule>
+
+  <!-- Secure task scheduler service entry points -->
+  <Rule Description="Task Scheduler Service" PriorityCategoryId="PRIORITY_HIGH" ResourceIri="$(DEVICEMANAGER_DEVICE)/TSH/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)">
+
+      <!-- we want only TCB to have this access         -->
+      <!-- and TCB always has full access to everything -->
+      <!-- no need for an explicit rule                 -->
+
+    <Stop>
+
+      <!-- Deny semantics on Everyone -->
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+
+    </Stop>
+
+  </Rule>
+
+  <!-- Secure scheduler database volume -->
+  <Rule Description="Task Scheduler Database Volume" PriorityCategoryId="PRIORITY_HIGH" ResourceIri="$(FILESYS_PRIMARY_ROOT)/APPLICATION%20DATA/MICROSOFT/SCHEDULER/SCHEDULES.VOL" SpeakerAccountId="$(SYSTEM_USER_NAME)">
+
+      <!-- we want only TCB to have this access         -->
+      <!-- and TCB always has full access to everything -->
+      <!-- no need for an explicit rule                 -->
+
+    <Stop>
+
+      <!-- Deny semantics on Everyone -->
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+
+    </Stop>
+
+  </Rule>
+
+  <!-- Secure scheduler log file -->
+  <Rule Description="Task Scheduler Log File" PriorityCategoryId="PRIORITY_HIGH" ResourceIri="$(FILESYS_PRIMARY_ROOT)/APPLICATION%20DATA/MICROSOFT/SCHEDULER/SCHEDULERLOG.TXT" SpeakerAccountId="$(SYSTEM_USER_NAME)">
+
+    <Authorize>
+
+      <!-- Grant read access to elevated -->
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_GENERIC_READ"></Match>
+
+      <!-- and TCB always has full access to everything -->
+
+    </Authorize>
+
+    <Stop>
+
+      <!-- Deny semantics on Everyone -->
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+
+    </Stop>
+
+  </Rule>
+
+  <!-- Secure named event objects used by the scheduler service (case
+       sensitive) -->
+
+  <Rule Description="Task Scheduler Time Change Notification Event" PriorityCategoryId="PRIORITY_HIGH" ResourceIri="policy:/KERNEL/EVENT/GLOBAL/TaskScheduler_TimeChangeRegistration_Event" SpeakerAccountId="$(SYSTEM_USER_NAME)">
+
+
+      <!-- we want only TCB to have this access         -->
+      <!-- and TCB always has full access to everything -->
+      <!-- no need for an explicit rule                 -->
+
+    <Stop>
+
+      <!-- Deny semantics on Everyone -->
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+
+    </Stop>
+
+  </Rule>
+
+  <Rule Description="Task Scheduler Wakeup Event" PriorityCategoryId="PRIORITY_HIGH" ResourceIri="policy:/KERNEL/EVENT/GLOBAL/TaskScheduler_TimeWakeupRegistration_Event" SpeakerAccountId="$(SYSTEM_USER_NAME)">
+
+      <!-- we want only TCB to have this access         -->
+      <!-- and TCB always has full access to everything -->
+      <!-- no need for an explicit rule                 -->
+
+    <Stop>
+
+      <!-- Deny semantics on Everyone -->
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+
+    </Stop>
+
+  </Rule>
+
+  <!-- Secure API Ready named event (case sensitive) -->
+  <Rule Description="Task Scheduler API Ready" PriorityCategoryId="PRIORITY_HIGH" ResourceIri="policy:/KERNEL/EVENT/SYSTEM/TaskSchedulerApiReady" SpeakerAccountId="$(SYSTEM_USER_NAME)">
+
+    <!-- TCB always has full access to everything     -->
+    <!-- no need for an explicit rule                 -->
+    <!-- also allow OM_USER_NAME to have this access  -->
+
+    <Authorize>
+
+      <!-- Grant access to OM_USER_NAME -->
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+
+      <!-- and TCB always has full access to everything -->
+
+    </Authorize>
+
+    <Stop>
+
+      <!-- Deny semantics on Everyone -->
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+
+    </Stop>
+
+  </Rule>
+
+  <!-- Secure RPC endpoint (case sensitive) -->
+  <Rule Description="Task Scheduler RPC Endpoint" PriorityCategoryId="PRIORITY_HIGH" ResourceIri="$(RPC_SERVER_ENDPOINT)/TaskSchedulerRpcEndPoint" SpeakerAccountId="$(SYSTEM_USER_NAME)">
+
+      <!-- we want only TCB to have this access         -->
+      <!-- and TCB always has full access to everything -->
+      <!-- no need for an explicit rule                 -->
+
+    <Stop>
+
+      <!-- Deny semantics on Everyone -->
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+
+    </Stop>
+
+  </Rule>
+
+  <!-- Macro for our RPC interface GUID.
+       Canonical form is lowercase, no braces. -->
+  <Macro Id="TASKSCHEDULERRPCINTERFACEGUID" Description="Task Scheduler RPC Interface GUID" Value="c0a76887-64af-44bc-9edd-b9350abada79"></Macro>
+
+  <!-- Permit everyone client access to our RPC interface -->
+  <Rule Description="TASK Scheduler RPC Interface Client Side" PriorityCategoryId="PRIORITY_STANDARD" ResourceIri="$(RPC_CLIENT_INTERFACE)/$(TASKSCHEDULERRPCINTERFACEGUID)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)">
+
+    <Authorize>
+
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+
+    </Authorize>
+
+  </Rule>
+
+
+<!-- templates.taskscheduler: Task Scheduler Template Policies -->
+<!-- Add scheduler access types to the templates namespace -->
+  <Namespace Prefix="/TEMPLATES">
+
+    <Authorization Id="SCHEDULE_GENERIC_ACCESS" Bitmask="0x00008000" Description="Access to a Schedule Group"></Authorization>
+
+    <Authorization Id="SCHEDULE_CREATE_PERSISTENT" Bitmask="0x00000001" Description="Permission to Create a Persistent Schedule Group"></Authorization>
+
+    <Authorization Id="SCHEDULE_ALL_ACCESS" Bitmask="0x00008001" Description="Unrestricted Access to a Schedule Group"></Authorization>
+
+  </Namespace>
+
+  <!--  Define a rule to determine if caller has access to create schedules.
+        we want to let everyone (including LPC) create non-persistent schedules.
+        and Standard+ to create persistent schedules.
+  -->
+
+  <Rule Description="Schedule Create Access" PriorityCategoryId="PRIORITY_STANDARD" ResourceIri="$(GLOBAL_RESOURCES)/SCHEDULE_GROUP/CREATE_SCHEDULE" SpeakerAccountId="$(SYSTEM_USER_NAME)">
+
+    <Authorize>
+
+      <Match Action="Add" AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="SCHEDULE_ALL_ACCESS"></Match>
+
+      <Match Action="Add" AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="SCHEDULE_GENERIC_ACCESS"></Match>
+
+    </Authorize>
+
+
+  </Rule>
+
+  <!--
+  Once schedule is created we will use following IRI to check modify/delete access to it.
+  /RESOURCES/(MATCH-CHAMBER)/SCHEDULE_GROUP/scheduleGuid.
+
+  for this purpose global resource policies defined in public\common\oak\packages\coreos\coreos.policy.xml
+  to protect "/RESOURCES/(MATCH-CHAMBER)/(*)" namespace are good enough for us.
+
+  Those policies are set for following simple rule  * App can access resources of its own, peers or lower priviledged apps *
+  -->
+
+
+
+<!-- tskschrdf: Task Scheduler Radio Events Filter Driver Policies -->
+<!-- Secure radio events driver registry entries -->
+  <Rule Description="Task Scheduler Radio Events Filter Driver Registry" PriorityCategoryId="PRIORITY_HIGH" ResourceIri="$(HKLM)/DRIVERS/BUILTIN/TSKSCHRDF/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)">
+
+      <!-- we want only TCB to have this access         -->
+      <!-- and TCB always has full access to everything -->
+      <!-- no need for an explicit rule                 -->
+
+    <Stop>
+
+      <!-- Deny semantics on Everyone -->
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+
+    </Stop>
+
+  </Rule>
+
+  <!-- Secure radio events driver entry points -->
+  <Rule Description="Task Scheduler Radio Events Filter Driver" PriorityCategoryId="PRIORITY_HIGH" ResourceIri="$(DEVICEMANAGER_DEVICE)/RDF/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)">
+
+      <!-- we want only TCB to have this access         -->
+      <!-- and TCB always has full access to everything -->
+      <!-- no need for an explicit rule                 -->
+
+    <Stop>
+
+      <!-- Deny semantics on Everyone -->
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+
+    </Stop>
+
+  </Rule>
+  
+  <!-- Secure named events used by the radio events driver (case
+       sensitive) -->
+
+  <Rule Description="Task Scheduler Radio Up Notification Event" PriorityCategoryId="PRIORITY_HIGH" ResourceIri="policy:/KERNEL/EVENT/GLOBAL/RadioDataExchangeActivity_Cellular1" SpeakerAccountId="$(SYSTEM_USER_NAME)">
+
+      <!-- we want only TCB to have this access         -->
+      <!-- and TCB always has full access to everything -->
+      <!-- no need for an explicit rule                 -->
+
+    <Stop>
+
+      <!-- Deny semantics on Everyone -->
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+
+    </Stop>
+
+  </Rule>
+
+  <Rule Description="Task Scheduler Radio Down Notification Event" PriorityCategoryId="PRIORITY_HIGH" ResourceIri="policy:/KERNEL/EVENT/GLOBAL/RadioDataExchangeActivity_Cellular1%21" SpeakerAccountId="$(SYSTEM_USER_NAME)">
+
+      <!-- we want only TCB to have this access         -->
+      <!-- and TCB always has full access to everything -->
+      <!-- no need for an explicit rule                 -->
+
+    <Stop>
+
+      <!-- Deny semantics on Everyone -->
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+
+    </Stop>
+
+  </Rule>
+
+
+
+</CeSecurityPolicyFile>

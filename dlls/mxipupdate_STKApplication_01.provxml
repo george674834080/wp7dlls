@@ -1,0 +1,9 @@
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<wap-provisioningdoc>
+  <characteristic type="AppInstall">
+    <nocharacteristic type="{fd74fc03-8904-4631-950e-1cb2590e4212}"/>
+  </characteristic>
+</wap-provisioningdoc>
+

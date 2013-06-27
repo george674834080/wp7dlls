@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<!--
+Use of this source code is subject to the terms of the Microsoft
+premium shared source license agreement under which you licensed
+this source code. If you did not accept the terms of the license
+agreement, you are not authorized to use this source code.
+For the terms of the license, please see the license agreement
+signed by you and Microsoft.
+THE SOURCE CODE IS PROVIDED "AS IS", WITH NO WARRANTIES OR INDEMNITIES.
+-->
+<CeSecurityPolicyFile Description="Default Remote Wipe API security policies" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.4.9876" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">
+
+    <!-- http://msdn.microsoft.com/en-us/library/bb416355.aspx -->
+    <!-- Default Policies for SecurityPolicyCSP -->
+
+
+    <Rule Description="This policy determines whether software certificates can be used to sign outgoing messages" ResourceIri="$(GLOBAL_RESOURCES)/SECURITYPOLICIES/0000101F" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+            <Match AccountId="$(DM_MANAGER_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+      </Authorize>
+    </Rule>
+
+    
+    <Rule Description="Password Required Policy can be modified by  SECROLE_MANAGER and SECROLE_ENTERPRISE" ResourceIri="$(GLOBAL_RESOURCES)/SECURITYPOLICIES/00001023" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+      <Authorize>
+            <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+            <Match AccountId="$(DM_MANAGER_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+      </Authorize>
+    </Rule>
+
+    
+
+    <Rule Description="This policy determines whether the Inbox app will send all messages signed" ResourceIri="$(GLOBAL_RESOURCES)/SECURITYPOLICIES/00001029" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+            <Match AccountId="$(DM_MANAGER_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+        </Authorize>
+    </Rule>
+
+    <Rule Description="This policy determines whether the Inbox app will send all messages encrypted" ResourceIri="$(GLOBAL_RESOURCES)/SECURITYPOLICIES/0000102A" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+            <Match AccountId="$(DM_MANAGER_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+        </Authorize>
+    </Rule>
+    
+   <Rule Description="This policy determines which algorithm will be used by the Inbox app when a message is to be encrypted." ResourceIri="$(GLOBAL_RESOURCES)/SECURITYPOLICIES/0000102B" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+            <Match AccountId="$(DM_MANAGER_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+        </Authorize>
+    </Rule>
+
+    <Rule Description="This policy determines which algorithm will be used by the Inbox app when a message is to be encrypted." ResourceIri="$(GLOBAL_RESOURCES)/SECURITYPOLICIES/0000102C" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+            <Match AccountId="$(DM_MANAGER_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+        </Authorize>
+    </Rule>
+
+    <Rule Description="This policy determines if messaging can negotiate to another encryption algorithm during SMIME encryption" ResourceIri="$(GLOBAL_RESOURCES)/SECURITYPOLICIES/00001030" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+            <Match AccountId="$(DM_MANAGER_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+        </Authorize>
+    </Rule>
+
+    <Rule Description="This policy determines if crypto modules should perform self tests for FIPS compliance. This is needed to load crypto modules" ResourceIri="$(GLOBAL_RESOURCES)/SECURITYPOLICIES/00001035" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="GENERIC_READ"></Match>
+        </Authorize>
+    </Rule>   
+
+    <Rule Description="Other than LPCs, all other chambes should be able to query security policies." ResourceIri="$(GLOBAL_RESOURCES)/SECURITYPOLICIES/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ"></Match>
+        </Authorize>
+    </Rule>
+
+</CeSecurityPolicyFile>

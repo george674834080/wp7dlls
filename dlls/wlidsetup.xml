@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<Provisioning xmlns="http://dbPreProvisioning"
+  RuntimeType="Native"
+  Title="@OobeRes.dll,-10171"
+  Version="1.0"
+  Genre=""
+  ProductID="{08180483-59DD-419b-B938-B7082424D69A}"
+  SingleInstanceHost="false"
+  DisplayOnAppList="false">
+  <IconPath xmlns="">res://StartMenu!AppIconGeneric.png</IconPath>
+  <ImagePath xmlns="">\Windows\wlidsetup.exe</ImagePath>
+  <ImageParams xmlns="">wlid</ImageParams>
+  <Tasks xmlns="">
+    <DefaultTask Name="Default"
+                 NavigationPage="WelcomeWlid"
+                 ActivationPolicy="Replace" />
+  </Tasks>
+</Provisioning>

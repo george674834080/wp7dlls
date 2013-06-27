@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<CeSecurityPolicyFile Description="IME security policies" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.4.9876" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">
+  <Rule Description="Protect input language registry key" ResourceIri="$(HKCU)/SYSTEM/INPUT/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(KEYBOARDCPL_EXE_SID)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match Action="Add" AccountId="$(OOBE_EXE_SID)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Description="Protect input language registry key" ResourceIri="$(HKLM)/SYSTEM/INPUT/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Description="Protect fuzzy ime registry keys" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/FUZZYIME/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(SID_MTF_SERVER)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match Action="Add" AccountId="$(KEYBOARDCPL_EXE_SID)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Description="Open up access to SQM keys" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/FUZZYIME/SQMCOUNTS" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Description="Open up access to SQM keys" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/FUZZYIME/SQMLASTLOG" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Description="Open up access to CurrentInputMode Reg Value" ResourceIri="$(HKLM)/SYSTEM/STATE/KEYBOARD" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Description="Protect fuzzy DS registry keys" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/FUZZYDS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(SID_MTF_SERVER)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match Action="Add" AccountId="$(KEYBOARDCPL_EXE_SID)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Description="Protect fuzzy DS registry keys" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/MTFKEYBOARDMAPPINGS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(SID_MTF_SERVER)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Description="Protect fuzzy DS registry keys" ResourceIri="$(HKLM)/HARDWARE/DEVICEMAP/KEYBD/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Action="CreateOrReplace" Description="protect CSAPI data file" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/endict_0409.DAT" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(SID_MTF_SERVER)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Action="CreateOrReplace" Description="protect static dictionary" ResourceIri="$(FILESYS_PRIMARY_ROOT)/APPLICATION%20DATA/MICROSOFT/USERDICT2.DAT" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(SID_MTF_SERVER)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Action="CreateOrReplace" Description="protect static dictionary" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/dictionary.0409.dat" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(SID_MTF_SERVER)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Action="CreateOrReplace" Description="protect static dictionary" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/dictionary.0407.dat" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(SID_MTF_SERVER)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Action="CreateOrReplace" Description="protect static dictionary" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/dictionary.040C.dat" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(SID_MTF_SERVER)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Action="CreateOrReplace" Description="protect static dictionary" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/dictionary.0410.dat" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(SID_MTF_SERVER)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  
+<!--Begin Generated accounts and routing/authz rules for $(SYSTEM_USER_NAME) -->
+
+<!--Begin Generated routing/authz rules for EC61528D-B0FD-4be8-8BD5-32938403D1FB.exe -->
+<Rule Description="Route EC61528D-B0FD-4be8-8BD5-32938403D1FB.exe" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/EC61528D-B0FD-4BE8-8BD5-32938403D1FB.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize EC61528D-B0FD-4be8-8BD5-32938403D1FB.exe be loadable to $(SYSTEM_USER_NAME) and  chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/EC61528D-B0FD-4BE8-8BD5-32938403D1FB.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for EC61528D-B0FD-4be8-8BD5-32938403D1FB.exe -->
+<!--End Generated accounts and routing/authz rules for $(SYSTEM_USER_NAME) -->
+
+</CeSecurityPolicyFile>

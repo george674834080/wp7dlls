@@ -1,0 +1,19 @@
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<wap-provisioningdoc>
+  <characteristic type="AppMetadata"> 
+    <characteristic type="{5B04B775-356B-4AA0-AAF8-6491FFEA5624}">
+      <parm name="Manifest" value="\Windows\SpeechCPL.xml"/>
+    </characteristic>
+  </characteristic>
+  <characteristic type="Registry">
+    <characteristic type="HKCU\Software\Microsoft\Speech\Settings">
+      <parm name="GrammarVersionUpdate" value="1" datatype="boolean" />
+      <parm name="NetworkConnection" value="0" datatype="integer" />
+      <parm name="PrivacyPolicyAcceptance" value="0" datatype="integer" />
+    </characteristic>
+  </characteristic>
+    
+</wap-provisioningdoc>
+

@@ -1,0 +1,18 @@
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+
+<wap-provisioningdoc>
+  <characteristic type="FileOperation">
+     <characteristic type="%CE19%\Microsoft\Office Mobile\SPM Data" translation="install">
+      <characteristic type="MakeDir" />
+      <characteristic type="SPSQLStore.sdf" translation="install">
+        <characteristic type="Copy">
+          <parm name="Source" value="\Windows\SPSQLStore.sdf" translation="install" />
+          <parm name="RemoveAttributes" value="R" />
+          <parm name="RemoveAttributes" value="S" />
+        </characteristic>
+      </characteristic>
+    </characteristic>
+  </characteristic>
+</wap-provisioningdoc>

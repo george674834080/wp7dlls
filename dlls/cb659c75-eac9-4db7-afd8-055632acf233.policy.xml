@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<CeSecurityPolicyFile Description="extapi: Default ExTAPI security policy;ril: Default RIL security policy;sim: Default SIM security policy;sms: Default SMS security policy;wap: Default WAP security policy;" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.00" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">  
+
+<!-- cellcore: Default cellcore security policy -->
+
+     <Namespace Prefix="/RESOURCES">
+        <!-- used for WAP assets -->
+        <Authorization Id="MESSAGE_SEND" Bitmask="0x00000001"></Authorization>
+        <Authorization Id="MESSAGE_RECEIVE" Bitmask="0x00000002"></Authorization>
+    </Namespace>
+
+    <Macro Id="CCA_CALL" Description="CellCore Assets - voice call operation" Value="policy:/RESOURCES/GLOBAL/CN_CALL"></Macro>
+
+    <Macro Id="CCA_NETWORK" Description="CellCore Assets - cellular network operation" Value="policy:/RESOURCES/GLOBAL/CN_NETWORK"></Macro>
+
+    <Macro Id="CCA_SUPPLEMTARY_SERVICE" Description="CellCore Assets - supplemtary service operation" Value="policy:/RESOURCES/GLOBAL/CN_SUPP"></Macro>
+
+    <Macro Id="CCA_RADIO_DEVICE" Description="CellCore Assets - radio device operation" Value="policy:/RESOURCES/GLOBAL/CN_RADIO"></Macro>
+
+    <Macro Id="CCA_WAP_MESSAGE" Description="CellCore Assets - wap message operation" Value="policy:/RESOURCES/GLOBAL/CN_WAP"></Macro>      
+
+    <Macro Id="CCA_SMS_MESSAGE" Description="CellCore Assets - sms message operation" Value="policy:/RESOURCES/GLOBAL/SMS_MESSAGE"></Macro>
+
+    <Macro Id="CCA_SIM_PHONEBOOK" Description="CellCore Assets - sim phonebook operation" Value="policy:/RESOURCES/GLOBAL/SIM_PHONEBOOK"></Macro>
+
+    <Macro Id="CCA_SIM_MESSAGE" Description="CellCore Assets - sim message operation" Value="policy:/RESOURCES/GLOBAL/SIM_MESSAGE"></Macro>
+
+    <Macro Id="CCA_SIM_INFO" Description="CellCore Assets - sim information operation" Value="policy:/RESOURCES/GLOBAL/SIM_INFO"></Macro>
+
+    <Macro Id="CCA_SIM_PIN" Description="CellCore Assets - sim pin operation" Value="policy:/RESOURCES/GLOBAL/SIM_PIN"></Macro>
+
+    <Macro Id="CCA_SIM_FILE" Description="CellCore Assets - sim file operation" Value="policy:/RESOURCES/GLOBAL/SIM_FILE"></Macro>
+
+    <Macro Id="CCA_RIL" Description="CellCore Assets - cellular RIL operation" Value="policy:/RESOURCES/GLOBAL/RIL"></Macro>
+
+    <Macro Id="CCA_PACKET_DATA" Description="CellCore Assets - cellular data connection operation" Value="policy:/RESOURCES/GLOBAL/CN_PACKET"></Macro>
+
+    <!-- DEVICE MANAGER -->
+    <Rule Description="Standard rights resource group can access SIM driver" ResourceIri="$(DEVICEMANAGER_DEVICE)/SIM/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+        <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+        </Authorize>
+    </Rule>
+
+    <Rule Description="Standard rights resource group can access SMS driver" ResourceIri="$(DEVICEMANAGER_DEVICE)/SMS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+        <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+        </Authorize>
+    </Rule>
+
+    <Rule Description="Standard rights resource group can access WAP driver" ResourceIri="$(DEVICEMANAGER_DEVICE)/WAP/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+        <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+        </Authorize>
+    </Rule>
+
+    <Rule Description="Elevated chamber can access RIL driver" ResourceIri="$(DEVICEMANAGER_DEVICE)/RIL/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+        <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+        <Match AccountId="$(MMSTRANS_USER_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+        </Authorize>
+    </Rule>
+
+
+<!-- Celltsp: Default Celltsp security policy -->
+
+    <Rule Description="Access rights for voice calls" ResourceIri="$(CCA_CALL)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+        <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ,GENERIC_WRITE,GENERIC_EXECUTE"></Match>
+        <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ,GENERIC_WRITE"></Match>
+        </Authorize>
+    </Rule>
+
+    <!-- Registry -->
+    <Rule Description="Registry for callsettingshost.exe/chdialerhost.exe/oobe.exe access" ResourceIri="$(HKLM)/COMM/CELLULAR/CELLTSP/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+     <Authorize>
+       <Match AccountId="$(CALLSETTINGSHOST_EXE_SID)" AuthorizationIds="KEY_READ"></Match>
+       <Match AccountId="$(CHDIALERHOST_EXE_SID)" AuthorizationIds="KEY_READ"></Match>
+       <Match AccountId="$(OOBE_ACCOUNT_ID)" AuthorizationIds="KEY_READ"></Match>
+      </Authorize>
+      <Stop>
+        <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+      </Stop>
+    </Rule>
+
+
+    <Rule Description="Protect registry only available to system" ResourceIri="$(HKLM)/COMM/CELLULAR/CELLTSP/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+        <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>          
+        </Authorize>
+        <Stop>
+          <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+  
+<!-- extapi: Default ExTAPI security policy -->
+
+    <!-- SUPPLEMENTARY SERVICE -->
+    <Rule Description="Access rights for supplementary service" ResourceIri="$(CCA_SUPPLEMTARY_SERVICE)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+        <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ,GENERIC_WRITE"></Match>
+        </Authorize>
+        <Stop>
+          <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+
+    <!-- Network -->
+    <Rule Description="Access rights for cellular network" ResourceIri="$(CCA_NETWORK)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+        <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+        <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ,GENERIC_WRITE"></Match>
+        </Authorize>
+        <Stop>
+          <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+    
+    <!-- Radio Device -->
+    <Rule Description="Access rights for radio device" ResourceIri="$(CCA_RADIO_DEVICE)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+        <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+        <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ,GENERIC_WRITE"></Match>
+        </Authorize>
+        <Stop>
+          <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+
+<!-- ril: Default RIL security policy -->
+
+  <!-- APIs -->
+  <!-- This rule is redundant because there is a similar rule for RIL driver -->
+  <Rule Description="Protect RIL APIs only available to supervisor" ResourceIri="$(CCA_RIL)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_EXECUTE"></Match>
+      <Match AccountId="$(MMSTRANS_USER_NAME)" AuthorizationIds="GENERIC_EXECUTE"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <!-- Registries -->
+  <Rule Description="Protect registry only available to supervisor" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/RIL/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Description="Protect registry only available to supervisor" ResourceIri="$(HKLM)/COMM/CELLULAR/RIL/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+
+<!-- sim: Default SIM security policy -->
+
+  
+<!--Begin generating capability accounts and authorization rules for ID_CAP_SIM -->
+<Macro Id="CAPMACRO_ID_CAP_SIM" Value="S-1-5-112-0-0X71-0X49445F4341505F53494D" />
+<Account Id="$(CAPMACRO_ID_CAP_SIM)" FriendlyName="ID_CAP_SIM:Provides access to SIM manager API" Description="Autogenerated group for capability ID_CAP_SIM" Type="Group">
+<MemberOfGroup GroupAccountId="$(PRIVATE_CAPABILITIES_GROUP_NAME)" />
+</Account>
+<Rule Description="Authorization rule for capability ID_CAP_SIM" ResourceIri="$(DEVICEMANAGER_DEVICE)/SIM/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_SIM)" AuthorizationIds="ALL_ACCESS" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_SIM" ResourceIri="$(CCA_SIM_PHONEBOOK)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_SIM)" AuthorizationIds="GENERIC_READ,GENERIC_WRITE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_SIM" ResourceIri="$(CCA_SIM_MESSAGE)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_SIM)" AuthorizationIds="GENERIC_READ,GENERIC_WRITE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_SIM" ResourceIri="$(CCA_SIM_INFO)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_SIM)" AuthorizationIds="GENERIC_READ,GENERIC_WRITE" />
+</Authorize>
+</Rule>
+<!--End generating capability accounts and authorization rules for ID_CAP_SIM -->
+
+
+    <!-- SIM PHONEBOOK -->
+    <Rule Description="Access rights for SIM phonebook" ResourceIri="$(CCA_SIM_PHONEBOOK)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+        <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ,GENERIC_WRITE"></Match>
+        </Authorize>
+    </Rule>
+
+    <!-- SIM MESSAGE -->
+    <Rule Description="Access rights for SIM message" ResourceIri="$(CCA_SIM_MESSAGE)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+        <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ,GENERIC_WRITE"></Match>
+        </Authorize>
+    </Rule>
+
+    <!-- SIM INFORMATION -->
+    <Rule Description="Access rights for SIM information" ResourceIri="$(CCA_SIM_INFO)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+        <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ,GENERIC_WRITE"></Match>
+        </Authorize>
+    </Rule>
+
+    <!-- SIM FILE -->
+    <Rule Description="Access rights for SIM files" ResourceIri="$(CCA_SIM_FILE)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+        <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ,GENERIC_WRITE"></Match>
+        </Authorize>
+    </Rule>
+    
+    <!-- SIM PIN -->
+    <Rule Description="Access rights for SIM PIN" ResourceIri="$(CCA_SIM_PIN)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+        <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+        </Authorize>
+    </Rule>
+
+    <!-- Registries-->
+    <Rule Description="Protect registry only available to system" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/SIMMGR/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+        <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+        <Stop>
+          <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+  
+<!-- sms: Default SMS security policy -->
+
+
+  
+<!--Begin generating capability accounts and authorization rules for ID_CAP_SMS -->
+<Macro Id="CAPMACRO_ID_CAP_SMS" Value="S-1-5-112-0-0X71-0X49445F4341505F534D53" />
+<Account Id="$(CAPMACRO_ID_CAP_SMS)" FriendlyName="ID_CAP_SMS:Provides access to SMS API" Description="Autogenerated group for capability ID_CAP_SMS" Type="Group">
+<MemberOfGroup GroupAccountId="$(PRIVATE_CAPABILITIES_GROUP_NAME)" />
+</Account>
+<Rule Description="Authorization rule for capability ID_CAP_SMS" ResourceIri="$(DEVICEMANAGER_DEVICE)/SMS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_SMS)" AuthorizationIds="ALL_ACCESS" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_SMS" ResourceIri="$(CCA_SMS_MESSAGE)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_SMS)" AuthorizationIds="GENERIC_READ,GENERIC_EXECUTE" />
+</Authorize>
+</Rule>
+<!--End generating capability accounts and authorization rules for ID_CAP_SMS -->
+
+
+  <!-- SMS MESSAGE -->
+    <Rule Description="Access rights for SMS messges" ResourceIri="$(CCA_SMS_MESSAGE)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+        <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ,GENERIC_WRITE,GENERIC_EXECUTE"></Match>
+        <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ"></Match>
+        </Authorize>
+    </Rule>
+
+    <!-- Registries-->
+    <Rule Description="Protect registry only available to system" ResourceIri="$(HKLM)/COMM/CELLULAR/SMS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+        <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+        <Stop>
+          <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Description="Protect registry only available to system" ResourceIri="$(HKCU)/SOFTWARE/MICROSOFT/SMS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+        <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+        <Stop>
+          <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+
+<!-- wap: Default WAP security policy -->
+
+  
+<!--Begin generating capability accounts and authorization rules for ID_CAP_WAP -->
+<Macro Id="CAPMACRO_ID_CAP_WAP" Value="S-1-5-112-0-0X71-0X49445F4341505F574150" />
+<Account Id="$(CAPMACRO_ID_CAP_WAP)" FriendlyName="ID_CAP_WAP:Provides access to WAP API" Description="Autogenerated group for capability ID_CAP_WAP" Type="Group">
+<MemberOfGroup GroupAccountId="$(PRIVATE_CAPABILITIES_GROUP_NAME)" />
+</Account>
+<Rule Description="Authorization rule for capability ID_CAP_WAP" ResourceIri="$(DEVICEMANAGER_DEVICE)/WAP/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_WAP)" AuthorizationIds="ALL_ACCESS" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_WAP" ResourceIri="$(CCA_WAP_MESSAGE)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_WAP)" AuthorizationIds="MESSAGE_SEND,MESSAGE_RECEIVE" />
+</Authorize>
+</Rule>
+<!--End generating capability accounts and authorization rules for ID_CAP_WAP -->
+
+
+  <!-- WAP MESSAGE -->
+    <Rule Description="Access rights for WAP messges" ResourceIri="$(CCA_WAP_MESSAGE)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+        <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="MESSAGE_SEND,MESSAGE_RECEIVE"></Match>
+        </Authorize>
+    </Rule>
+
+    <!-- Registries-->
+    <Rule Description="WAP registry is open to standard rights group for read but elevated only for read/write" ResourceIri="$(HKLM)/COMM/CELLULAR/WAP/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+        <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+        <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+        <Stop>
+          <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+<!-- ccoreutl: Default ccoreutl security policy -->
+
+    <!-- Registries-->
+    <Rule Description="Protect registry for ccoreutl functions" ResourceIri="$(HKCU)/SOFTWARE/MICROSOFT/VMAIL/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+        <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+        </Authorize>
+        <Stop>
+          <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Description="Protect registry for ccoreutl functions" ResourceIri="$(HKCU)/CONTROLPANEL/CELLBROADCAST/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+        <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+        </Authorize>
+        <Stop>
+          <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule> 
+
+    <Rule Description="Protect registry for ccoreutl functions" ResourceIri="$(HKCU)/CONTROLPANEL/PHONE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+        <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+        </Authorize>
+        <Stop>
+          <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule> 
+
+     <Rule Description="Protect registry for ccoreutl functions" ResourceIri="$(HKLM)/COMM/CELLULAR/SIM/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+        <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+        <Stop>
+          <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+     </Rule> 
+
+<!-- Data-related policy -->
+
+	<Rule Description="Protect registry only available to system" ResourceIri="$(HKLM)/COMM/CELLULAR/DATASPEED/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+        <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+
+        <!-- Give Mediaapps access to CELLULAR/DATASPEED so an MO Billing connection can be setup -->
+        <Match AccountId="$(SID_MEUX_STANDARD)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+        </Authorize>
+        <Stop>
+          <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+</CeSecurityPolicyFile>

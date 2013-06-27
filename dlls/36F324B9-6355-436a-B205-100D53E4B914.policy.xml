@@ -1,0 +1,1303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<!--
+Use of this source code is subject to the terms of the Microsoft
+premium shared source license agreement under which you licensed
+this source code. If you did not accept the terms of the license
+agreement, you are not authorized to use this source code.
+For the terms of the license, please see the license agreement
+signed by you and Microsoft.
+THE SOURCE CODE IS PROVIDED "AS IS", WITH NO WARRANTIES OR INDEMNITIES.
+-->
+<CeSecurityPolicyFile Description="Default file system security policy" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.4.9876" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">
+
+  <Namespace Prefix="/METABASE">
+
+    <Authorization Id="METABASE_ALL" Bitmask="0xC0000000"></Authorization>
+
+    <Authorization Id="METABASE_READ" Bitmask="0x80000000"></Authorization>
+
+    <Authorization Id="METABASE_WRITE" Bitmask="0x40000000"></Authorization>
+
+  </Namespace>
+
+
+  <!-- Macros -->
+
+  <Macro Id="DM_TREE_ROOT" Description="Root node of DM tree" Value="policy:/METABASE/%2E"></Macro>
+
+  <Macro Id="MS_NODE_PATH" Description="Root node of Microsoft-specific sub-tree" Value="policy:/METABASE/%2E/VENDOR/MSFT"></Macro>
+
+  <!-- OMADM Application Policies -->
+
+  <!-- OMADMPRC runs in TCB only -->
+  
+<!--Begin Generated accounts and routing/authz rules for $(SYSTEM_USER_NAME) -->
+
+<!--Begin Generated routing/authz rules for OMADMPRC.EXE -->
+<Rule Description="Route OMADMPRC.EXE" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/OMADMPRC.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize OMADMPRC.EXE be loadable to $(SYSTEM_USER_NAME) and  chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/OMADMPRC.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for OMADMPRC.EXE -->
+<!--End Generated accounts and routing/authz rules for $(SYSTEM_USER_NAME) -->
+
+
+  <Rule Description="Only TCB can launch into this chamber" ResourceIri="policy:/LOADERVERIFIER/ACCOUNT/$(SYSTEM_USER_NAME)/ACCOUNT_CAN_LAUNCH/NONE/NONE/PRIMARY/WINDOWS/OMADMPRC.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <!-- OMADMCLIENT can run in any chamber due to 
+       LoadableChamber Name="$(SYSTEM_IDENTITY_GROUP_NAME)" 
+  -->
+  
+<!--Begin Generated accounts and routing/authz rules for $(SYSTEM_USER_NAME) -->
+
+<!--Begin Generated routing/authz rules for OMADMCLIENT.EXE -->
+<Rule Description="Route OMADMCLIENT.EXE" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/OMADMCLIENT.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize OMADMCLIENT.EXE be loadable to $(SYSTEM_USER_NAME) and $(SYSTEM_IDENTITY_GROUP_NAME) chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/OMADMCLIENT.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+<Match AccountId="$(SYSTEM_IDENTITY_GROUP_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for OMADMCLIENT.EXE -->
+<!--End Generated accounts and routing/authz rules for $(SYSTEM_USER_NAME) -->
+
+
+  <!-- Coldinit policies -->
+    <Rule Description="Only System authorized to execute ColdInit.exe" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/COLDINIT.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Description="Only System authorized to execute CIPhase2.exe" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/CIPHASE2.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Description="Protect ColdInit registry keys. Only System can write to them, but normal+ can read them" ResourceIri="$(HKLM)/SECURITY/COLDINIT/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Action="CreateNew" Description="Allow access to events coldinit phase2 done event (excluding guid_ui.exe). Only System can write to them, but normal+ can read them" ResourceIri="policy:/KERNEL/EVENT/SYSTEM/ColdInitPhase2Done" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match Action="Add" AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+            <Match Action="Add" AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="READ_CONTROL"></Match>
+        </Authorize>
+        <Stop>
+          <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Action="CreateNew" Description="Allow access to events coldinit phase2 completion event (including guid_ui.exe). Only System can write to them, but normal+ can read them" ResourceIri="policy:/KERNEL/EVENT/SYSTEM/ColdInitPhase2Complete" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match Action="Add" AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="READ_CONTROL"></Match>
+        </Authorize>
+        <Stop>
+          <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+    
+  
+<!--Begin Generated accounts and routing/authz rules for $(SYSTEM_USER_NAME) -->
+
+<!--Begin Generated routing/authz rules for COLDINIT.EXE -->
+<Rule Description="Route COLDINIT.EXE" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/COLDINIT.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize COLDINIT.EXE be loadable to $(SYSTEM_USER_NAME) and  chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/COLDINIT.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for COLDINIT.EXE -->
+
+<!--Begin Generated routing/authz rules for CIPHASE2.EXE -->
+<Rule Description="Route CIPHASE2.EXE" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/CIPHASE2.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize CIPHASE2.EXE be loadable to $(SYSTEM_USER_NAME) and  chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/CIPHASE2.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for CIPHASE2.EXE -->
+<!--End Generated accounts and routing/authz rules for $(SYSTEM_USER_NAME) -->
+
+
+  <!-- Only allow a TCB chamber to spawn VolatileDirCleanup.exe -->
+  <Rule Description="Only TCB can launch into this chamber" ResourceIri="$(LOADERVERIFIER_ACCOUNT_CAN_LAUNCH_INROM_ROOT)/WINDOWS/VOLATILEDIRCLEANUP.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  
+  <!-- Push Router Policies -->
+
+  <Rule Description="Only TCB Chamber can call PushRouter_SubmitPush API" ResourceIri="$(GLOBAL_RESOURCES)/PUSHROUTER/SubmitPush" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_EXECUTE"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Everyone can call PushRouter_RegisterClient API" ResourceIri="$(GLOBAL_RESOURCES)/PUSHROUTER/RegisterClient" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="GENERIC_EXECUTE"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Everyone can call PushRouter_UnRegisterClient API" ResourceIri="$(GLOBAL_RESOURCES)/PUSHROUTER/UnRegisterClient" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="GENERIC_EXECUTE"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Everyone can call PushRouter_Open API" ResourceIri="$(GLOBAL_RESOURCES)/PUSHROUTER/Open" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="GENERIC_EXECUTE"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Everyone can call PushRouter_Close API" ResourceIri="$(GLOBAL_RESOURCES)/PUSHROUTER/Close" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="GENERIC_EXECUTE"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Everyone can call PushRouter_GetMessage API" ResourceIri="$(GLOBAL_RESOURCES)/PUSHROUTER/GetMessage" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="GENERIC_EXECUTE"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Only TCB gets all access to the Push Router directory" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/SYSTEM/PUSHROUTER" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Stop>
+        <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+<!-- BEGIN Metabase Policy Rules. -->
+<!-- These were initially generated at WP7 RTM.  Do not edit -->
+  <Rule ResourceIri="$(MS_NODE_PATH)/ACTIVESYNC/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/ACTIVESYNC/ACCOUNTS/(+)/POLICIES/(+)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/APPLICATION/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/APPLICATION/USEHWDEVID" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/BOOTSTRAP/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/BROWSERFAVORITE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/CERTIFICATESTORE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_READ"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/CERTIFICATESTORE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/CERTIFICATESTORE/CA/USER/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/CERTIFICATESTORE/MY/USER/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/CERTIFICATESTORE/ROOT/USER/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/CM_CELLULARENTRIES/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/CM_PROXYENTRIES/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/CMPOLICY/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="POLICY:/METABASE/./DEVDETAIL" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_READ"></Match>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="POLICY:/METABASE/./DEVDETAIL/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_READ"></Match>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_READ"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="POLICY:/METABASE/./DEVINFO" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_READ"></Match>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="POLICY:/METABASE/./DEVINFO/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_READ"></Match>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_READ"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="POLICY:/METABASE/./SYNCML/DMACC/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="POLICY:/METABASE/./SYNCML/DMACC/(+)/EXT/MICROSOFT/USEHWDEVID" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="POLICY:/METABASE/./SYNCML/DMS" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_READ"></Match>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="POLICY:/METABASE/./SYNCML/DMS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="POLICY:/METABASE/./SYNCML/DMS/(+)/EXT/MICROSOFT/USEHWDEVID" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/EMAIL2/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/FILEOPERATION/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/FILESYSTEM/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_READ"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/INSTALL/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/LOADERREVOCATION/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/NAP/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/NAPDEF/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/NETWORKPOLICY/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/PROXY/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/PXLOGICAL/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/PXLOGICAL/(+)/TRUST" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/PXLOGICAL/TRUST" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_READ"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKCR/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKCU/COMM/SECURITY/SYSTEMCERTIFICATES/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKCU/CONTROLPANEL/DEBUG/VISUALEFFECTS" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKCU/CONTROLPANEL/PHONE/ANYKEY" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKCU/SECURITY/LOCKTIMEOUT" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKCU/SOFTWARE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKCU/SOFTWARE/MICROSOFT/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKCU/SOFTWARE/MICROSOFT/INBOX/SETTINGS/AUTOSAVE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKCU/SOFTWARE/MICROSOFT/INTERNET%20EXPLORER/MAIN/DAYSTOKEEP" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKCU/SOFTWARE/MICROSOFT/INTERNET%20EXPLORER/MAIN/DISPLAY%20INLINE%20IMAGES" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKCU/SOFTWARE/MICROSOFT/INTERNET%20EXPLORER/MAIN/ENABLEWARNING0" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKCU/SOFTWARE/MICROSOFT/INTERNET%20EXPLORER/MAIN/ENABLEWARNING1" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKCU/SOFTWARE/MICROSOFT/INTERNET%20EXPLORER/MAIN/PLAY_BACKGROUND_SOUNDS" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKCU/SOFTWARE/MICROSOFT/INTERNET%20EXPLORER/MAIN/ZOOMSETTING" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKCU/SOFTWARE/MICROSOFT/MESSENGERSERVICE/USERMSN%20MESSENGER%20SERVICE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKCU/SOFTWARE/MICROSOFT/SHORTMSG/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKCU/SOFTWARE/MICROSOFT/VMAIL/PHONENUMBER1" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKCU/SOFTWARE/MICROSOFT/VMAIL/PHONENUMBER2" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKCU/SOFTWARE/MICROSOFT/VMAIL/REGOVERRIDESSIM" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKCU/SOFTWARE/MICROSOFT/WINDOWS/CURRENTVERSION/INTERNET%20SETTINGS/ALLOWCOOKIES" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKCU/SOFTWARE/MICROSOFT/WINDOWS/CURRENTVERSION/INTERNET%20SETTINGS/ENABLEAUTODETECT" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/COMM/SECURITY/POLICY/LASSD/AE/%7B50C13377-C66D-400C-889E-C316FC4AB374%7D/AEFREQUENCYTYPE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/COMM/SECURITY/POLICY/LASSD/AE/%7B50C13377-C66D-400C-889E-C316FC4AB374%7D/AEFREQUENCYVALUE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/COMM/SECURITY/POLICY/LASSD/AUTHRESET/AUTHENTICATIONRESET" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/COMM/SECURITY/POLICY/LASSD/AUTHRESET/DLL" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/COMM/SECURITY/POLICY/LASSD/AUTHRESET/EXCHANGEAR/CRYPTOPROVIDERNAME" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/COMM/SECURITY/POLICY/LASSD/AUTHRESET/EXCHANGEAR/CRYPTOPROVIDERTYPE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/COMM/SECURITY/POLICY/LASSD/AUTHRESET/EXCHANGEAR/ENCRYPTIONALGORITHM" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/COMM/SECURITY/POLICY/LASSD/AUTHRESET/EXCHANGEAR/HASHALGORITHM" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/COMM/SECURITY/POLICY/LASSD/AUTHRESET/EXCHANGEAR/RECOVERYMESSAGE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/COMM/SECURITY/POLICY/LASSD/AUTHRESET/EXCHANGEAR/RECOVERYPHONE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/COMM/SECURITY/POLICY/LASSD/AUTHRESET/EXCHANGEAR/RECOVERYPWDLENGTH" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/COMM/SECURITY/POLICY/LASSD/AUTHRESET/REQUESTFAILUREMESSAGE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/COMM/SECURITY/POLICY/LASSD/AUTHRESET/REQUESTMESSAGE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/COMM/SECURITY/POLICY/LASSD/AUTHRESET/REQUESTSUCCESSMESSAGE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/COMM/SECURITY/POLICY/LASSD/AUTHRESET/SETUPFAILUREMESSAGE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/COMM/SECURITY/POLICY/LASSD/AUTHRESET/SETUPINVALID" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/COMM/SECURITY/POLICY/LASSD/AUTHRESET/SETUPMESSAGE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/COMM/SECURITY/POLICY/LASSD/AUTHRESET/SETUPSUCCESSMESSAGE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/COMM/SECURITY/POLICY/LASSD/AUTHRESET/TIMEOUT" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/COMM/SECURITY/POLICY/LASSD/AUTHRESET/WAITMESSAGE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/COMM/SECURITY/POLICY/LASSD/CODEWORD" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/COMM/SECURITY/POLICY/LASSD/CODEWORDFREQUENCY" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/COMM/SECURITY/POLICY/LASSD/DEVICEWIPETHRESHOLD" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/COMM/SECURITY/POLICY/LASSD/LAP/LAP_PW/ALLOWSIMPLEPIN" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/COMM/SECURITY/POLICY/LASSD/LAP/LAP_PW/COMPLEXELEMENTS" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/COMM/SECURITY/POLICY/LASSD/LAP/LAP_PW/EXPIRATIONPERIOD" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/COMM/SECURITY/POLICY/LASSD/LAP/LAP_PW/LAPHASHALGORITHM" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/COMM/SECURITY/POLICY/LASSD/LAP/LAP_PW/LAPPROVIDERNAME" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/COMM/SECURITY/POLICY/LASSD/LAP/LAP_PW/LAPPROVIDERTYPE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/COMM/SECURITY/POLICY/LASSD/LAP/LAP_PW/MINIMUMPASSWORDLENGTH" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/COMM/SECURITY/POLICY/LASSD/LAP/LAP_PW/NUMBEROFPASSWORDS" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/COMM/SECURITY/POLICY/LASSD/LAP/LAP_PW/PASSWORDCOMPLEXITY" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/CONTROLPANEL/PASSWORD/TIMEOUTVALUE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/IDENT/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/SECURITY/SHELL/AUXDISPLAY/TIMEOUT" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/SECURITY/WAP/PGLIST/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/SECURITY/WAP/TPSLIST/DEFAULTTPS" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/SECURITY/WTLS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/SOFTWARE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/SOFTWARE/MICROSOFT/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/SOFTWARE/MICROSOFT/COLOR/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/SOFTWARE/MICROSOFT/INTERNET%20EXPLORER/INTERNATIONAL/DEFAULT_CODEPAGE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/SOFTWARE/MICROSOFT/INTERNET%20EXPLORER/URL/URLPREFIX" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/SOFTWARE/MICROSOFT/INTERNET%20EXPLORER/URL/URLSUFFIX" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/SOFTWARE/MICROSOFT/MSDRM/SERVICELOCATION/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/SOFTWARE/MICROSOFT/SHELL/SMARTDIALER/CHINESE/MODE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/SOFTWARE/MICROSOFT/SSUPDATE/SIGNALLEVELHIGHFLOOR" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/SOFTWARE/MICROSOFT/SSUPDATE/SIGNALLEVELLOWFLOOR" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/SOFTWARE/MICROSOFT/SSUPDATE/SIGNALLEVELMEDFLOOR" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/SOFTWARE/MICROSOFT/WINDOWS%20CE/CURRENTVERSION/AEDEBUG/ENABLED/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/SOFTWARE/MICROSOFT/WINDOWS/CURRENTVERSION/INTERNET%20SETTINGS/CACHE/CONTENT/CACHELIMIT" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/SOFTWARE/MICROSOFT/WINDOWS/CURRENTVERSION/INTERNET%20SETTINGS/CACHE/COOKIES/CACHELIMIT" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/SOFTWARE/MICROSOFT/WINDOWS/CURRENTVERSION/INTERNET%20SETTINGS/CACHE/HISTORY/CACHELIMIT" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/SOFTWARE/MICROSOFT/WINDOWS/CURRENTVERSION/INTERNET%20SETTINGS/CLEARTYPETEXT" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/SOFTWARE/MICROSOFT/WINDOWS/CURRENTVERSION/INTERNET%20SETTINGS/ZONEMAP/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/SOFTWARE/MICROSOFT/WINDOWS/CURRENTVERSION/INTERNET%20SETTINGS/ZONES/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/SYSTEM/PLATFORM/DATAPATH" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_READ"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/SYSTEM/SHORTMSG/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REGISTRY/HKLM/WINDOWS%20CE%20SERVICES/SYNCHRONIZATION/OBJECTS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/REMOTEWIPE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/ROMPACKAGE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_READ"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_READ"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/SCHEDULER/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/SECURITYPOLICY/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ENTERPRISE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/STORAGE/DISABLE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/TAPI/IMEI" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_READ"></Match>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_READ"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/TAPI/PHONENUMBER" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_READ"></Match>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_READ"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/TAPI/RADIOVERSION" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_READ"></Match>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_READ"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/TAPI/RILVERSION" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_READ"></Match>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_READ"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/WI-FI/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/WI-FI/ACCESS-POINT/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/WI-FI/ACCESS-POINT/(+)/ADHOC" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/WI-FI/ACCESS-POINT/(+)/AUTHENTICATION" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/WI-FI/ACCESS-POINT/(+)/EAPTYPE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/WI-FI/ACCESS-POINT/(+)/ENCRYPTION" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/WI-FI/ACCESS-POINT/(+)/HIDDEN" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/WI-FI/ACCESS-POINT/(+)/KEYINDEX" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/WI-FI/ACCESS-POINT/(+)/KEYPROVIDED" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/WI-FI/ACCESS-POINT/(+)/NETWORKKEY" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/WI-FI/ACCESS-POINT/(+)/USE8021X" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule ResourceIri="$(MS_NODE_PATH)/WI-FI/FILTER" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+<!-- END Metabase Policy Rules -->
+
+  
+</CeSecurityPolicyFile>

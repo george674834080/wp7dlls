@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<!--
+Use of this sample source code is subject to the terms of the Microsoft
+license agreement under which you licensed this sample source code. If
+you did not accept the terms of the license agreement, you are not
+authorized to use this sample source code. For the terms of the license,
+please see the license agreement between you and Microsoft or, if applicable,
+see the LICENSE.RTF on your install media or the root of your tools installation.
+THE SAMPLE SOURCE CODE IS PROVIDED "AS IS", WITH NO WARRANTIES OR INDEMNITIES.
+-->
+<CeSecurityPolicyFile Description="bluetooth: Default Bluetooth security policy;" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.00" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">  
+<!-- bluetooth: Default Bluetooth security policy -->
+<!-- Macros -->
+
+  <!-- High priority rules -->
+
+
+  <!-- Standard priority rules -->
+  
+  <!-- Access rights to the device driver -->
+  <Rule Description="Access rights to BTD device driver" ResourceIri="policy:/DEVICEMANAGER/DEVICE/BTD/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+  
+  <!-- Access rights to named events -->
+  <Rule Description="Access rights to Bluetooth named events" ResourceIri="policy:/KERNEL/EVENT/SYSTEM/events/bluetooth/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Low priority rules -->
+
+  <!-- Access rights to APIs -->
+
+  <Rule Description="Access to Bluetooth Pairing APIs" ResourceIri="$(GLOBAL_RESOURCES)/BLUETOOTH/PAIRING_APIS" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Access to Bluetooth BthGetLinkKey API" ResourceIri="$(GLOBAL_RESOURCES)/BLUETOOTH/GET_LINK_KEY" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+  </Rule>
+
+ <Rule Description="Access to Bluetooth BthSSPWriteDebugMode API" ResourceIri="$(GLOBAL_RESOURCES)/BLUETOOTH/WRITE_DEBUG_MODE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+  </Rule>
+
+
+
+</CeSecurityPolicyFile>

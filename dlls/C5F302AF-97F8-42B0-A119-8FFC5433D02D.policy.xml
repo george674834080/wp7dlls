@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<CeSecurityPolicyFile Description="Default policy definitions and rules" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.00" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">
+
+  <Rule Description="Allow normal+ apps to use the critical app monitor. Don't allow RRC apps to use this, as it is undocumented and more users affect perf" ResourceIri="$(DEVICEMANAGER_DEVICE)/CPM/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Only allow TCB apps to call SetUniversalTimeout" ResourceIri="$(GLOBAL_RESOURCES)/CPM/SetUniversalTimeout" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Allow all apps to use the delayed boot work driver" ResourceIri="$(DEVICEMANAGER_DEVICE)/DBW/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+
+  <Rule Description="Only allow elevated+ apps to call DrainDelayedBootWork" ResourceIri="$(GLOBAL_RESOURCES)/DBW/DrainDelayedBootWork" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Allow write access to Themes only to TCB" ResourceIri="$(HKLM)/CONTROLPANEL/Themes/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <!-- Policy rules enable everyone capability -->
+  <Rule Description="THEMEMANAGER need to read some information" ResourceIri="$(HKLM)/SYSTEM/STATE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+      <Authorize>
+          <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+      </Authorize>
+  </Rule>
+  
+  <Rule Description="THEMEMANAGER need to read some information" ResourceIri="$(HKCU)/SYSTEM/STATE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+      <Authorize>
+          <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+      </Authorize>
+  </Rule>
+
+</CeSecurityPolicyFile>

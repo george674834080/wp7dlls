@@ -1,0 +1,273 @@
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<wap-provisioningdoc>
+	<!-- Provision  WAP push gateways SMS address from WDS Global in the different countries. No port is given for SMS provisioning -->
+	<characteristic type="PXLOGICAL">
+		<characteristic type="www.wdsglobal.com/PPG" mwid="1">
+			<characteristic type="PXPHYSICAL">
+				<characteristic type="PPG1" mwid="1">
+					<parm name="PXADDR" value="4047" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG2" mwid="1">
+					<parm name="PXADDR" value="1000" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG3" mwid="1">
+					<parm name="PXADDR" value="421260012" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG4" mwid="1">
+					<parm name="PXADDR" value="0421260695" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG5" mwid="1">
+					<parm name="PXADDR" value="1013" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG6" mwid="1">
+					<parm name="PXADDR" value="1009" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG7" mwid="1">
+					<parm name="PXADDR" value="12345" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG8" mwid="1">
+					<parm name="PXADDR" value="9458" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG9" mwid="1">
+					<parm name="PXADDR" value="Vodafone" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG10" mwid="1">
+					<parm name="PXADDR" value="27820099829" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG11" mwid="1">
+					<parm name="PXADDR" value="1682" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG12" mwid="1">
+					<parm name="PXADDR" value="1683" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG13" mwid="1">
+					<parm name="PXADDR" value="678" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG14" mwid="1">
+					<parm name="PXADDR" value="194128132077" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG15" mwid="1">
+					<parm name="PXADDR" value="65169" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG16" mwid="1">
+					<parm name="PXADDR" value="7466" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG17" mwid="1">
+					<parm name="PXADDR" value="156" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG18" mwid="1">
+					<parm name="PXADDR" value="27831236004" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG19" mwid="1">
+					<parm name="PXADDR" value="9012" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG20" mwid="1">
+					<parm name="PXADDR" value="1530" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG21" mwid="1">
+					<parm name="PXADDR" value="22888" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG22" mwid="1">
+					<parm name="PXADDR" value="12149320902" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG23" mwid="1">
+					<parm name="PXADDR" value="7770" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG24" mwid="1">
+					<parm name="PXADDR" value="491726165863" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG25" mwid="1">
+					<parm name="PXADDR" value="61428443151" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG26" mwid="1">
+					<parm name="PXADDR" value="088571888" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG27" mwid="1">
+					<parm name="PXADDR" value="QTELOTA" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG28" mwid="1">
+					<parm name="PXADDR" value="937682" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG29" mwid="1">
+					<parm name="PXADDR" value="8002" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG30" mwid="1">
+					<parm name="PXADDR" value="103" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG31" mwid="1">
+					<parm name="PXADDR" value="741" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG32" mwid="1">
+					<parm name="PXADDR" value="3777466542" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG33" mwid="1">
+					<parm name="PXADDR" value="6005" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG34" mwid="1">
+					<parm name="PXADDR" value="21070000" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG35" mwid="1">
+					<parm name="PXADDR" value="1111111111" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG36" mwid="1">
+					<parm name="PXADDR" value="100" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG37" mwid="1">
+					<parm name="PXADDR" value="10958" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG38" mwid="1">
+					<parm name="PXADDR" value="1388" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG39" mwid="1">
+					<parm name="PXADDR" value="1001005013" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG40" mwid="1">
+					<parm name="PXADDR" value="28050" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG41" mwid="1">
+					<parm name="PXADDR" value="16980" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+				<characteristic type="PPG42" mwid="1">
+					<parm name="PXADDR" value="1234" />
+					<parm name="PXADDRTYPE" value="E164" />
+					<parm name="PUSHENABLED" value="1" />
+					<parm name="TO-NAPID" value="MS SMS NAP" />
+				</characteristic>
+
+			</characteristic>
+		</characteristic>
+	</characteristic>
+	<!--Provide the NAPDEF for the PPG. This will be ignored by the device though because default SMSC number stored in SIM card will be used for all incoming SMS messages. Push Proxy Gateway (PPG) should use the Short Message Service Center (SMSC) that is saved on the Subscriber Identity Module (SIM) card -->
+	<characteristic type="NAPDEF">
+		<parm name="NAPID" value="MS SMS NAP" />
+		<parm name="NAME" value="MS SMS Connection" />
+		<parm name="NAP-ADDRTYPE" value="E164" />
+		<parm name="NAP-ADDRESS" value="+11111111111" />
+		<parm name="BEARER" value="GSM-SMS" />
+	</characteristic>
+</wap-provisioningdoc>

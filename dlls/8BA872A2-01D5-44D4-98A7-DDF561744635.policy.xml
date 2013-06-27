@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<!--
+Use of this source code is subject to the terms of the Microsoft
+premium shared source license agreement under which you licensed
+this source code. If you did not accept the terms of the license
+agreement, you are not authorized to use this source code.
+For the terms of the license, please see the license agreement
+signed by you and Microsoft.
+THE SOURCE CODE IS PROVIDED "AS IS", WITH NO WARRANTIES OR INDEMNITIES.
+-->
+<CeSecurityPolicyFile Description="Default security policy for Watson and UIF" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.00" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">  
+
+  
+<!--Begin Generated accounts and routing/authz rules for $(SYSTEM_USER_NAME) -->
+
+<!--Begin Generated routing/authz rules for uif.exe -->
+<Rule Description="Route uif.exe" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/UIF.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize uif.exe be loadable to $(SYSTEM_USER_NAME) and  chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/UIF.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for uif.exe -->
+<!--End Generated accounts and routing/authz rules for $(SYSTEM_USER_NAME) -->
+
+
+  
+<!--Begin Generated accounts and routing/authz rules for $(SYSTEM_USER_NAME) -->
+
+<!--Begin Generated routing/authz rules for DW.EXE -->
+<Rule Description="Route DW.EXE" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/DW.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize DW.EXE be loadable to $(SYSTEM_USER_NAME) and  chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/DW.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for DW.EXE -->
+<!--End Generated accounts and routing/authz rules for $(SYSTEM_USER_NAME) -->
+
+
+  
+<!--Begin Generated accounts and routing/authz rules for $(SYSTEM_USER_NAME) -->
+
+<!--Begin Generated routing/authz rules for 8BA872A2-01D5-44D4-98A7-DDF561744635.exe -->
+<Rule Description="Route 8BA872A2-01D5-44D4-98A7-DDF561744635.exe" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/8BA872A2-01D5-44D4-98A7-DDF561744635.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize 8BA872A2-01D5-44D4-98A7-DDF561744635.exe be loadable to $(SYSTEM_USER_NAME) and  chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/8BA872A2-01D5-44D4-98A7-DDF561744635.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for 8BA872A2-01D5-44D4-98A7-DDF561744635.exe -->
+<!--End Generated accounts and routing/authz rules for $(SYSTEM_USER_NAME) -->
+
+
+
+  <!-- Registry -->
+  <Rule Description="Protect Device Feedback registry keys. Only Elevated can write to them, but normal+ can read them" ResourceIri="$(HKLM)/System/ErrorReporting/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+</CeSecurityPolicyFile>

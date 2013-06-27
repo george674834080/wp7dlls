@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<CeSecurityPolicyFile Description="GPSID macros and default policies." Vendor="Microsoft" RequiredOSVersion="7.0" FileVersion="7.0" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">
+
+  <!-- Macros for use with GPSID -->
+  <Macro Id="GPS_START_FIX" Description="GPS device parameter to start and continue querying position" Value="0"></Macro>
+
+  <Macro Id="GPS_STOP_FIX" Description="GPS device parameter to stop querying position" Value="1"></Macro>
+
+  <Macro Id="GPS_CONFIG_FIX_MODE" Description="GPS device parameter to get/set mode used by GPS device in fixes" Value="2"></Macro>
+
+  <Macro Id="GPS_CONFIG_FIX_RATE" Description="GPS device parameter to get/set fix rate GPS device" Value="3"></Macro>
+
+  <Macro Id="GPS_CONFIG_FIX_QOS" Description="GPS device parameter to get/set fix rate GPS QOS" Value="4"></Macro>
+
+  <Macro Id="GPS_CONFIG_OEM_CUSTOM" Description="GPS device parameter that OEM has implemented as an add-on" Value="256"></Macro>
+
+  <!-- Rules for use with GPSID -->
+
+  <Rule Description="Allow access to GPSID service (CreateFile(GPD0:) to be called from any chamber" ResourceIri="$(DEVICEMANAGER_DEVICE)/GPD/0" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+
+  <Rule Description="Normal has permission to read from GPS" ResourceIri="$(GLOBAL_RESOURCES)/GPSID/DEVICE-READ" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ,GENERIC_WRITE,GENERIC_EXECUTE"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Supervisor can do a raw DeviceIoControl or WriteFile to GPS device itself" ResourceIri="$(GLOBAL_RESOURCES)/GPSID/DEVICE-CONFIGURE-DIRECTLY" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ,GENERIC_WRITE,GENERIC_EXECUTE"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Supervisor can change service state (on/off/refresh)" ResourceIri="$(GLOBAL_RESOURCES)/GPSID/SERVICE-CONFIGURE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ,GENERIC_WRITE,GENERIC_EXECUTE"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Supervisor can get and set device parameters" ResourceIri="$(GLOBAL_RESOURCES)/GPS_DEVICE_PARAM/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ, GENERIC_WRITE"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ"></Match>
+    </Authorize>
+  </Rule>
+
+
+</CeSecurityPolicyFile>

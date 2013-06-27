@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<Provisioning xmlns="http://dbPreProvisioning"
+  RuntimeType="Native"
+  Title="FieldTestApp"
+  Version="1.0"
+  Genre=""
+  ProductID="{5B04B775-356B-4AA0-AAF8-6491FFEA5626}"
+  DisplayOnAppList="false"
+  SingleInstanceHost="false">
+  <ImagePath xmlns="">\Windows\fieldtestapp.exe</ImagePath>
+  <ImageParams xmlns=""></ImageParams>
+  <Tasks xmlns="">
+    <DefaultTask Name="FieldTest"
+	NavigationPage="Home"
+	ActivationPolicy="Replace"/>
+  </Tasks>
+  <Tokens xmlns="">
+    <PrimaryToken TokenID="Default"
+           TaskName="FieldTest"
+           TaskParameters=""
+           Pinned="false">
+      <TemplateType1>
+        <IconImageURI/>
+        <Title/>
+      </TemplateType1>
+    </PrimaryToken>
+  </Tokens>
+</Provisioning>

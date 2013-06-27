@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<CeSecurityPolicyFile Description="Datamodel security policy" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.00" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">
+
+    <!--
+    Access rules for data category registration
+    -->
+    <Rule Description="Protect data category registration so anyone can read it but only supervisor can modify it" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/SHELL/EXTENSIONS/DataCategories/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+        <Stop>
+          <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <!--
+    Access rules for registration of discoverable data providers
+    -->
+    <Rule Description="Protect data provider registration so anyone can read it but only supervisor can modify it" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/SHELL/EXTENSIONS/SearchSuppliers/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+        <Stop>
+          <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <!--
+    Access rules for registration of discoverable online services providers
+    -->
+    <Rule Description="Protect online services provider registration so anyone can read it but only supervisor can modify it" ResourceIri="$(HKLM)/SYSTEM/OnlineServices/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+        <Stop>
+          <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+</CeSecurityPolicyFile>

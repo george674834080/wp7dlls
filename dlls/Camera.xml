@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<Provisioning xmlns="http://dbPreProvisioning"
+  RuntimeType="Native"
+  Title="@PhotoRes.dll,-1501"
+  Version="1.0"
+  Genre=""
+  ProductID="{5B04B775-356B-4AA0-AAF8-6491FFEA5631}"
+  UsePlatformTheme="true"
+  SingleInstanceHost="false">
+  <IconPath xmlns="">res://StartMenu!AppIconCamera.png</IconPath>
+  <ImagePath xmlns="">\Windows\PhotoEntCapture.exe</ImagePath>
+  <ImageParams xmlns=""></ImageParams>
+  <Tasks xmlns="">
+    <DefaultTask  Name="Default"  NavigationPage="Camera" ActivationPolicy="Replace" DehydrationSuppressing="true"/>
+  </Tasks>
+  <Tokens xmlns="">
+    <PrimaryToken TokenID="Default"
+           TaskName="Default"
+           TaskParameters=""
+           DisplayPosition="6"
+           Pinned="false">
+      <TemplateType1>
+        <IconImageURI>res://StartMenu!TokenCamera.png</IconImageURI>
+        <Title>@PhotoRes.dll,-1501</Title>
+      </TemplateType1>
+    </PrimaryToken>
+  </Tokens>
+</Provisioning>

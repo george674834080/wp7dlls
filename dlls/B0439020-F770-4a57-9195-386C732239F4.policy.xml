@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<CeSecurityPolicyFile Description="Default list of accounts" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.4.9876" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">
+     <Rule Description="Protect Image Update registry keys. Only System can write to them, but normal+ can read them" ResourceIri="$(HKLM)/SYSTEM/IMAGEUPDATE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+    </Rule>
+
+    <Rule Description="Allow elevated to write UpdateResult registry key since DuaSvc need to clean it during pre install" ResourceIri="$(HKLM)/SYSTEM/IMAGEUPDATE/UpdateResult/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+        </Authorize>
+        <Stop>
+          <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+</CeSecurityPolicyFile>

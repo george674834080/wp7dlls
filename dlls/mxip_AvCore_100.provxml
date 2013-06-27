@@ -1,0 +1,16 @@
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<wap-provisioningdoc>
+  <!-- Copy MultimediaLauncher.lnk to LOC_DIRWINDOWSSTARTUP -->
+  <characteristic type="FileOperation">
+    <characteristic type="%CE4%" translation="install">
+      <characteristic type="MakeDir" />
+      <characteristic type="MultimediaLauncher.lnk" translation="install">
+        <characteristic type="Copy">
+          <parm name="Source" value="\Windows\MultimediaLauncher.lnk" translation="install" />
+        </characteristic>
+      </characteristic>
+    </characteristic>
+  </characteristic>
+</wap-provisioningdoc>

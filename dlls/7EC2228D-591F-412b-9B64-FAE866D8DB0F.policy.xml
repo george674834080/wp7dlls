@@ -1,0 +1,1187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<CeSecurityPolicyFile Description="eventlog: Macros for use with EventLog security policy.;&#xA;               filesys: Default file system security policy;&#xA;               loaderverifier: Default loader verifier security policy;&#xA;               registry: Default registry security policy;&#xA;               templates.testcerts.loaderverifier: template security policy;&#xA;               toberemoved: Default loader verifier security policy;&#xA;               dstsvc: Daylight Saving Time Service policy definitions and rules;&#xA;               fsprofile: Default kernel security policy;&#xA;               oalioctl: Default Device Manager Security Policy;&#xA;               kernel: Default kernel security policy" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.00" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">
+    <!-- eventlog: Macros for use with EventLog security policy. -->
+    <Rule Description="Provide base channel rules, protecting from non-privileged applications" ResourceIri="$(GLOBAL_RESOURCES)/EVENTLOG_CHANNEL/System" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ, GENERIC_WRITE"></Match>
+            <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Description="Provide base channel rules, protecting from non-privileged applications" ResourceIri="$(GLOBAL_RESOURCES)/EVENTLOG_CHANNEL/Security" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Description="Allow everyone to log to the application channel" ResourceIri="$(GLOBAL_RESOURCES)/EVENTLOG_CHANNEL/Application" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="GENERIC_READ, GENERIC_WRITE"></Match>
+        </Authorize>
+    </Rule>
+
+    <Rule Description="Provide base channel rules, protecting from non-privileged applications" ResourceIri="$(GLOBAL_RESOURCES)/EVENTLOG_CHANNEL/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+        <Authorize>
+            <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ, GENERIC_WRITE"></Match>
+        </Authorize>
+    </Rule>
+
+    <Rule Description="Provide base channel rules, protecting from non-privileged applications" ResourceIri="$(GLOBAL_RESOURCES)/EVENTLOG_TRACE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+        <Authorize>
+            <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ, GENERIC_WRITE"></Match>
+            <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_WRITE"></Match>
+        </Authorize>
+    </Rule>
+
+    <!-- filesys: Default file system security policy -->
+    <Namespace Prefix="/FILESYS" ForceUppercase="true">
+
+        <Authorization Id="FILE_ALL_ACCESS" Bitmask="0x001f01ff"></Authorization>
+
+        <Authorization Id="FILE_GENERIC_READ" Bitmask="0x00120089"></Authorization>
+
+        <Authorization Id="FILE_GENERIC_WRITE" Bitmask="0x00120116"></Authorization>
+
+        <Authorization Id="FILE_GENERIC_EXECUTE" Bitmask="0x001200a0"></Authorization>
+
+        <Authorization Id="FILE_READ_ATTRIBUTES" Bitmask="0x80"></Authorization>
+
+        <Authorization Id="FILE_WRITE_ATTRIBUTES" Bitmask="0x100"></Authorization>
+
+        <Authorization Id="FILE_LIST_DIRECTORY" Bitmask="0x0001"></Authorization>
+
+    </Namespace>
+
+
+    <!-- Macros -->
+
+    <Macro Id="FILESYS_ROOT" Description="Root of the file system namespace" Value="policy:/FILESYS"></Macro>
+
+    <Macro Id="FILESYS_PRIMARY_ROOT" Description="Root directory of the internal root and ROM file systems" Value="policy:/FILESYS/PRIMARY"></Macro>
+
+    <Macro Id="WINDOWS_DIRECTORY_PATH" Description="Windows root directory" Value="policy:/FILESYS/PRIMARY/WINDOWS"></Macro>
+
+    <Macro Id="DOCUMENTS_AND_SETTINGS_DIRECTORY_PATH" Description="Documents and Settings root directory" Value="policy:/FILESYS/PRIMARY/DOCUMENTS%20AND%20SETTINGS"></Macro>
+
+
+    <!-- High priority rules -->
+
+    <Rule Description="Base filesys policy rule" ResourceIri="$(FILESYS_ROOT)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+        </Authorize>
+    </Rule>
+
+    <Rule Description="Protect the registry hive files from everyone but the system" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/REGISTRY/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Description="Protect the policy DB from everyone but the system" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/SECURITY/POLICYDB.VOL" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Description="Protect the metabase from everyone but the system" ResourceIri="$(FILESYS_PRIMARY_ROOT)/MXIP_SYSTEM.VOL" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Description="Protect the metabase from everyone but the system" ResourceIri="$(FILESYS_PRIMARY_ROOT)/MXIP_NOTIFY.VOL" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+
+    <Rule Description="Protect the Object Store" ResourceIri="$(GLOBAL_RESOURCES)/FILESYS/OBJECT_STORE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Description="Protect the File System Password" ResourceIri="$(GLOBAL_RESOURCES)/FILESYS/PASSWORD" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Description="Protect the Current User" ResourceIri="$(GLOBAL_RESOURCES)/FILESYS/CURRENT_USER" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Description="Protect Clean Boot and Secure Wipe" ResourceIri="$(GLOBAL_RESOURCES)/FILESYS/CLEAN_BOOT" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+        </Authorize>
+    </Rule>
+
+    <Rule Description="Protect device notifications" ResourceIri="$(GLOBAL_RESOURCES)/DEVICE_NOTIFICATIONS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+        <Authorize>
+            <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="GENERIC_READ"></Match>
+        </Authorize>
+    </Rule>
+
+    <Rule Description="Protect mount points" ResourceIri="$(GLOBAL_RESOURCES)/MOUNT_POINTS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Description="Protect SLDR Entropy API" ResourceIri="$(GLOBAL_RESOURCES)/SLDR_ENTROPY_API/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <!-- Allow Standard chambers to access the Regext State Notifications and Broker Service -->
+    <Rule Description="Allow Standard chambers to access the Regext State Notifications and Broker Service" ResourceIri="$(DEVICEMANAGER_DEVICE)/SNA/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+        </Authorize>
+    </Rule>
+
+    <!-- Elevated priority rules -->
+
+    <Rule Description="Protect the Windows system directory from tampering by non-privileged applications" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/SYSTEM/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+
+
+    <!-- Standard priority rules -->
+
+    <Rule Description="Prevent the Application Data folder from being removed or renamed" ResourceIri="$(FILESYS_PRIMARY_ROOT)/APPLICATION%20DATA" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_GENERIC_READ, FILE_GENERIC_WRITE, FILE_GENERIC_EXECUTE"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Description="Restrict volume level access to the root storage devices via VOL:" ResourceIri="$(FILESYS_PRIMARY_ROOT)/VOL%3A" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Description="Restrict volume level access to external storage devices via VOL:" ResourceIri="$(FILESYS_ROOT)/SECONDARY/(+)/VOL%3A" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Description="Protect the connection manager directory from tampering by non-privileged applications" ResourceIri="$(FILESYS_PRIMARY_ROOT)/CONNMGR/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+            <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_GENERIC_READ, FILE_GENERIC_EXECUTE"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Description="Protect the ringtones from tampering by non-privileged applications" ResourceIri="$(FILESYS_PRIMARY_ROOT)/APPLICATION%20DATA/SOUNDS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="FILE_GENERIC_READ, FILE_GENERIC_EXECUTE"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Description="Give everyone all access to files in temp directory" ResourceIri="$(FILESYS_PRIMARY_ROOT)/TEMP/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+        </Authorize>
+    </Rule>
+
+    <Rule Description="Protect the Windows directory from tampering by non-privileged applications" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_BASIC">
+        <Authorize>
+            <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="FILE_GENERIC_READ, FILE_GENERIC_EXECUTE"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Description="Allow normal apps to change the start menu" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/START%20MENU/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Description="Allow normal apps to change favorites" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/FAVORITES/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Description="Protect storage and partition management APIs" ResourceIri="$(FILESYS_ROOT)/SECONDARY/STOREMGR/(+)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <!-- Supervisor has read access to storage APIs -->
+            <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_GENERIC_READ"></Match>
+            <!-- Normal has query access to storage APIs -->
+            <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="READ_CONTROL"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <!-- Low priority rules -->
+    <Rule Description="Fallback rule if nothing else matched" ResourceIri="$(FILESYS_ROOT)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+        <Authorize>
+            <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+        </Authorize>
+    </Rule>
+
+    
+<!--Begin Generated accounts and routing/authz rules for $(SYSTEM_USER_NAME) -->
+
+<!--Begin Generated routing/authz rules for unifiedpair.exe -->
+<Rule Description="Route unifiedpair.exe" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/UNIFIEDPAIR.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize unifiedpair.exe be loadable to $(SYSTEM_USER_NAME) and  chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/UNIFIEDPAIR.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for unifiedpair.exe -->
+<!--End Generated accounts and routing/authz rules for $(SYSTEM_USER_NAME) -->
+
+
+
+
+
+    <!-- registry: Default registry security policy -->
+    <Namespace Prefix="/REGISTRY" ForceUppercase="true">
+
+        <Authorization Id="KEY_ALL_ACCESS" Bitmask="0x000f003f"></Authorization>
+
+        <Authorization Id="KEY_READ" Bitmask="0x00020019"></Authorization>
+
+        <Authorization Id="KEY_WRITE" Bitmask="0x00020006"></Authorization>
+
+        <Authorization Id="KEY_EXECUTE" Bitmask="0x00020019"></Authorization>
+
+    </Namespace>
+
+
+    <!-- Macros -->
+
+    <Macro Id="HKLM" Description="Root of the HKEY_LOCAL_MACHINE registry path" Value="policy:/REGISTRY/HKLM"></Macro>
+
+    <Macro Id="HKCU" Description="Root of the HKKEY_CURRENT_USER registry path" Value="policy:/REGISTRY/HKCU"></Macro>
+
+    <Macro Id="HKCR" Description="Root of the HKEY_CLASSES_ROOT registry path" Value="policy:/REGISTRY/HKCR"></Macro>
+
+    <Macro Id="HKU" Description="Root of the HKEY_USERS registry path" Value="policy:/REGISTRY/HKU"></Macro>
+
+    <!-- High priority rules -->
+
+    <!-- Unless we revoke write right from supervisor group in "Port of WM6" rule,
+        we have to keep this rule
+  -->
+    <Rule Description="TCB can do anything to all registry keys" ResourceIri="policy:/REGISTRY/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+        </Authorize>
+    </Rule>
+
+    <Rule Description="Protect the push router config" ResourceIri="$(HKLM)/SECURITY/PUSHROUTER/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <!-- Explicitly provide access to user crypto keys from some chambers -->
+
+    <Rule Description="Restrict access to CAPI 1 user keys" ResourceIri="$(HKCU)/COMM/SECURITY/CRYPTO/USERKEYS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <!-- This rule will need to have an authorize match added for the cert enroller chamber and supervisor changed to system. -->
+    <Rule Description="Restrict access to CAPI 1 machine keys" ResourceIri="$(HKLM)/COMM/SECURITY/CRYPTO/USERKEYS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <!-- Restrict The set of Regext State Notification keys to the TCB group only -->
+    <Rule Description=" Restrict The set of Regext State Notification keys to the TCB group only" ResourceIri="$(HKLM)/SYSTEM/NOTIFICATIONS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <!-- Standard priority rules -->
+
+    <!-- Rules from the WM5 and WM6 2-tier access model -->
+
+    <Rule Description="Port of WM6 rule" ResourceIri="$(HKLM)/COMM/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+            <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Description="Port of WM6 rule" ResourceIri="$(HKLM)/DRIVERS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+            <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Description="Port of WM6 rule" ResourceIri="$(HKLM)/HARDWARE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+            <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Description="Port of WM6 rule" ResourceIri="$(HKLM)/INIT/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+            <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Description="Port of WM6 rule" ResourceIri="$(HKLM)/SERVICES/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+            <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Description="Port of WM6 rule" ResourceIri="$(HKLM)/SYSTEM/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+            <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Description="Port of WM6 rule" ResourceIri="$(HKLM)/WDMDRIVERS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+            <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Description="Port of WM6 rule" ResourceIri="$(HKLM)/SECURITY/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Description="Port of WM6 rule" ResourceIri="$(HKCU)/SECURITY/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+            <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Description="Port of WM6 rule" ResourceIri="$(HKLM)/LOADER/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+            <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <!-- Give everyone access to keys necessary to run -->
+
+    <Rule Description="Elevated group has full access to the PG list registry" ResourceIri="$(HKLM)/SECURITY/WAP/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+          <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+        </Authorize>
+    </Rule>
+
+    <Rule Description="Allow everyone read access to policy engine keys" ResourceIri="$(HKLM)/SECURITY/POLICYENGINE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+    </Rule>
+
+    <Rule Description="Allow everyone to read COM and file type registration information" ResourceIri="$(HKCR)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+    </Rule>
+
+    <Rule Description="Allow standard right and above have full access to the clsid root" ResourceIri="$(HKCR)/CLSID/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+        <Authorize>
+            <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+        </Authorize>
+    </Rule>
+
+    <Rule Description="Allow standard right full access to the TYPELIB root to allow register COM components. TYPELIB is another option to register a COM component by specifying the type libraries associated with the component." ResourceIri="$(HKCR)/TYPELIB/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+        <Authorize>
+            <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+        </Authorize>
+    </Rule>
+
+    <Rule Description="Allow everyone to read adaptability settings" ResourceIri="$(HKLM)/ADAPTABILITY/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+    </Rule>
+
+    <!-- The authorization for HKLM/COMM/* had to be merged with an earlier rule due to IRI collisions -->
+
+    <Rule Description="Allow everyone to read control panel settings" ResourceIri="$(HKCU)/CONTROLPANEL/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+    </Rule>
+
+    <Rule Description="Allow everyone to read control panel settings" ResourceIri="$(HKLM)/CONTROLPANEL/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+    </Rule>
+
+    <Rule Description="Allow everyone to read debug zones" ResourceIri="$(HKLM)/DEBUGZONES/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+    </Rule>
+
+    <!-- The authorization for HKLM/DRIVERS/* had to be merged with an earlier rule due to IRI collisions -->
+
+    <!-- In taskhost, CESHELL!UserSettings reads file explorer settings -->
+    <Rule Description="Allow everyone to explorer settings" ResourceIri="$(HKLM)/EXPLORER/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+    </Rule>
+
+   <!-- In taskhost, URLMON reads computer identity -->
+    <Rule Description="Allow everyone to access phone identity settings" ResourceIri="$(HKLM)/IDENT/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+    </Rule>
+
+    <Rule Description="Allow everyone to read keyboard layouts" ResourceIri="$(HKCU)/KEYBOARD%20LAYOUT/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+    </Rule>
+
+    <Rule Description="Allow everyone to read MUI info" ResourceIri="$(HKCU)/MUI/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+    </Rule>
+
+    <Rule Description="Allow everyone to read MUI info" ResourceIri="$(HKLM)/MUI/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+    </Rule>
+
+    <Rule Description="Allow everyone to read NLS info" ResourceIri="$(HKCU)/NLS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+    </Rule>
+
+    <Rule Description="Allow standard chamber and above to access phone security settings" ResourceIri="$(HKLM)/SECURITY/PHONE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+    </Rule>
+
+    <Rule Description="Allow everyone to read shimming keys" ResourceIri="$(HKLM)/SHIMENGINE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+    </Rule>
+
+    <Rule Description="Allow any chamber with Standard or greater privilege all access." ResourceIri="$(HKCU)/SOFTWARE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+        </Authorize>
+    </Rule>
+
+    <Rule Description="Allow any chamber with Standard or greater privilege all access." ResourceIri="$(HKLM)/SOFTWARE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+        </Authorize>
+    </Rule>
+
+    <Rule Description="Allow standard chamber and above to read system config info" ResourceIri="$(HKCU)/SYSTEM/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+    </Rule>
+
+    <!-- The authorization for HKLM/SYSTEM/* had to be merged with an earlier rule due to IRI collisions -->
+
+    <!-- Low priority rules -->
+
+    <Rule Description="Catch all rule to allow Normal and above apps to read/write to all unnamed keys" ResourceIri="policy:/REGISTRY/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+        <Authorize>
+            <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+        </Authorize>
+    </Rule>
+
+
+<!-- dstsvc: Daylight Saving Time Service policy definitions and rules -->
+<!--
+    Access rules for HKLM/SOFTWARE/Microsoft/Clock
+    -->
+    <Rule Action="CreateNew" Description="Protect AutoDST setting for DST service" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/CLOCK/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match Action="Add" AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+            <Match Action="Add" AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <!--
+    Access rules for HKLM/Time
+    -->
+    <Rule Action="CreateNew" Description="Protect Timezone registry key for DST service" ResourceIri="$(HKLM)/TIME/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match Action="Add" AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+            <Match Action="Add" AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <!--
+    Access rules for HKLM/Time zones
+    -->
+    <Rule Action="CreateNew" Description="Protect Timezone list registry key for DST service" ResourceIri="$(HKLM)/TIME%20ZONES/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match Action="Add" AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+            <Match Action="Add" AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <!--
+    Access rules for named events
+    -->
+    <Rule Action="CreateNew" Description="DSTTimerEvent named event used by DST service for CeRunAppAtTime" ResourceIri="policy:/KERNEL/EVENT/GLOBAL/DSTTimerEvent" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match Action="Add" AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Action="CreateNew" Description="DynDSTTimerEvent named event used by DST service for CeRunAppAtTime" ResourceIri="policy:/KERNEL/EVENT/GLOBAL/DynDSTTimerEvent" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match Action="Add" AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Action="CreateNew" Description="TimeChangeEvent named event used by DST service for CeRunAppAtEvent" ResourceIri="policy:/KERNEL/EVENT/GLOBAL/TimeChangeEvent" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match Action="Add" AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+<!-- fsprofile: Default kernel security policy -->
+<!-- DPAPI rule -->
+  <Rule Description="Protect the DPAPI user and master key files from everyone but the system" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/KEYS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Description="Base policy for DPAPI public flag (CRYPTPROTECT_PRIVATE is not set)" ResourceIri="$(GLOBAL_RESOURCES)/DPAPI/PROTECTEDDATA/PUBLIC/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="GENERIC_READ"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Base policy for DPAPI system flag (CRYPTPROTECT_SYSTEM is set)" ResourceIri="$(GLOBAL_RESOURCES)/DPAPI/PROTECTEDDATA/SYSTEM/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Restrict access to DPAPI configuring use AES128 instead of RC4" ResourceIri="$(HKLM)/COMM/SECURITY/DPAPI/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Description="Restrict access to RNG data and configuration to TCB" ResourceIri="$(HKLM)/COMM/SECURITY/RNG/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+
+<!-- oalioctl: Default Device Manager Security Policy -->
+<!--
+  Metadata is stored on the device but off to the side - it is not used by the
+  policy engine. It is used for validation and reference if more data is imported
+  later.
+
+  Metadata values can be imported more than once, but all definitions must match.
+  It is an error to refer to metadata that is not defined (i.e. use an undefined
+  Authorization Id in an ACL).
+  -->
+
+  <Namespace Prefix="/oalioctl" Description="Generic rights that apply to all namespaces">
+
+  </Namespace>
+
+
+  <!-- Macros -->
+
+  <Macro Id="OAL_IOCTL_IRI" Description="Device Manager Bus Name Access" Value="policy:/RESOURCES/GLOBAL/OALIOCTL"></Macro>
+
+  <Macro Id="IOCTL_HAL_GET_CACHE_INFO" Value="01010108"></Macro>
+
+  <Macro Id="IOCTL_HAL_GET_CELOG_PARAMETERS" Value="01010150"></Macro>
+
+  <Macro Id="IOCTL_HAL_GET_DEVICE_INFO" Value="01010004"></Macro>
+
+  <Macro Id="IOCTL_HAL_GET_DEVICEID" Value="01010054"></Macro>
+
+  <Macro Id="IOCTL_HAL_GET_POWERONREASON" Value="010100C8"></Macro>
+
+  <Macro Id="IOCTL_HAL_GET_UUID" Value="01010034"></Macro>
+
+  <Macro Id="IOCTL_PROCESSOR_INFORMATION" Value="01010064"></Macro>
+
+  <Macro Id="IOCTL_HAL_UPDATE_MODE" Value="01010134"></Macro>
+
+  <Rule Description="Allow only system group access to OAL IOCTL's" ResourceIri="$(OAL_IOCTL_IRI)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Open access to for IOCTL_HAL_GET_CACHE_INFO to everyone" ResourceIri="$(OAL_IOCTL_IRI)/$(IOCTL_HAL_GET_CACHE_INFO)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Open access to for IOCTL_HAL_GET_CELOG_PARAMETERS to everyone" ResourceIri="$(OAL_IOCTL_IRI)/$(IOCTL_HAL_GET_CELOG_PARAMETERS)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Open access to for IOCTL_HAL_GET_DEVICE_INFO to everyone" ResourceIri="$(OAL_IOCTL_IRI)/$(IOCTL_HAL_GET_DEVICE_INFO)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Open access to for IOCTL_HAL_GET_DEVICEID to everyone" ResourceIri="$(OAL_IOCTL_IRI)/$(IOCTL_HAL_GET_DEVICEID)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Open access to for IOCTL_HAL_GET_POWERONREASON to everyone" ResourceIri="$(OAL_IOCTL_IRI)/$(IOCTL_HAL_GET_POWERONREASON)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Open access to for IOCTL_HAL_GET_UUID to everyone" ResourceIri="$(OAL_IOCTL_IRI)/$(IOCTL_HAL_GET_UUID)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Open access to for IOCTL_PROCESSOR_INFORMATION to everyone" ResourceIri="$(OAL_IOCTL_IRI)/$(IOCTL_PROCESSOR_INFORMATION)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Device Update (DU) client runs Elevated on the device, and needs&#xA;               to call this IOCTL. This rule opens access to IOCTL_HAL_UPDATE_MODE&#xA;               to Elevated Chambers such as the DU Client" ResourceIri="$(OAL_IOCTL_IRI)/$(IOCTL_HAL_UPDATE_MODE)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+
+    <!-- kernel: Default kernel security policy -->
+
+  <Namespace Prefix="/KERNEL">
+    
+    <!-- Only the generic bitmasks are used -->
+
+  </Namespace>
+
+  <Namespace Prefix="/RESOURCES" Description="Resources Namespace">
+    <Authorization Id="PROCESS_QUERY_INFORMATION" Bitmask="0x00000400"></Authorization>
+    <Authorization Id="PROCESS_DUP_HANDLE" Bitmask="0x00000440"></Authorization>
+  </Namespace>
+
+<!-- 
+  High priority rules 
+-->
+
+  <Rule Description="System kernel policy" ResourceIri="policy:/KERNEL/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+<!-- 
+ Standard priority rules for kernel named objects
+  ResourceIri="policy:/KERNEL/EVENT/GLOBAL/(*)"
+  ResourceIri="policy:/KERNEL/MSGQUEUE/GLOBAL/(*)"
+  ResourceIri="policy:/KERNEL/WATCHDOG/GLOBAL/(*)"
+  ResourceIri="policy:/KERNEL/MUTEX/GLOBAL/(*)"
+  ResourceIri="policy:/KERNEL/SEMAPHORE/GLOBAL/(*)" 
+  ResourceIri="policy:/KERNEL/MAPFILE/GLOBAL/(*)"  
+-->
+
+<!--  Everyone has access to GLOBAL -->
+<Rule Description="Base policy for global kernel objects events,message queues, watchdogs,mutexe,semaphore,mapped files " ResourceIri="policy:/KERNEL/(+)/GLOBAL/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+<!-- TCB group has access to SYSTEM -->
+
+  <Rule Description="Only TCB has access to all SYSTEM kernel objects by default" ResourceIri="policy:/KERNEL/(+)/SYSTEM/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+
+
+<!-- Define template rules to grant self- and intra-chamber access to owned resources in the /RESOURCES namespace -->
+
+  <Rule Description="All chambers have access to their resources" ResourceIri="policy:/RESOURCES/(MATCH-CHAMBER)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+    <Match AccountId="$(TEMPLATE_USER_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Elevated has access to all resources in Elevated chamber group and below" ResourceIri="policy:/RESOURCES/(CHAMBER-IN-GROUP:$(ELEVATED_RIGHTS_IDENTITY_GROUP_NAME))/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Standard has access to all resources in Standard chamber group and below" ResourceIri="policy:/RESOURCES/(CHAMBER-IN-GROUP:$(STANDARD_RIGHTS_IDENTITY_GROUP_NAME))/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+<!-- Define template rules to grant self- and intra-chamber access to owned objects in the /KERNEL namespace -->
+
+  <Rule Description="All chambers have access to their own kernel objects" ResourceIri="policy:/KERNEL/(+)/(MATCH-CHAMBER)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+    <Match AccountId="$(TEMPLATE_USER_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Elevated has access to all kernel resources in Elevated chamber group and below" ResourceIri="policy:/KERNEL/(+)/(CHAMBER-IN-GROUP:$(ELEVATED_RIGHTS_IDENTITY_GROUP_NAME))/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Standard has access to all kernel resources in Standard chamber group and below" ResourceIri="policy:/KERNEL/(+)/(CHAMBER-IN-GROUP:$(STANDARD_RIGHTS_IDENTITY_GROUP_NAME))/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+       <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+<!-- Process access policies -->
+
+  <Rule Description="Everyone has query access to every process" ResourceIri="policy:/RESOURCES/(+)/KERNEL/OPENPROCESS" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="PROCESS_QUERY_INFORMATION"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Elevated has dup handle access to every process" ResourceIri="policy:/RESOURCES/(+)/KERNEL/OPENPROCESS" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="PROCESS_DUP_HANDLE"></Match>
+    </Authorize>
+  </Rule>
+
+<!--
+  set thread priority requires this access 
+-->
+
+  <Rule Description="Base policy for time and priority related" ResourceIri="policy:/RESOURCES/(+)/KERNEL/SCHEDULER" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+<!-- 
+  Realtime thread priority changes restricted to elevated and above
+-->  
+  <Rule Description="Base policy for thread priority updates" ResourceIri="policy:/RESOURCES/(+)/KERNEL/CESETTHREADPRIORITY" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+<!-- 
+  Supervisor should be able to set time
+-->  
+  <Rule Description="Allow supervisor to set the time" ResourceIri="$(GLOBAL_RESOURCES)/KERNEL/SETTIME" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+<!-- 
+  Rule for GetThreadContext
+-->  
+  <Rule Description="Allow supervisor to get thread ctx" ResourceIri="$(GLOBAL_RESOURCES)/KERNEL/THREADCONTEXT" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+<!--
+  kernel API set registration 
+-->
+
+  <Rule Description="Base policy for API registration" ResourceIri="$(GLOBAL_RESOURCES)/KERNEL/REGISTERAPISET" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+<!--
+  kernel Set System Process Privilege 
+-->
+
+  <Rule Description="Base policy for setting a process as system process" ResourceIri="$(GLOBAL_RESOURCES)/KERNEL/SETSYSTEMPROCESS" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+<!--
+  Kernel lib ioctls
+-->
+
+  <Rule Description="Base policy for kernel lib ioctls" ResourceIri="policy:/RESOURCES/GLOBAL/KERNEL/KLIB_KMOD_CORE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+<!--
+  KLIB_IOCTL access control setting 
+-->
+
+  <Rule Description="Base policy for controlling KLIB_IOCTL call to a custom dll" ResourceIri="policy:/RESOURCES/GLOBAL/KERNEL/KLIB_KDLL_IOCTL" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+<!--
+  SetDbgZone limited to system
+-->
+
+    <Rule Description="Base policy for SetDbgZone" ResourceIri="policy:/RESOURCES/GLOBAL/KERNEL/SETDBGZONE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+<!--
+  Reset device limited to system
+-->
+
+  <Rule Description="Base policy for reset device" ResourceIri="policy:/RESOURCES/GLOBAL/KERNEL/RESETDEVICE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+<!--
+  Create process in a specific account limited to system
+-->
+
+  <Rule Description="Base policy for create process in specific account" ResourceIri="policy:/RESOURCES/GLOBAL/KERNEL/CREATEPROCESSINACCOUNT" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+
+<!-- 
+  Loading a kernel library limited to system
+-->
+
+  <Rule Description="Base policy for LoadKernelLibrary API call" ResourceIri="policy:/RESOURCES/GLOBAL/KERNEL/LOADLIBRARYINKERNEL" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+<!--
+  Limit write access to HKLM\RAMDump to TCB
+-->
+
+  <Rule Description="Only TCB can change RAM dump settings; everyone can read RAM dump settings" ResourceIri="$(HKLM)/RAMDump/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+
+
+<!-- 
+  Low priority rules 
+-->
+
+<!-- 
+  CE Notification driver should be available in all chambers 
+-->  
+  <Rule Description="Grant access to Notification driver to everyone" ResourceIri="policy:/DEVICEMANAGER/DEVICE/NFY/0" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+<!-- 
+  CE Notification ready event should be accessible by supervisor and above 
+-->  
+
+  <Rule Description="Base policy for notification API ready event" ResourceIri="policy:/KERNEL/EVENT/SYSTEM/events/notify/APIReady" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+<!-- 
+  CeEventHasOccurred API restricted to elevated and above
+-->  
+
+  <Rule Description="Base policy for CeEventHasOccurred" ResourceIri="policy:/RESOURCES/GLOBAL/SYSTEM_NOTIFICATIONS/CEEVENTHASOCCURRED" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+
+
+    <!-- BEGIN: Policy rules enable everyone capability -->
+    <!-- Generic -->
+    <!--
+      1) CESHELL!InitializeShellObjects, read LangDbPath"
+         ResourceIri="$(HKCU)/SOFTWARE/MICROSOFT/WINDOWS"
+      2) CESHELL!UserSettings reads file explorer settings"
+         ResourceIri="$(HKCU)/SOFTWARE/MICROSOFT/SHELL/FILEEXPLORER/SETTINGS"
+    -->
+    <Rule Description="Allow LPC to read HKCU/SOFTWARE" ResourceIri="$(HKCU)/SOFTWARE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+    </Rule>
+
+    <!--
+        1) CXcpControlHost::GetDefaultThemeXaml reads default theme
+        ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/DEFAULTTHEMEXAML"
+        2) Read silverlight settings
+        ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/SILVERLIGHT"
+        3) Read OLE settings
+        ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/OLE"
+        4) MSCOREE3_7!PALConfig_InitModule(), only read is needed
+        ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/.NETCOMPACTFRAMEWORK"
+        5) Input method setting
+        ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/FUZZYIME/(*)"
+    -->
+    <Rule Description="Allow LPC to read HKLM/SOFTWARE" ResourceIri="$(HKLM)/SOFTWARE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+    </Rule>
+
+    <!-- Security related -->
+    <Rule Description="Load crypt32.dll in LPC" ResourceIri="$(HKLM)/COMM/SECURITY/CRYPTO/DEFAULTS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+    </Rule>
+
+    <!-- Allow Silverlight to call SystemParametersInfo -->
+    <Rule Description="allow everyone RO access for to Device Platform Info" ResourceIri="$(HKLM)/SYSTEM/PLATFORM/DEVICETARGETINGINFO" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+    </Rule>
+
+    <!-- Driver -->
+  <!-- .NETCF need to access registry keys in LPC -->
+    <Rule Description="MSCOREE3_7 reads it" ResourceIri="$(HKLM)/SYSTEM/STORAGEMANAGER" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+      <Authorize>
+          <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+      </Authorize>
+    </Rule>
+    
+    <Rule Description="Need to console information to write error output" ResourceIri="$(HKLM)/DRIVERS/CONSOLE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+      <Authorize>
+          <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+      </Authorize>
+    </Rule>
+
+    <!-- END: Policy rules enable everyone capability -->
+
+  <Rule Description="Give Standard right and above access to device ID" ResourceIri="$(GLOBAL_RESOURCES)/DEVICEID" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ"></Match>
+    </Authorize>
+  </Rule>
+
+  
+<!--Begin generating capability accounts and authorization rules for ID_CAP_IDENTITY_DEVICE -->
+<Macro Id="CAPMACRO_ID_CAP_IDENTITY_DEVICE" Value="S-1-5-112-0-0X70-0X49445F4341505F4944454E544954595F444556494345" />
+<Account Id="$(CAPMACRO_ID_CAP_IDENTITY_DEVICE)" FriendlyName="ID_CAP_IDENTITY_DEVICE:Capability to access device ID" Description="Autogenerated group for capability ID_CAP_IDENTITY_DEVICE" Type="Group">
+<MemberOfGroup GroupAccountId="$(PUBLIC_CAPABILITIES_GROUP_NAME)" />
+</Account>
+<Rule Description="Authorization rule for capability ID_CAP_IDENTITY_DEVICE" ResourceIri="$(GLOBAL_RESOURCES)/DEVICEID" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_IDENTITY_DEVICE)" AuthorizationIds="GENERIC_READ" />
+</Authorize>
+</Rule>
+<!--End generating capability accounts and authorization rules for ID_CAP_IDENTITY_DEVICE -->
+
+
+</CeSecurityPolicyFile>

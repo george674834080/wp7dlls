@@ -1,0 +1,569 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<!--
+Use of this sample source code is subject to the terms of the Microsoft
+license agreement under which you licensed this sample source code. If
+you did not accept the terms of the license agreement, you are not
+authorized to use this sample source code. For the terms of the license,
+please see the license agreement between you and Microsoft or, if applicable,
+see the LICENSE.RTF on your install media or the root of your tools installation.
+THE SAMPLE SOURCE CODE IS PROVIDED "AS IS", WITH NO WARRANTIES OR INDEMNITIES.
+-->
+
+<ConfigurationFile version="10" forceupdate="0">
+    <Domains>
+
+        <Domain id="PROD">
+            <setting id="ZestDomain">zune.net</setting>
+            <setting id="ZuneWebPageDomain" >zune.net</setting>
+            <setting id="XboxDomain">xboxlive.com</setting>
+            <setting id="XboxLiveWebPageDomain">xbox.com</setting>
+            <setting id="WPSDomain" >mobilling.microsoft.com</setting>
+            <setting id="WPSRedirectDomain">windowsphone.com</setting>
+            <setting id="TelemetryDomain">qos.zune.net</setting>
+            <ep id="Passport_ZEST" url="kdc.xboxlive.com" />
+            <ep id="Passport_MCP" url="mobilling.microsoft.com" />
+            <ep id="Passport_LIVEn" url="kdc.xboxlive.com" />
+            <ep id="Passport_LIVEnWeb" url="live.xbox.com" />
+            <ep id="Passport_Musiwave" url="live.zune.net" />
+        </Domain>
+        <Domain id="INT">
+            <setting id="ZestDomain">b.aegis.zune.net</setting>
+            <setting id="ZuneWebPageDomain">b.aegis.zune.net</setting>
+            <setting id="XboxDomain">int2.xboxlive.com</setting>
+            <setting id="XboxLiveWebPageDomain">int2.xbox.com</setting>
+            <setting id="WPSDomain">mobilling.microsoft-int.com</setting>
+            <setting id="WPSRedirectDomain">www.windowsphone-int.com</setting>
+            <setting id="TelemetryDomain">test.qos.zune.net</setting>
+            <ep id="Passport_ZEST" url="kdc.test.xboxlive.com" />
+            <ep id="Passport_MCP" url="mobilling.microsoft-int.com" />
+            <ep id="Passport_LIVEn" url="kdc.int2.xboxlive.com" />
+            <ep id="Passport_LIVEnWeb" url="live.int2.xbox.com" />
+            <ep id="Passport_Musiwave" url="live.b.aegis.zune.net" />
+
+            <ep id="MobileOperatorFile" url="https://int.moservices.microsoft-int.com/Mobi/Discovery/v1/Operators?cdmaExists={cdmaexists}&amp;gsmExists={gsmexists}&amp;SubscriberLocked={subscriberlocked}&amp;moManufacturerId={manufacturingmoid}&amp;imsi={first10imsi}&amp;ef_ons={ef_ons}&amp;ef_spn={ef_spn}&amp;gid1={ef_gid1}" />
+            
+        </Domain>
+        <Domain id="PartnerNet">
+            <setting id="ZestDomain">partner.zune.net</setting>
+            <setting id="ZuneWebPageDomain">partner.zune.net</setting>
+            <setting id="XboxDomain">part.xboxlive.com</setting>
+            <setting id="XboxLiveWebPageDomain">part.xbox.com</setting>
+            <setting id="WPSDomain">mobilling.microsoft-int.com</setting>
+            <setting id="WPSRedirectDomain">www.windowsphone-int.com</setting>
+            <setting id="TelemetryDomain">test.qos.zune.net</setting>
+            <ep id="Passport_ZEST" url="kdc.test.xboxlive.com" />
+            <ep id="Passport_MCP" url="mobilling.microsoft-int.com" />
+            <ep id="Passport_LIVEn" url="kdc.part.xboxlive.com" />
+            <ep id="Passport_LIVEnWeb" url="live.part.xbox.com" />
+            <ep id="Passport_Musiwave" url="live.b.aegis.zune.net" />
+
+            <ep id="MobileOperatorFile" url="https://int.moservices.microsoft-int.com/Mobi/Discovery/v1/Operators?cdmaExists={cdmaexists}&amp;gsmExists={gsmexists}&amp;SubscriberLocked={subscriberlocked}&amp;moManufacturerId={manufacturingmoid}&amp;imsi={first10imsi}&amp;ef_ons={ef_ons}&amp;ef_spn={ef_spn}&amp;gid1={ef_gid1}" />
+            
+        </Domain>
+
+        <Domain id="CertNet">
+            <setting id="ZestDomain">zune.net</setting>
+            <setting id="ZuneWebPageDomain" >zune.net</setting>
+            <setting id="XboxDomain">cert.xboxlive.com</setting>
+            <setting id="XboxLiveWebPageDomain">xbox.com</setting>
+            <setting id="WPSDomain" >mobilling.microsoft.com</setting>
+            <setting id="WPSRedirectDomain">windowsphone.com</setting>
+            <setting id="TelemetryDomain">qos.zune.net</setting>
+            <ep id="Passport_ZEST" url="kdc.test.xboxlive.com" />
+            <ep id="Passport_MCP" url="mobilling.microsoft.com" />
+            <ep id="Passport_LIVEn" url="kdc.xboxlive.com" />
+            <ep id="Passport_LIVEnWeb" url="live.xbox.com" />
+            <ep id="Passport_Musiwave" url="live.zune.net" />
+        </Domain>
+        
+        <Domain id="UnitTest">
+            <setting id="ZestDomain">zune.net</setting>
+            <setting id="ZuneWebPageDomain" >zune.net</setting>
+            <setting id="XboxDomain">xboxlive.com</setting>
+            <setting id="XboxLiveWebPageDomain">xbox.com</setting>
+            <setting id="WPSDomain" ></setting>
+            <setting id="WPSRedirectDomain">www.windowsphone-int.com</setting>
+            <setting id="TelemetryDomain">test.qos.zune.net</setting>
+            <ep id="Passport_ZEST" url="kdc.xboxlive.com" />
+            <ep id="Passport_MCP" url="mobilling.microsoft.com" />
+            <ep id="Passport_LIVEn" url="kdc.xboxlive.com" />
+            <ep id="Passport_LIVEnWeb" url="live.xbox.com" />
+            <ep id="Passport_Musiwave" url="live.zune.net" />
+        </Domain>
+
+        <EndpointParameter id="ZestDomain" />
+        <EndpointParameter id="WPSDomain" />
+        <EndpointParameter id="CatalogLocale" />
+
+        <EndpointParameter id="LastFetchedMOID" />
+        <EndpointParameter id="DeviceRawOEMID" />
+        <EndpointParameter id="MarketplaceClientVersion" />
+
+        <ep id="TunerConfigFile" url="https://tuners-ssl.{ZestDomain}/{CatalogLocale}/winmobile/v{MarketplaceClientVersion}/TunerConfig.xml" />
+        <ep id="TunerConfigVersionFile" url="https://tuners-ssl.{ZestDomain}/{CatalogLocale}/winmobile/v{MarketplaceClientVersion}/TunerConfigVersion.xml" />
+
+        <ep id="MobileOperatorFile" url="https://moservices.microsoft.com/Mobi/Discovery/v1/Operators?cdmaExists={cdmaexists}&amp;gsmExists={gsmexists}&amp;SubscriberLocked={subscriberlocked}&amp;moManufacturerId={manufacturingmoid}&amp;imsi={first10imsi}&amp;ef_ons={ef_ons}&amp;ef_spn={ef_spn}&amp;gid1={ef_gid1}" />
+
+        <ep id="MobileOperatorStoreFile" url="https://tuners-ssl.{ZestDomain}/{CatalogLocale}/winmobile/v{MarketplaceClientVersion}/mobileoperatorstoreconfig.xml?MOKEY={LastFetchedMOID}" />
+        <ep id="OEMStoreFile" url="https://tuners-ssl.{ZestDomain}/{CatalogLocale}/winmobile/v{MarketplaceClientVersion}/oemstoreconfig.xml?OEMID={DeviceRawOEMID}" />
+
+    </Domains>
+
+    <Marketization>
+        <string id="1">plus taxes, if applicable</string>
+        <string id="2">VAT included</string>
+        <string id="3">inklusive MwSt.</string>
+        <string id="4">IVA inclusa</string>
+        <string id="5">TVA comprise</string>
+        <string id="6">IVA incluido</string>
+        <string id="7">plus les taxes, le cas échéant</string>
+        <string id="8">including GST</string>
+        <string id="9">incluye impuestos, si corresponde</string>
+        <string id="10">GST included, if applicable</string>
+        <string id="11">税込</string>
+        <string id="12">excluindo os impostos aplicáveis</string>
+        <string id="13">부가세포함</string>
+        <string id="14">inclusief btw</string>
+        <string id="15">uwzględniony VAT</string>
+        <string id="16">Inklusive moms</string>
+        <string id="17">IVA incluído</string>
+        <string id="18">inkl. moms</string>
+        <string id="19">Συμπεριλαμβανομένου του ΦΠΑ</string>
+        <string id="20">Inkludert MVA</string>
+        <string id="21">sisältää ALV:n</string>
+        <string id="22">Včetně DPH</string>
+        <string id="23">impuestos aplicables no incluidos</string>
+        <string id="24">áfát tartalmaz</string>
+        <string id="25">已含稅</string>
+
+        <string id="26">MUSIC TAX STRING 2 PLACEHOLDER</string>
+        <string id="27">APPS TAX STRING 2 PLACEHOLDER</string>
+
+        <string id="28">(cada uno incluye IVA, cuando fuera aplicable)</string>
+        <string id="29">(ambos incluem impostos, caso se aplique)</string>
+
+        <market id="en-US" mkt="1" zpass="1" SDJloc="1" SDJmkt="1" pod="1" music="1" xbox="1" ratings="ESRB" catalog="en-US" MTax="1" ATax="1" MTax2="26" ATax2="27" />
+        <market id="es-US" mkt="1" zpass="1" SDJloc="1" SDJmkt="1" music="1" xbox="1" ratings="ESRB" catalog="en-US" MTax="1" ATax="1" MTax2="26" ATax2="27" />
+        <market id="en-GB" mkt="1" zpass="1" SDJloc="1" SDJmkt="1" music="1" xbox="1" ratings="PEGI" catalog="en-GB" MTax="2" ATax="2" MTax2="26" ATax2="27" />
+        <market id="de-DE" mkt="1" music="1" xbox="1" ratings="USK" catalog="de-DE" MTax="3" ATax="3" MTax2="26" ATax2="27" />
+        <market id="it-IT" mkt="1" zpass="1" SDJloc="1" SDJmkt="1" music="1" xbox="1" ratings="PEGI" catalog="it-IT" MTax="4" ATax="4" MTax2="26" ATax2="27" />
+        <market id="fr-FR" mkt="1" zpass="1" SDJloc="1" SDJmkt="1" music="1" xbox="1" ratings="PEGI" catalog="fr-FR" MTax="5" ATax="5" MTax2="26" ATax2="27" />
+        <market id="es-ES" mkt="1" zpass="1" SDJloc="1" SDJmkt="1" music="1" xbox="1" ratings="PEGI" catalog="es-ES" MTax="6" ATax="6" MTax2="26" ATax2="27" />
+        <market id="en-CA" mkt="1" xbox="1" ratings="ESRB" catalog="en-CA" MTax="1" ATax="1" MTax2="26" ATax2="27" />
+        <market id="fr-CA" mkt="1" xbox="1" ratings="ESRB" catalog="fr-CA" MTax="7" ATax="7" MTax2="26" ATax2="27" />
+        <market id="en-AU" mkt="1" xbox="1" ratings="OFLC_AU" catalog="en-AU" MTax="8" ATax="8" MTax2="26" ATax2="27" />
+        <market id="fr-BE" mkt="1" xbox="1" ratings="PEGI" catalog="fr-BE" MTax="5" ATax="5" MTax2="26" ATax2="27" />
+        <market id="es-MX" mkt="1" xbox="1" ratings="ESRB" catalog="es-MX" MTax="9" ATax="9" MTax2="28" ATax2="28" />
+        <market id="en-SG" mkt="1" xbox="1" ratings="" catalog="en-SG" MTax="8" ATax="8" MTax2="26" ATax2="27" />
+        <market id="de-CH" mkt="1" xbox="1" ratings="PEGI" catalog="de-CH" MTax="3" ATax="3" MTax2="26" ATax2="27" />
+        <market id="fr-CH" mkt="1" xbox="1" ratings="PEGI" catalog="fr-CH" MTax="5" ATax="5" MTax2="26" ATax2="27" />
+        <market id="it-CH" mkt="1" xbox="1" ratings="PEGI" catalog="de-CH" MTax="3" ATax="3" MTax2="26" ATax2="27" />
+        <market id="de-AT" mkt="1" xbox="1" ratings="PEGI" catalog="de-AT" MTax="3" ATax="3" MTax2="26" ATax2="27" />
+        <market id="en-NZ" mkt="1" xbox="1" ratings="OFLC_NZ" catalog="en-NZ" MTax="10" ATax="10" MTax2="26" ATax2="27" />
+        <market id="en-IE" mkt="1" xbox="1" ratings="PEGI" catalog="en-IE" MTax="2" ATax="2" MTax2="26" ATax2="27" />
+        <market id="en-HK" mkt="1" xbox="1" ratings="" catalog="en-HK" />
+        <market id="zh-HK" mkt="1" xbox="1" ratings="" catalog="zh-HK" />
+
+        <!-- New Mango Markets -->
+        <market id="nl-BE" mkt="1" xbox="1" ratings="PEGI" catalog="nl-BE" MTax="14" ATax="14" MTax2="26" ATax2="27" />
+        <market id="ja-JP" mkt="1" xbox="1" ratings="CERO" catalog="ja-JP" MTax="11" ATax="11" MTax2="26" ATax2="27" />
+        <market id="pt-BR" mkt="1" xbox="1" ratings="DJCTQ" catalog="pt-BR" MTax="12" ATax="12" MTax2="29" ATax2="29" />
+        <market id="ko-KR" mkt="1" xbox="1" ratings="GRB" catalog="ko-KR" MTax="13" ATax="13" MTax2="26" ATax2="27" />
+        <market id="nl-NL" mkt="1" xbox="1" ratings="PEGI" catalog="nl-NL" MTax="14" ATax="14" MTax2="26" ATax2="27" />
+        <market id="pl-PL" mkt="1" xbox="1" ratings="PEGI" catalog="pl-PL" MTax="15" ATax="15" MTax2="26" ATax2="27" />
+        <market id="en-ZA" mkt="1" xbox="1" ratings="FPB" catalog="en-ZA" MTax="" ATax="" MTax2="" ATax2="" />
+        <market id="sv-SE" mkt="1" xbox="1" ratings="PEGI" catalog="sv-SE" MTax="16" ATax="16" MTax2="26" ATax2="27" />
+        <market id="pt-PT" mkt="1" xbox="1" ratings="PEGI_PT" catalog="pt-PT" MTax="17" ATax="17" MTax2="26" ATax2="27" />
+        <market id="da-DK" mkt="1" xbox="1" ratings="PEGI" catalog="da-DK" MTax="18" ATax="18" MTax2="26" ATax2="27" />
+        <market id="nb-NO" mkt="1" xbox="1" ratings="PEGI" catalog="nb-NO" MTax="20" ATax="20" MTax2="26" ATax2="27" />
+        <market id="fi-FI" mkt="1" xbox="1" ratings="PEGI" catalog="fi-FI" MTax="21" ATax="21" MTax2="26" ATax2="27" />
+        <market id="cs-CZ" mkt="1" xbox="1" ratings="PEGI" catalog="cs-CZ" MTax="22" ATax="22" MTax2="26" ATax2="27" />
+        <market id="es-CL" mkt="1" xbox="1" ratings="ESRB" catalog="es-CL" MTax="23" ATax="23" MTax2="26" ATax2="27" />
+        <market id="hu-HU" mkt="1" xbox="1" ratings="PEGI" catalog="hu-HU" MTax="24" ATax="24" MTax2="26" ATax2="27" />
+        <market id="el-GR" mkt="1" xbox="1" ratings="PEGI" catalog="el-GR" MTax="19" ATax="19" MTax2="26" ATax2="27" />
+        <market id="es-CO" mkt="1" xbox="1" ratings="ESRB" catalog="es-CO" MTax="23" ATax="23" MTax2="28" ATax2="28" />
+        <market id="ru-RU" mkt="1" xbox="1" ratings="PEGI" catalog="ru-RU" />
+        <market id="en-IN" mkt="1" xbox="1" ratings="" catalog="en-IN" />
+        <market id="zh-TW" mkt="1" xbox="1" ratings="" catalog="zh-TW" MTax="25" ATax="25" MTax2="26" ATax2="27" />
+
+    </Marketization>
+
+    <Ratings>
+        <rating id="ESRB.EC" explicit="0">
+            <title lang="en">EC (Early Childhood)</title>
+            <title lang="fr">EC (Jeunes enfants)</title>
+            <title lang="es">EC (Niños Pequeños)</title>
+        </rating>
+        <rating id="ESRB.E" explicit="0">
+            <title lang="en">E (Everyone)</title>
+            <title lang="fr">E (Enfants et adultes)</title>
+            <title lang="es">E (Todos)</title>
+        </rating>
+        <rating id="ESRB.E10+" explicit="0">
+            <title lang="en">E10+ (Everyone 10+)</title>
+            <title lang="fr">E10+ (Enfants et adultes 10+)</title>
+            <title lang="es">E10+ (Todas las Personas Mayores de 10 años)</title>
+        </rating>
+        <rating id="ESRB.T" explicit="0">
+            <title lang="en">T (Teen)</title>
+            <title lang="fr">T (Adolescents)</title>
+            <title lang="es">T (Adolescentes)</title>
+        </rating>
+        <rating id="ESRB.M" explicit="1">
+            <title lang="en">M (Mature)</title>
+            <title lang="fr">M (Jeunes adultes)</title>
+            <title lang="es">M (Maduro)</title>
+        </rating>
+        <rating id="ESRB.AO" explicit="1">
+            <title lang="en">AO (Adults Only)</title>
+            <title lang="fr">AO (Adultes seulement)</title>
+            <title lang="es">AO (Adultos Únicamente)</title>
+        </rating>
+        <rating id="PEGI.3" explicit="0">
+            <title lang="en">3</title>
+        </rating>
+        <rating id="PEGI.7" explicit="0">
+            <title lang="en">7</title>
+        </rating>
+        <rating id="PEGI.12" explicit="0">
+            <title lang="en">12</title>
+        </rating>
+        <rating id="PEGI.16" explicit="0">
+            <title lang="en">16</title>
+        </rating>
+        <rating id="PEGI.18" explicit="1">
+            <title lang="en">18</title>
+        </rating>
+        <rating id="PEGI_PT.4" explicit="0">
+            <title lang="en">4</title>
+        </rating>
+        <rating id="PEGI_PT.6" explicit="0">
+            <title lang="en">6</title>
+        </rating>
+        <rating id="PEGI_PT.12" explicit="0">
+            <title lang="en">12</title>
+        </rating>
+        <rating id="PEGI_PT.16" explicit="0">
+            <title lang="en">16</title>
+        </rating>
+        <rating id="PEGI_PT.18" explicit="1">
+            <title lang="en">18</title>
+        </rating>
+        <rating id="OFLC_NZ.G" explicit="0">
+            <title lang="en">G (Unrestricted)</title>
+        </rating>
+        <rating id="OFLC_NZ.PG" explicit="0">
+            <title lang="en">PG (Unrestricted)</title>
+        </rating>
+        <rating id="OFLC_NZ.M" explicit="0">
+            <title lang="en">M (Unrestricted)</title>
+        </rating>
+        <rating id="OFLC_NZ.R13" explicit="0">
+            <title lang="en">R13 (Restricted)</title>
+        </rating>
+        <rating id="OFLC_NZ.R15" explicit="0">
+            <title lang="en">R15 (Restricted)</title>
+        </rating>
+        <rating id="OFLC_NZ.R16" explicit="0">
+            <title lang="en">R16 (Restricted)</title>
+        </rating>
+        <rating id="OFLC_NZ.R18" explicit="1">
+            <title lang="en">R18 (Restricted)</title>
+        </rating>
+        <rating id="OFLC_NZ.R" explicit="1">
+            <title lang="en">R (Restricted)</title>
+        </rating>
+        <rating id="OFLC_AU.G" explicit="0">
+            <title lang="en">G (General)</title>
+        </rating>
+        <rating id="OFLC_AU.PG" explicit="0">
+            <title lang="en">PG (Parental Guidance Recommended)</title>
+        </rating>
+        <rating id="OFLC_AU.M" explicit="0">
+            <title lang="en">M (Recommended for Mature Audiences)</title>
+        </rating>
+        <rating id="OFLC_AU.MA15+" explicit="1">
+            <title lang="en">MA 15+ (Restricted)</title>
+        </rating>
+        <rating id="DJCTQ.L" explicit="0">
+            <title lang="pt">L</title>
+        </rating>
+        <rating id="DJCTQ.10" explicit="0">
+            <title lang="pt">10</title>
+        </rating>
+        <rating id="DJCTQ.12" explicit="0">
+            <title lang="pt">12</title>
+        </rating>
+        <rating id="DJCTQ.14" explicit="0">
+            <title lang="pt">14</title>
+        </rating>
+        <rating id="DJCTQ.16" explicit="0">
+            <title lang="pt">16</title>
+        </rating>
+        <rating id="DJCTQ.18" explicit="1">
+            <title lang="pt">18</title>
+        </rating>
+        <rating id="CERO.A" explicit="0">
+            <title lang="ja">A (全年齢対象)</title>
+        </rating>
+        <rating id="CERO.B" explicit="0">
+            <title lang="ja">B (１２才以上対象)</title>
+        </rating>
+        <rating id="CERO.C" explicit="0">
+            <title lang="ja">C (１５才以上対象)</title>
+        </rating>
+        <rating id="CERO.D" explicit="1">
+            <title lang="ja">D (１７才以上対象)</title>
+        </rating>
+        <rating id="CERO.Z" explicit="1">
+            <title lang="ja">Z (１８才以上のみ対象)</title>
+        </rating>
+        <rating id="FPB.A" explicit="0">
+            <title lang="en">A</title>
+        </rating>
+        <rating id="FPB.PG" explicit="0">
+            <title lang="en">PG</title>
+        </rating>
+        <rating id="FPB.13" explicit="0">
+            <title lang="en">13</title>
+        </rating>
+        <rating id="FPB.16" explicit="0">
+            <title lang="en">16</title>
+        </rating>
+        <rating id="FPB.18" explicit="1">
+            <title lang="en">18</title>
+        </rating>
+        <rating id="GRB.A" explicit="0">
+            <title lang="ko">A (전체 이용가)</title>
+        </rating>
+        <rating id="GRB.12" explicit="0">
+            <title lang="ko">12 (12세 이용가)</title>
+        </rating>
+        <rating id="GRB.15" explicit="0">
+            <title lang="ko">15 (15세 이용가)</title>
+        </rating>
+        <rating id="GRB.18" explicit="1">
+            <title lang="ko">18 (청소년 이용불가)</title>
+        </rating>
+        <rating id="USK.0" explicit="0">
+            <title lang="de">0 (Ohne Beschränkung)</title>
+        </rating>
+        <rating id="USK.6" explicit="0">
+            <title lang="de">6 (6 Jahre und älter)</title>
+        </rating>
+        <rating id="USK.12" explicit="0">
+            <title lang="de">12 (12 Jahre und älter)</title>
+        </rating>
+        <rating id="USK.16" explicit="1">
+            <title lang="de">16 (16 Jahre und älter)</title>
+        </rating>
+        <rating id="USK.18" explicit="1">
+            <title lang="de">18 (18 Jahre und älter)</title>
+        </rating>
+    </Ratings>
+
+    <Xbox>
+        <EndpointParameter id="CatalogLocale" />
+        <EndpointParameter id="XboxLIVESpotlightMOStoreID" />
+        <EndpointParameter id="XboxDomain" />
+        <EndpointParameter id="XboxLiveWebPageDomain" />
+        
+        <ep id="RatingsDetails" url="http://www.{XboxLiveWebPageDomain}/{CatalogLocale}/Marketplace/gameratings" />
+
+        <ep id="LIVEnRewardsService" url="https://rewards.{XboxDomain}/RewardsService.svc" />
+        <ep id="LIVEnGameDataService" url="https://uds.{XboxDomain}/GameData.svc" />
+        <ep id="LIVEnGameDataServicePart" url="https://uds-part.{XboxDomain}/GameData.svc" />
+        <ep id="LIVEnMessageService" url="https://uds-part.{XboxDomain}/Message.svc" />
+        <ep id="LIVEnProfileService" url="https://uds.{XboxDomain}/Profiles.svc" />
+        <ep id="LIVEnProfileServicePart" url="https://uds-part.{XboxDomain}/Profile.svc" />
+        <ep id="LIVEnFriendService" url="https://uds-part.{XboxDomain}/Friend.svc" />
+        <ep id="LIVEnNotificationsService" url="https://notifications.{XboxDomain}/Notifications.svc" />
+        <ep id="LIVEnSpotlightWeb" url="https://windowsphone.{XboxLiveWebPageDomain}/{CatalogLocale}/Spotlight/{XboxLIVESpotlightMOStoreID}" />
+        <ep id="LIVEnSubscribeService" url="https://notifications.{XboxDomain}/V1/Subscribe.svc" />
+        <ep id="LIVEnAvatarAwardsDataService" url="https://uds.{XboxDomain}/GameData.svc" />
+        <ep id="LIVEnWLIDChangeInfo" url="http://go.microsoft.com/fwlink/?LinkId=192126"/>
+
+        <ep id="XblTicketService" url="https://activeauth.{XboxDomain}/sts/sts.asmx"/>
+        <ep id="XblBillingService" url="https://activeauth.{XboxDomain}/xbos/billing.asmx"/>
+        <ep id="XblUserAccountService" url="https://activeauth.{XboxDomain}/xuacs/useraccount.asmx"/>
+        <ep id="XblGamerTagService" url="https://activeauth.{XboxDomain}/xbos/gamertag.asmx"/>
+
+        <ep id="XblGoldUpgradeLink" url="https://live.{XboxLiveWebPageDomain}/Account/ManageSubscription"/>
+        
+        <ep id="XblTermsOfServiceLink" url="https://windowsphone.{XboxLiveWebPageDomain}/TOU"/>
+        <ep id="XblAvatarLink" url="https://windowsphone.{XboxLiveWebPageDomain}/mobile/selectavatar" />
+        <ep id="XblAvatarPic" url="http://avatar.{XboxDomain}/avatar" />
+        <ep id="XblHaveXboxAccountLink" url="https://windowsphone.{XboxLiveWebPageDomain}/Mobile/AccountLinking" />
+        <ep id="XblMrFixIt" url="http://live.{XboxLiveWebPageDomain}" />
+        <ep id="XblPrivacySettings" url="https://windowsphone.{XboxLiveWebPageDomain}/mobile/viewprivacysettings" />
+        <ep id="XblGamertagChange" url="https://windowsphone.{XboxLiveWebPageDomain}/mobile/changegamertag" />
+        <ep id="XblGamertagChangeInfo" url="https://windowsphone.{XboxLiveWebPageDomain}/mobile/howtochangegamertag" />
+
+        <ep id="AvatarAuthManifestService" url="https://avatarread-part.{XboxDomain}/Manifest.svc/GetManifest" />
+        <ep id="AvatarManifestService" url="http://avatarread.{XboxDomain}/manifest.svc" />
+        <ep id="AvatarStockAsset" url="http://download.xboxlive.com/content/4d530914/v2" />
+        <ep id="AvatarNonStockAsset" url="http://download.xboxlive.com/content" />
+        <ep id="AvatarResource" url="http://download.xboxlive.com/content/4d530914/v2" />
+    </Xbox>
+
+  <Zest>
+        <setting id="YPV">WinMobile%207.1</setting>
+        <setting id="TelemetrySampling">20</setting>
+
+        <EndpointParameter id="ZestDomain" />
+        <EndpointParameter id="DeviceXuidLocale" />
+        <EndpointParameter id="CatalogLocale" />
+        <EndpointParameter id="MOStoreID" />
+        <EndpointParameter id="OEMStoreID" />
+        <EndpointParameter id="ZuneWebPageDomain" />
+        <EndpointParameter id="YPV" />
+        <EndpointParameter id="WPSRedirectDomain" />
+        <EndpointParameter id="TelemetryDomain" />
+        <EndpointParameter id="DeviceMarketLocale" />
+
+        <ep id="AcquisitionInfoFor" url="https://cert-commerce.{ZestDomain}/billing/verifypastpurchase" />
+        <ep id="GetBalances" url="https://cert-commerce.{ZestDomain}/account/balances" />
+        <ep id="GetLocation" url="https://cert-commerce.{ZestDomain}/{CatalogLocale}/asset/location" />
+        <ep id="AcquireLicense" url="https://cert-commerce.{ZestDomain}/asset/acquirelicense" />
+        <ep id="AckLicenseDelivery" url="https://cert-commerce.{ZestDomain}/asset/acklicensedelivery" />
+        <ep id="PurchaseAsset" url="https://cert-commerce.{ZestDomain}/billing/purchaseasset" />
+        <ep id="RegisterTuner" url="https://cert-commerce.{ZestDomain}/tuner/register" />
+        <ep id="ZunePassSignUpPage" url="https://live.{ZestDomain}/mobile/getazunepass?tk{zestrpstoken}" />
+        <ep id="HowToSyncFilesPage" url="http://www.microsoft.com/windowsphone/{DeviceMarketLocale}/howto/wp7/music/sync-files-with-my-phone.aspx" />
+        <ep id="ZunePassPurchaseComplete" url="https://live.{ZestDomain}/{CatalogLocale}/mobile/purchasecomplete" />
+
+        <ep id="MarketplaceHubFeatured" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/clientTypes/{YPV}/hubTypes/marketplace/hub?store=Zest&amp;store={MOStoreID}&amp;store={OEMStoreID}" />
+
+        <ep id="PrefixSearch" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/?prefix={query}&amp;includeApplications={includeapplications}&amp;includeAlbums={includealbums}&amp;includeArtists={includeartists}&amp;includeTracks={includetracks}&amp;includePodcasts={includepodcasts}" />
+    
+        <ep id="Album" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/music/album/{objectid}" />
+        <ep id="AlbumReview" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/music/album/{objectid}/review" />
+        <ep id="AlbumSearch" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/music/album/?chunksize={searchchunksize}&amp;isActionable=true&amp;q={query}" />
+        <ep id="AlbumsList" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/music/chart/zune/albums?chunksize={chunksize}" />
+        <ep id="AlbumTrackMixData" url="http://mix.{ZestDomain}/v3.2/{CatalogLocale}/model/album/{objectid}" />
+
+        <ep id="Artist" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/music/artist/{objectid}" />
+        <ep id="ArtistAlbums" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/music/artist/{objectid}/albums?chunksize={chunksize}&amp;orderBy=ReleaseDate&amp;isActionable=true" />
+        <ep id="ArtistInfluencers" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/music/artist/{objectid}/influencers?chunksize={chunksize}" />
+        <ep id="ArtistSearch" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/music/artist/?chunksize={searchchunksize}&amp;isActionable=true&amp;q={query}" />
+        <ep id="ArtistTracks" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/music/artist/{objectid}/tracks?chunksize={chunksize}&amp;orderBy=playRank&amp;isActionable=true" />
+        <ep id="ArtistPhotos" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/music/artist/{objectid}/images" />
+        <ep id="ArtistBio" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/music/artist/{objectid}/biography" />
+        <ep id="ArtistMixData" url="http://mix.{ZestDomain}/v3.2/{CatalogLocale}/model/artist/{objectid}" />
+
+        <ep id="FeaturedAlbums" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/music/featured/albums" />
+
+        <ep id="Genre" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/music/genre/{objectid}" />
+        <ep id="GenreAlbums" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/music/genre/{objectid}/albums?orderby=SalesRank&amp;chunksize={chunksize}" />
+        <ep id="GenresInfo" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/music/genre" />
+        <ep id="GenreTracks" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/music/genre/{objectid}/tracks?orderby=SalesRank&amp;chunksize={chunksize}" />
+        <ep id="GenreFeaturedArtists" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/music/genre/{objectid}/artists?orderby=SalesRank&amp;chunksize={chunksize}" />
+        <ep id="GenreTopAlbums" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/music/genre/{objectid}/albums?orderby=SalesRank&amp;chunksize={chunksize}" />
+        <ep id="GenreTopTracks" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/music/genre/{objectid}/tracks?orderby=SalesRank&amp;chunksize={chunksize}" />
+        <ep id="GenreFeaturedAlbums" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/music/genre/{objectid}/featured/albums?chunksize={chunksize}" />
+        <ep id="GenreTopPlaylists" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/music/genre/{objectid}/playlists?orderby=SalesRank&amp;chunksize={chunksize}" />
+
+        <ep id="SimilarArtists" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/music/artist/{objectid}/similarArtists?chunksize={chunksize}" />
+        <ep id="TopArtists" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/music/chart/zune/artists?chunksize={chunksize}" />
+
+        <ep id="Track" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/music/track/{objectid}" />
+        <ep id="TrackSearch" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/music/track/?chunksize={searchchunksize}&amp;isActionable=true&amp;q={query}" />
+        <ep id="TracksList" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/music/chart/zune/tracks?chunksize={chunksize}" />
+
+        <ep id="TopPodcasts" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/podcastchart/zune/podcasts?chunksize={chunksize}" />
+        <ep id="PodcastSearch" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/podcast/?q={query}&amp;chunksize={searchchunksize}" />
+        <ep id="OnePodcast" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/podcast/{objectid}/" />
+        <ep id="FeaturedPodcasts" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/hubs/podcast/" />
+        <ep id="NewAdditionsPodcasts" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/hubs/podcast/" />
+        <ep id="MostSubscribedPodcasts" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/podcastchart/zune/podcasts?chunksize={chunksize}" />
+        <ep id="PodcastCategory" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/podcastCategories/{objectid}" />
+        <ep id="PodcastCategoryPodcasts" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/podcastCategories/{objectid}/podcasts?chunksize={chunksize}" />
+        <ep id="PodcastCategoriesInfo" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/podcastCategories" />
+        <ep id="PodcastCategoryNewAdditions" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/podcastCategories/{objectid}/podcasts?orderby=dateAdded&amp;chunksize={chunksize}" />
+        <ep id="PodcastCategoryMostSubscribed" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/podcastCategories/{objectid}/podcasts?orderby=subscriptionRank&amp;chunksize={chunksize}" />
+        <ep id="PodcastCategoryMostSubscribedAudio" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/podcastCategories/{objectid}/podcasts?type=audio&amp;orderby=subscriptionRank&amp;chunksize={chunksize}" />
+        <ep id="PodcastCategoryMostSubscribedVideo" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/podcastCategories/{objectid}/podcasts?type=video&amp;orderby=subscriptionRank&amp;chunksize={chunksize}" />
+
+        <ep id="ShareLink" url="http://social.{ZestDomain}/redirect?type={generic1}&amp;id={objectid}" />
+        <ep id="AppShareLink" url="http://{WPSRedirectDomain}/s?appid={objectid}" />
+       
+        <ep id="TopPlaylists" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/music/chart/zune/playlists/?chunksize={chunksize}" />
+        <ep id="PlaylistInfo" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/music/playlist/{objectid}/" />
+        <ep id="PlaylistSearch" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/music/playlist?q={query}" />
+        <ep id="FeaturedPlaylists" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/music/playlistFeatures/" />
+        <ep id="GenrePlaylists" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/music/genre/{objectid}/playlists?orderby=SalesRank&amp;chunksize={chunksize}" />
+
+        <ep id="ImageApi" url="http://image.catalog.{ZestDomain}/v3.2/{CatalogLocale}/image/{objectid}?width={imagesize}&amp;height={imagesize}&amp;resize=true&amp;contenttype=image/jpeg" />
+        <ep id="ArtistBgImage" url="http://image.catalog.{ZestDomain}/v3.2/{CatalogLocale}/music/artist/{objectid}/primaryimage?height=480&amp;contenttype=image/jpeg&amp;resize=true"/>
+
+        <ep id="FeaturedApplications" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/clientTypes/{YPV}/hubTypes/apps/hub?store=Zest&amp;store={MOStoreID}&amp;store={OEMStoreID}" />
+        <ep id="FeaturedGames" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/clientTypes/{YPV}/hubTypes/games/hub?store=Zest&amp;store={MOStoreID}&amp;store={OEMStoreID}" />
+        <ep id="TopApplications" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/apps?orderBy=downloadRank&amp;cost=paid&amp;chunkSize={chunksize}&amp;clientType={YPV}&amp;store=Zest&amp;store={MOStoreID}&amp;store={OEMStoreID}" />
+        <ep id="NewApplications" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/apps?orderBy=releaseDate&amp;chunkSize={chunksize}&amp;clientType={YPV}&amp;store=Zest&amp;store={MOStoreID}&amp;store={OEMStoreID}" />
+        <ep id="FreeApplications" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/apps?orderBy=downloadRank&amp;cost=free&amp;chunkSize={chunksize}&amp;clientType={YPV}&amp;store=Zest&amp;store={MOStoreID}&amp;store={OEMStoreID}" />
+        <ep id="MOApplications" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/stores/{MOStoreID}/clientTypes/{YPV}/hubTypes/apps/hub?store={MOStoreID}" />
+        <ep id="OEMApplications" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/stores/{OEMStoreID}/clientTypes/{YPV}/hubTypes/apps/hub?store={OEMStoreID}" />
+        <ep id="XBoxLiveApplications" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/appCategories/windowsphone.games/apps?clientType={YPV}&amp;store=Zest&amp;store={MOStoreID}&amp;store={OEMStoreID}&amp;tag=apptag.premium&amp;chunkSize={chunksize}" />
+        <ep id="TopXBoxLiveApplications" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/appCategories/windowsphone.games/apps?clientType={YPV}&amp;store=Zest&amp;store={MOStoreID}&amp;store={OEMStoreID}&amp;tag=apptag.premium&amp;orderby=downloadRank&amp;cost=paid&amp;chunkSize={chunksize}" />
+        <ep id="NewXBoxLiveApplications" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/appCategories/windowsphone.games/apps?clientType={YPV}&amp;store=Zest&amp;store={MOStoreID}&amp;store={OEMStoreID}&amp;tag=apptag.premium&amp;orderby=releaseDate&amp;chunkSize={chunksize}" />
+        <ep id="FreeXBoxLiveApplications" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/appCategories/windowsphone.games/apps?clientType={YPV}&amp;store=Zest&amp;store={MOStoreID}&amp;store={OEMStoreID}&amp;tag=apptag.premium&amp;orderby=downloadRank&amp;cost=free&amp;chunkSize={chunksize}" />
+        <ep id="ApplicationSearch" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/apps?q={query}&amp;chunkSize={appsearchchunksize}&amp;clientType={YPV}&amp;store=Zest&amp;store={MOStoreID}&amp;store={OEMStoreID}" />
+        <ep id="Application" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/apps/{objectid}?clientType={YPV}&amp;store=Zest&amp;store={MOStoreID}&amp;store={OEMStoreID}{urltail}" />
+        <ep id="ApplicationPrimaryImage" url="http://image.catalog.{ZestDomain}/v3.2/{CatalogLocale}/apps/{objectid}/primaryImage?width=170&amp;height=170&amp;resize=true&amp;contenttype=image/jpeg" />
+        <ep id="ApplicationBackgroundImage" url="http://image.catalog.{ZestDomain}/v3.2/{CatalogLocale}/apps/{objectid}/backgroundImage?width=480&amp;height=480&amp;resize=true&amp;contenttype=image/jpeg" />
+        <ep id="ApplicationScreenshotThumbnail" url="http://image.catalog.{ZestDomain}/v3.2/{CatalogLocale}/image/{objectid}?width=100&amp;height=100&amp;resize=true&amp;contenttype=image/jpeg" />
+        <ep id="ApplicationScreenshotLarge" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/image/{objectid}?width=480&amp;resize=true&amp;contenttype=image/jpeg" />
+        <ep id="ApplicationReviews" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/apps/{objectid}/reviews?chunkSize={chunksize}" />
+        <ep id="ApplicationCategoriesInfo" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/appCategories?clientType={YPV}&amp;store=Zest&amp;store={MOStoreID}&amp;store={OEMStoreID}" />
+        <ep id="ApplicationPurchaseHistory" url="https://cert-commerce.{ZestDomain}/v2/billing/purchaseHistory?tunerType=zuneMobile&amp;mediaTypeOrCategory=Apps&amp;startDate={lastfetchtime}" />
+        <ep id="ApplicationCategory" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/appCategories/{objectid}?clientType={YPV}&amp;store=Zest&amp;store={MOStoreID}&amp;store={OEMStoreID}" />
+        <ep id="ApplicationCategoryFeatured" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/appCategories/{objectid}/clientTypes/{YPV}/hub?store=Zest&amp;store={MOStoreID}&amp;store={OEMStoreID}" />
+        <ep id="ApplicationCategoryTop" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/appCategories/{objectid}/apps?orderBy=downloadRank&amp;cost=paid&amp;chunkSize={chunksize}&amp;clientType={YPV}&amp;store=Zest&amp;store={MOStoreID}&amp;store={OEMStoreID}" />
+        <ep id="ApplicationCategoryNew" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/appCategories/{objectid}/apps?orderBy=releaseDate&amp;chunkSize={chunksize}&amp;clientType={YPV}&amp;store=Zest&amp;store={MOStoreID}&amp;store={OEMStoreID}" />
+        <ep id="ApplicationCategoryFree" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/appCategories/{objectid}/apps?orderBy=downloadRank&amp;cost=free&amp;chunkSize={chunksize}&amp;clientType={YPV}&amp;store=Zest&amp;store={MOStoreID}&amp;store={OEMStoreID}" />
+        <ep id="ApplicationCategoryXboxLive" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/appCategories/{objectid}/apps?orderBy=releaseDate&amp;tag=apptag.premium&amp;chunkSize={chunksize}&amp;clientType={YPV}&amp;store=Zest&amp;store={MOStoreID}&amp;store={OEMStoreID}" />
+        <ep id="ApplicationSynopsis" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/apps/{objectid}/synopsis?clientType={YPV}&amp;store=Zest&amp;store={MOStoreID}&amp;store={OEMStoreID}" />
+        <ep id="ApplicationCurrentUserReview" url="https://stats.{ZestDomain}/v4.0/{CatalogLocale}/members/{zuneuserid}/app/{objectid}/review" />
+        <ep id="ApplicationRatingImage" url="http://image.catalog.{ZestDomain}/v3.2/{CatalogLocale}/apps/{objectid}/ratingImage?width=60&amp;height=90&amp;resize=true&amp;contenttype=image/jpeg" />
+
+        <ep id="AppListForGameId" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/liveEngagement/{objectid}/apps?store=Zest&amp;store={MOStoreID}&amp;store={OEMStoreID}&amp;clientType={YPV}" />
+        <ep id="AppListForPublisher" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/apps?orderBy=downloadRank&amp;chunkSize={appsearchchunksize}&amp;store=Zest&amp;store={MOStoreID}&amp;store={OEMStoreID}&amp;clientType={YPV}&amp;publisher={query}"/>
+
+        <ep id="UsageData" url="https://stats.{ZestDomain}/v4.0/usage"/>
+
+        <ep id="GetCreditCards" url="https://cert-commerce.{ZestDomain}/billing/getcreditcards" />
+        <ep id="GetUser" url="https://cert-commerce.{ZestDomain}/v2/account/user" />
+        <ep id="PurchaseAssetV2" url="https://cert-commerce.{ZestDomain}/v2/billing/purchaseasset" />
+        <ep id="ResumePurchaseAsset" url="https://cert-commerce.{ZestDomain}/v3/billing/resumepurchase" />
+        <ep id="ZESTSignInV2" url="https://cert-commerce.{ZestDomain}/v2/account/signin" />
+        <ep id="RegisterTunerV2" url="https://cert-commerce.{ZestDomain}/v2/tuner/register" />
+        <ep id="ZESTCreateUser" url="https://cert-commerce.{ZestDomain}/v2/account/createuser" />
+        <ep id="ZESTUpgradeUser" url="https://cert-commerce.{ZestDomain}/v2/account/upgrade" />
+        <ep id="ZESTReserveTag" url="https://cert-commerce.{ZestDomain}/v2/account/reservetag" />
+        <ep id="PurchaseAssetV3" url="https://cert-commerce.{ZestDomain}/v3/billing/purchaseasset" />
+
+        <ep id="FeaturedMusic" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/hubs/music"/>
+        <ep id="GenreFeaturedMusic" url="http://catalog.{ZestDomain}/v3.2/{CatalogLocale}/music/genre/{objectid}/hub"/>
+        <ep id="FeaturedItemImage" url="http://image.catalog.{ZestDomain}/v3.2/{CatalogLocale}/image/{objectid}?width=320&amp;height=320&amp;resize=true&amp;contenttype=image/jpeg"/>
+        <ep id="FeaturedItemBackgroundImage" url="http://image.catalog.{ZestDomain}/v3.2/{CatalogLocale}/image/{objectid}?height=480&amp;resize=true&amp;contenttype=image/jpeg" />
+
+        <ep id="ZMktTermsOfServiceLink" url="http://www.{ZuneWebPageDomain}/redirects/wmtos.ashx"/>
+
+        <ep id="SubmitMeteringReport" url="https://cert-commerce.{ZestDomain}/tuner/submitmeteringreport"/>
+        <ep id="AckMeteringReport" url="https://cert-commerce.{ZestDomain}/tuner/ackmeteringreport"/>
+
+        <ep id="ContentRedirect" url="http://social.{ZestDomain}"/>
+
+        <ep id="MOImage" url="http://image.catalog.{ZestDomain}/v3.2/{CatalogLocale}/stores/{MOStoreID}/image?width=100"/>
+        <ep id="OEMImage" url="http://image.catalog.{ZestDomain}/v3.2/{CatalogLocale}/stores/{OEMStoreID}/image?width=100"/>
+
+        <ep id="SmartDjRadio" url="https://mix-ssl.{ZestDomain}/v4.0/{CatalogLocale}/members/{zuneuserid}/radio/channel/{objectid}/tracks?count={trackcount}&amp;sessionID={sessionid}" />
+        <ep id="TracksSimilarToArtist" url="http://mix.{ZestDomain}/v3.0/members/{zuneuserid}/artist/{objectid}/similarTracks?chunkSize={trackcount}" />
+        <ep id="TracksSimilarToTrack" url="http://mix.{ZestDomain}/v3.0/members/{zuneuserid}/track/{objectid}/similarTracks?chunkSize={trackcount}" />
+        <ep id="PlaybackTelemetry" url="https://{TelemetryDomain}/stats/mbr.aspx"/>  
+    </Zest>
+
+</ConfigurationFile>

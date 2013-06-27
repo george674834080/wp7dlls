@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<!--
+Use of this source code is subject to the terms of the Microsoft
+premium shared source license agreement under which you licensed
+this source code. If you did not accept the terms of the license
+agreement, you are not authorized to use this source code.
+For the terms of the license, please see the license agreement
+signed by you and Microsoft.
+THE SOURCE CODE IS PROVIDED "AS IS", WITH NO WARRANTIES OR INDEMNITIES.
+-->
+<CeSecurityPolicyFile Description="Default Watson Core security policy" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.4.9876" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">
+
+  <Rule Description="Restrict access to the CaptureDumpFileOnDevice() API to Supervisor" ResourceIri="$(GLOBAL_RESOURCES)/WATSON/CAPTURE_DUMPFILE_ON_DEVICE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Description="Restrict access to the Watson (OsAxsT0) IOCTLs" ResourceIri="$(GLOBAL_RESOURCES)/WATSON/IOCTL_WATSON" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+</CeSecurityPolicyFile>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<!--
+Use of this source code is subject to the terms of the Microsoft
+premium shared source license agreement under which you licensed
+this source code. If you did not accept the terms of the license
+agreement, you are not authorized to use this source code.
+For the terms of the license, please see the license agreement
+signed by you and Microsoft.
+THE SOURCE CODE IS PROVIDED "AS IS", WITH NO WARRANTIES OR INDEMNITIES.
+-->
+<CeSecurityPolicyFile Description="Credman: Policy File for sharing of credentials between Office Mobile and Outlook Mobile;ntlmssp: Default Primitive Provider security policy;" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.00" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">  
+<!-- Credman: Policy File for sharing of credentials between Office Mobile and Outlook Mobile -->
+<Rule Description="Policy rule to check only apps in normal chamber and above can access public credentials" ResourceIri="policy:/RESOURCES/CREDMAN/PUBLIC/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ, GENERIC_WRITE"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Policy rule to check only apps in supervisor chamber and above can access trusted credentials" ResourceIri="policy:/RESOURCES/CREDMAN/TRUSTED/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ, GENERIC_WRITE"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Credman service user mode driver rule" ResourceIri="$(DEVICEMANAGER_DEVICE)/CRD/0" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Protect credman registry keys" ResourceIri="$(HKLM)/COMM/SECURITY/CREDMAN/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+
+<!-- ntlmssp: Default Primitive Provider security policy -->
+<!-- NTLM service rule -->
+    <Rule Description="Allow the NTLM service to be called from standard chamber and above" ResourceIri="$(DEVICEMANAGER_DEVICE)/SSP/0" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+        </Authorize>
+    </Rule>
+
+
+
+</CeSecurityPolicyFile>

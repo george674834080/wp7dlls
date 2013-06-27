@@ -1,0 +1,689 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<!--
+Use of this source code is subject to the terms of the Microsoft
+premium shared source license agreement under which you licensed
+this source code. If you did not accept the terms of the license
+agreement, you are not authorized to use this source code.
+For the terms of the license, please see the license agreement
+signed by you and Microsoft.
+THE SOURCE CODE IS PROVIDED "AS IS", WITH NO WARRANTIES OR INDEMNITIES.
+-->
+<CeSecurityPolicyFile Description="Default list of accounts" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.4.9876" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">
+  <Macro Id="MMSTRANS_USER_NAME" Description="MMS transport user SID" Value="S-1-5-112-0-0X20-0X0000002E"></Macro>
+  <Macro Id="MMSTRANS_USER_FRIENDLY_NAME" Description="MMS transport" Value="LOC_ACCOUNT_FRIENDLY_NAME_MMSTRANS_USER"></Macro>
+  <Account Id="$(MMSTRANS_USER_NAME)" FriendlyName="$(MMSTRANS_USER_FRIENDLY_NAME)" Action="CreateNew" Description="MMS transport user" Type="User">
+    <MemberOfGroup Action="Add" GroupAccountId="$(STANDARD_RIGHTS_CHAMBER_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+  <!-- Outlook mobile applicatios routing to OM chamber -->
+  
+<!--Begin Generated accounts and routing/authz rules for $(OM_USER_NAME) -->
+
+<!--Begin Generated routing/authz rules for EMAIL.EXE -->
+<Rule Description="Route EMAIL.EXE" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/EMAIL.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(OM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize EMAIL.EXE be loadable to $(OM_USER_NAME) and  chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/EMAIL.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(OM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for EMAIL.EXE -->
+
+<!--Begin Generated routing/authz rules for EMAILSETUP.EXE -->
+<Rule Description="Route EMAILSETUP.EXE" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/EMAILSETUP.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(OM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize EMAILSETUP.EXE be loadable to $(OM_USER_NAME) and  chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/EMAILSETUP.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(OM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for EMAILSETUP.EXE -->
+
+<!--Begin Generated routing/authz rules for CALENDARAPP.EXE -->
+<Rule Description="Route CALENDARAPP.EXE" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/CALENDARAPP.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(OM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize CALENDARAPP.EXE be loadable to $(OM_USER_NAME) and  chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/CALENDARAPP.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(OM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for CALENDARAPP.EXE -->
+
+<!--Begin Generated routing/authz rules for CALNOT.EXE -->
+<Rule Description="Route CALNOT.EXE" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/CALNOT.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(OM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize CALNOT.EXE be loadable to $(OM_USER_NAME) and  chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/CALNOT.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(OM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for CALNOT.EXE -->
+
+<!--Begin Generated routing/authz rules for CALUPD.EXE -->
+<Rule Description="Route CALUPD.EXE" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/CALUPD.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(OM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize CALUPD.EXE be loadable to $(OM_USER_NAME) and  chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/CALUPD.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(OM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for CALUPD.EXE -->
+
+<!--Begin Generated routing/authz rules for SICLNT.EXE -->
+<Rule Description="Route SICLNT.EXE" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/SICLNT.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(OM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize SICLNT.EXE be loadable to $(OM_USER_NAME) and  chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/SICLNT.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(OM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for SICLNT.EXE -->
+
+<!--Begin Generated routing/authz rules for COMMSVC.EXE -->
+<Rule Description="Route COMMSVC.EXE" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/COMMSVC.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(OM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize COMMSVC.EXE be loadable to $(OM_USER_NAME) and  chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/COMMSVC.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(OM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for COMMSVC.EXE -->
+
+<!--Begin Generated routing/authz rules for CONTACTS.EXE -->
+<Rule Description="Route CONTACTS.EXE" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/CONTACTS.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(OM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize CONTACTS.EXE be loadable to $(OM_USER_NAME) and  chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/CONTACTS.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(OM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for CONTACTS.EXE -->
+
+<!--Begin Generated routing/authz rules for IMPORTXMLCONTACTS.EXE -->
+<Rule Description="Route IMPORTXMLCONTACTS.EXE" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/IMPORTXMLCONTACTS.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(OM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize IMPORTXMLCONTACTS.EXE be loadable to $(OM_USER_NAME) and  chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/IMPORTXMLCONTACTS.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(OM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for IMPORTXMLCONTACTS.EXE -->
+
+<!--Begin Generated routing/authz rules for MMSPRPROXY.EXE -->
+<Rule Description="Route MMSPRPROXY.EXE" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/MMSPRPROXY.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(OM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize MMSPRPROXY.EXE be loadable to $(OM_USER_NAME) and  chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/MMSPRPROXY.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(OM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for MMSPRPROXY.EXE -->
+
+<!--Begin Generated routing/authz rules for ACCOUNTSMANAGER.EXE -->
+<Rule Description="Route ACCOUNTSMANAGER.EXE" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/ACCOUNTSMANAGER.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(OM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize ACCOUNTSMANAGER.EXE be loadable to $(OM_USER_NAME) and  chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/ACCOUNTSMANAGER.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(OM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for ACCOUNTSMANAGER.EXE -->
+
+<!--Begin Generated routing/authz rules for SHORTMSG.EXE -->
+<Rule Description="Route SHORTMSG.EXE" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/SHORTMSG.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(OM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize SHORTMSG.EXE be loadable to $(OM_USER_NAME) and  chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/SHORTMSG.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(OM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for SHORTMSG.EXE -->
+
+<!--Begin Generated routing/authz rules for SMSTRANSPORT.EXE -->
+<Rule Description="Route SMSTRANSPORT.EXE" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/SMSTRANSPORT.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(OM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize SMSTRANSPORT.EXE be loadable to $(OM_USER_NAME) and  chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/SMSTRANSPORT.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(OM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for SMSTRANSPORT.EXE -->
+<!--End Generated accounts and routing/authz rules for $(OM_USER_NAME) -->
+
+  
+<!--Begin Generated accounts and routing/authz rules for $(MMSTRANS_USER_NAME) -->
+
+<!--Begin Generated routing/authz rules for MMSTRANSHOST.EXE -->
+<Rule Description="Route MMSTRANSHOST.EXE" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/MMSTRANSHOST.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(MMSTRANS_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize MMSTRANSHOST.EXE be loadable to $(MMSTRANS_USER_NAME) and  chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/MMSTRANSHOST.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(MMSTRANS_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for MMSTRANSHOST.EXE -->
+<!--End Generated accounts and routing/authz rules for $(MMSTRANS_USER_NAME) -->
+
+  <!-- Rules pertaining to the messaging RPC service -->
+  <Rule Action="CreateNew" Description="RPC service for sync application" ResourceIri="$(RPC_SERVER_ENDPOINT)/RemoteSyncApp" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Action="CreateNew" Description="RPC server interface for the Sync app " ResourceIri="$(RPC_CLIENT_INTERFACE)/0c53aa2e-fb1c-49c5-bfb6-c54f8e5857cd/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Action="CreateNew" Description="RPC service for pop3imap plugin" ResourceIri="$(RPC_SERVER_ENDPOINT)/RemotePOP3IMAPApp" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Action="CreateNew" Description="RPC server interface for the pop3imap plugin " ResourceIri="$(RPC_CLIENT_INTERFACE)/599d9762-c0f8-7ccd-dc6f-2b60ca15cef9/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Action="CreateNew" Description="RPC service for Presence Provider Server" ResourceIri="$(RPC_SERVER_ENDPOINT)/IMessengerPresenceProvider" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Action="CreateNew" Description="RPC client interface for Presence Provider Server" ResourceIri="$(RPC_CLIENT_INTERFACE)/d3373273-33c5-4f65-a0d8-379d426ffeed/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Action="CreateNew" Description="RPC service for Messenger Service" ResourceIri="$(RPC_SERVER_ENDPOINT)/IMessengerService" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Action="CreateNew" Description="RPC client interface for Messenger Service" ResourceIri="$(RPC_CLIENT_INTERFACE)/b9fc272f-5185-4afa-a506-24a089ab1a02/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+      <Match Action="Add" AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Action="CreateNew" Description="Rule to allow DB_CEOID_* EDB notification messages about callhistory items from cprog" ResourceIri="policy:/RESOURCES/$(OM_USER_NAME)/GWEWINMSG/USER" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="S-1-5-112-0-0X10-0X00000005" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <!-- Rules pertaining to the files -->
+  <Rule Action="CreateNew" Description="Applications in the normal group can access default stores" ResourceIri="$(FILESYS_PRIMARY_ROOT)/APPLICATION%20DATA/MICROSOFT/OUTLOOK/STORES/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Action="CreateNew" Description="Applications in the normal group can access default device store" ResourceIri="$(FILESYS_PRIMARY_ROOT)/APPLICATION%20DATA/MICROSOFT/OUTLOOK/STORES/DEVICESTORE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Action="CreateNew" Description="ShortMsg and Media app can access, standard group can only read MMS temp files" ResourceIri="$(FILESYS_PRIMARY_ROOT)/APPLICATION%20DATA/Volatile/MMS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+      <Match Action="Add" AccountId="$(SID_MEUX_STANDARD)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+      <Match Action="Add" AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_GENERIC_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Action="CreateNew" Description="Applications in the normal group can access active sync logs" ResourceIri="$(FILESYS_PRIMARY_ROOT)/WINDOWS/ACTIVESYNC/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Action="CreateNew" Description="Applications in the OM chamber can access MMS engine working folder" ResourceIri="$(FILESYS_PRIMARY_ROOT)/APPLICATION%20DATA/MICROSOFT/SHORTMESSAGE/MMS/ENGINE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(MMSTRANS_USER_NAME)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <!-- Rules pertaining to the kernel objects -->
+  <Rule Action="CreateNew" Description="Base policy for OM mutexs" ResourceIri="policy:/KERNEL/MUTEX/$(OM_USER_NAME)/PRIVATE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Action="CreateNew" Description="Base policy for OM mutexs" ResourceIri="policy:/KERNEL/MUTEX/$(OM_USER_NAME)/SHARED/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Action="CreateNew" Description="Base policy for OM mapfiles" ResourceIri="policy:/KERNEL/MAPFILE/$(OM_USER_NAME)/PRIVATE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Action="CreateNew" Description="Base policy for OM mapfiles" ResourceIri="policy:/KERNEL/MAPFILE/$(OM_USER_NAME)/SHARED/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Action="CreateNew" Description="Base policy for OM events" ResourceIri="policy:/KERNEL/EVENT/$(OM_USER_NAME)/PRIVATE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+      <Match Action="Add" AccountId="$(MMSTRANS_USER_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Action="CreateNew" Description="Base policy for OM events" ResourceIri="policy:/KERNEL/EVENT/$(OM_USER_NAME)/SHARED/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Action="CreateNew" Description="Base policy for IM events" ResourceIri="policy:/KERNEL/EVENT/PRIVATE/Messenger/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <!-- Rules pertaining to Message Queues-->
+  <!-- Protect MapiShellNotification message queue from everyone -->
+  <Rule Action="CreateOrReplace" Description="MapiShellNotification Message Queues are accessible to OM" ResourceIri="policy:/KERNEL/MSGQUEUE/$(OM_USER_NAME)/CommsApps/Messaging/ShellNotification/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <!-- OM chamber gets full access -->
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+      <!-- SSUpdate requires READ access since it reads off of this Q. SSUpdate is part of elevated group -->
+      <Match Action="Add" AccountId="$(ELEVATED_RIGHTS_CHAMBER_GROUP_NAME)" AuthorizationIds="GENERIC_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <!-- Rules pertaining to the registry-->
+  <Rule Action="CreateNew" Description="The activesync configuration shouldn't be allowed to be modified by apps running in normal group" ResourceIri="$(HKCU)/SOFTWARE/MICROSOFT/ACTIVESYNC/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match Action="Add" AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match Action="Add" AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Action="CreateNew" Description="The secure activesync configuration should be be modified by CommSync running in OM chamber only" ResourceIri="$(HKCU)/SECURITY/SOFTWARE/MICROSOFT/ACTIVESYNC/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match Action="Add" AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Action="CreateNew" Description="The Inbox configuration should be accessible to by email app running in OM chamber" ResourceIri="$(HKLM)/SYSTEM/INBOX/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match Action="Add" AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match Action="Add" AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Action="CreateNew" Description="Share Accounts settings should be accessible to by email, entertainment, and elevated apps" ResourceIri="$(HKLM)/SYSTEM/SHARE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match Action="Add" AccountId="$(SID_MEUX_STANDARD)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match Action="Add" AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match Action="Add" AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Action="CreateNew" Description="Email settings should be accessible to email, and elevated apps" ResourceIri="$(HKCU)/Software/Microsoft/Email/Settings/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match Action="Add" AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match Action="Add" AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Action="CreateNew" Description="The SMS and SISL configuration should be accessible to by app running in OM chamber" ResourceIri="$(HKLM)/SYSTEM/SHORTMSG/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match Action="Add" AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match Action="Add" AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Action="CreateNew" Description="The SMS delivery notification settings should be accessible to by app running in OM chamber" ResourceIri="$(HKCU)/SOFTWARE/MICROSOFT/SHORTMSG/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match Action="Add" AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match Action="Add" AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Action="CreateNew" Description="The activesync and email notifications be allowed to be modified by apps running in OM chamber" ResourceIri="$(HKLM)/SYSTEM/STATE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match Action="Add" AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match Action="Add" AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Action="CreateNew" Description="The event log congifuration be allowed to be modified by apps running in OM chamber" ResourceIri="$(HKLM)/SYSTEM/EVENTLOG/CHANNEL/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match Action="Add" AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match Action="Add" AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Description="The contacts configuration shouldn't be allowed to be modified by apps running in normal group" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/CONTACTS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(OM_USER_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Description="The MMS profiles should be allowed to be modified by DM and the apps running in OM chamber" ResourceIri="$(HKCU)/SOFTWARE/MICROSOFT/SHORTMSG/MMS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(OM_USER_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match Action="Add" AccountId="$(MMSTRANS_USER_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Action="CreateNew" Description="The Flags field of the MessengerService definition should be allowed to be modified to enable/disable start at boot" ResourceIri="$(HKLM)/SERVICES/LIM/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <!-- Rules pertaining to push router client -->
+  <Rule Action="CreateNew" Description="Apps running in OM chamber should have read/write access to specific push router message" ResourceIri="$(GLOBAL_RESOURCES)/PR_MessageAccess/application%2Fvnd.wap.sic;" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="GENERIC_READ, GENERIC_WRITE"></Match>
+    </Authorize>
+  </Rule>
+  <Rule Action="CreateNew" Description="Apps running in OM chamber should have read/write access to specific push router message" ResourceIri="$(GLOBAL_RESOURCES)/PR_MessageAccess/text%2Fvnd.wap.si;application%2Fvnd.wap.sic;" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="GENERIC_READ, GENERIC_WRITE"></Match>
+    </Authorize>
+  </Rule>
+  <Rule Action="CreateNew" Description="Apps running in OM chamber should have read/write access to specific push router message" ResourceIri="$(GLOBAL_RESOURCES)/PR_MessageAccess/application%2Fvnd.wap.slc;" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="GENERIC_READ, GENERIC_WRITE"></Match>
+    </Authorize>
+  </Rule>
+  <Rule Action="CreateNew" Description="Apps running in OM chamber should have read/write access to specific push router message" ResourceIri="$(GLOBAL_RESOURCES)/PR_MessageAccess/text%2Fvnd.wap.sl;application%2Fvnd.wap.slc;" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="GENERIC_READ, GENERIC_WRITE"></Match>
+    </Authorize>
+  </Rule>
+  <Rule Action="CreateNew" Description="Apps running in OM chamber should have read/write access to specific push router message" ResourceIri="$(GLOBAL_RESOURCES)/PR_MessageAccess/application%2Fvnd.wap.emn+wbxml;x-wap-application:emn.ua" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="GENERIC_READ, GENERIC_WRITE"></Match>
+    </Authorize>
+  </Rule>
+  <Rule Action="CreateNew" Description="Apps running in OM chamber should have read/write access to specific push router message" ResourceIri="$(GLOBAL_RESOURCES)/PUSHROUTER/Open" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="GENERIC_EXECUTE"></Match>
+      <Match Action="Add" AccountId="$(MMSTRANS_USER_NAME)" AuthorizationIds="GENERIC_EXECUTE"></Match>
+    </Authorize>
+  </Rule>
+  <Rule Action="CreateNew" Description="Apps running in OM chamber should have read/write access to specific push router message" ResourceIri="$(GLOBAL_RESOURCES)/PUSHROUTER/Close" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="GENERIC_EXECUTE"></Match>
+      <Match Action="Add" AccountId="$(MMSTRANS_USER_NAME)" AuthorizationIds="GENERIC_EXECUTE"></Match>
+    </Authorize>
+  </Rule>
+  <Rule Action="CreateNew" Description="Apps running in OM chamber should have read/write access to specific push router message" ResourceIri="$(GLOBAL_RESOURCES)/PUSHROUTER/GetMessage" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="GENERIC_EXECUTE"></Match>
+      <Match Action="Add" AccountId="$(MMSTRANS_USER_NAME)" AuthorizationIds="GENERIC_EXECUTE"></Match>
+    </Authorize>
+  </Rule>
+  <Rule Description="Apps running in OM chamber should have read/write access to MMS push router message" ResourceIri="$(GLOBAL_RESOURCES)/PR_MessageAccess/application%2Fvnd.wap.mms-message;x-wap-application:mms.ua" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(MMSTRANS_USER_NAME)" AuthorizationIds="GENERIC_READ, GENERIC_WRITE"></Match>
+    </Authorize>
+  </Rule>
+  <!-- Rules pertaining to cfghost -->
+  
+<!--Begin Generated accounts and routing/authz rules for $(SYSTEM_USER_NAME) -->
+
+<!--Begin Generated routing/authz rules for CFGHOST.EXE -->
+<Rule Description="Route CFGHOST.EXE" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/CFGHOST.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize CFGHOST.EXE be loadable to $(SYSTEM_USER_NAME) and $(SYSTEM_IDENTITY_GROUP_NAME) chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/CFGHOST.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+<Match AccountId="$(SYSTEM_IDENTITY_GROUP_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for CFGHOST.EXE -->
+<!--End Generated accounts and routing/authz rules for $(SYSTEM_USER_NAME) -->
+
+  <Rule Action="CreateNew" Description="Allow OM to modify the registry keys that control device lock policy so that Exchange policy can be applied" ResourceIri="$(HKLM)/COMM/SECURITY/POLICY/LASSD/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+  <Rule Action="CreateNew" Description="Allow OM to modify the registry keys that control network policy so that Exchange policy can be applied" ResourceIri="$(HKLM)/COMM/NETWORKPOLICY/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+  <!-- SMS MESSAGE -->
+  <Rule Action="CreateNew" Description="Apps running in OM chamber will have access to SMS messges" ResourceIri="policy:/RESOURCES/GLOBAL/SMS_MESSAGE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="GENERIC_READ,GENERIC_WRITE,GENERIC_EXECUTE"></Match>
+      <Match Action="Add" AccountId="$(MMSTRANS_USER_NAME)" AuthorizationIds="GENERIC_READ,GENERIC_WRITE,GENERIC_EXECUTE"></Match>
+    </Authorize>
+  </Rule>
+  <!-- OM Services -->
+  <Rule Action="CreateNew" Description="OM has full rights to POOM indexing keys, standard can read them" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/POOM/INDEXING/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match Action="Add" AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Action="CreateNew" Description="Sms transport service entry point policy is accessible to the OM chamber only" ResourceIri="policy:/DEVICEMANAGER/DEVICE/SMT/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Action="CreateNew" Description="PIM Index Maintenance service entry point policy is accessible to the OM chamber only" ResourceIri="policy:/DEVICEMANAGER/DEVICE/PIM/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Action="CreateNew" Description="PIM Index Maintenance service events are accessible to the OM chamber only" ResourceIri="policy:/KERNEL/EVENT/PIMIM/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Description="Msg Maintenance service entry point policy is accessible to the OM chamber only" ResourceIri="policy:/DEVICEMANAGER/DEVICE/MSG/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Description="CEMAPI service entry point policy is accessible to the OM chamber only" ResourceIri="policy:/DEVICEMANAGER/DEVICE/MPI/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+      <Match Action="Add" AccountId="$(MMSTRANS_USER_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <!-- SIM FILE -->
+  <Rule Action="CreateNew" Description="Allow OM to access SIM files" ResourceIri="policy:/RESOURCES/GLOBAL/SIM_FILE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="GENERIC_READ,GENERIC_WRITE"></Match>
+      <Match Action="Add" AccountId="$(MMSTRANS_USER_NAME)" AuthorizationIds="GENERIC_READ,GENERIC_WRITE"></Match>
+    </Authorize>
+  </Rule>
+  <Rule Description="Allow contacts.exe to delete OEM, MO and Custom Ringtone entries under the Sounds Registry key" ResourceIri="$(HKCU)/CONTROLPANEL/SOUNDS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(OM_USER_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+  <Rule Description="Allow Contacts app to access the SHDeleteSoundFile API" ResourceIri="$(GLOBAL_RESOURCES)/SHELL/SHDeleteSoundFile" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(OM_USER_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+  
+<!--Begin Generated accounts and routing/authz rules for $(SYSTEM_USER_NAME) -->
+
+<!--Begin Generated routing/authz rules for 47124C2D-F925-48e2-A1E5-A5428F8994AB_ui.exe -->
+<Rule Description="Route 47124C2D-F925-48e2-A1E5-A5428F8994AB_ui.exe" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/47124C2D-F925-48E2-A1E5-A5428F8994AB_UI.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize 47124C2D-F925-48e2-A1E5-A5428F8994AB_ui.exe be loadable to $(SYSTEM_USER_NAME) and  chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/47124C2D-F925-48E2-A1E5-A5428F8994AB_UI.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for 47124C2D-F925-48e2-A1E5-A5428F8994AB_ui.exe -->
+<!--End Generated accounts and routing/authz rules for $(SYSTEM_USER_NAME) -->
+
+</CeSecurityPolicyFile>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<CeSecurityPolicyFile Description="alpcd: Policy to allow access to the ALPC driver.;lpcd: Policy to allow access to the NT4 LPC driver.;rpcrt4: Macros for use with RPC security policy.;" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.00" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">  
+
+<!-- ETW: Policy to enable logging in any chamber -->
+  <Rule Description="Grant everyone access to RPC's EEInfo channel." ResourceIri="$(GLOBAL_RESOURCES)/EVENTLOG_CHANNEL/Microsoft-Windows-RPC%2FEEInfo" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="GENERIC_READ, GENERIC_WRITE"></Match>
+    </Authorize>
+  </Rule>
+  <Rule Description="Grant everyone access to RPC's Debug channel." ResourceIri="$(GLOBAL_RESOURCES)/EVENTLOG_CHANNEL/Microsoft-Windows-RPC%2FDebug" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="GENERIC_READ, GENERIC_WRITE"></Match>
+    </Authorize>
+  </Rule>
+
+
+<!-- alpcd: Policy to allow access to the ALPC driver. -->
+<Rule Description="Authorization for new LPC Driver" ResourceIri="$(DEVICEMANAGER_DEVICE)/LPC/2" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+<!-- rpcrt4: Macros for use with RPC security policy. -->
+<!-- Macros for use with RPC -->
+
+  <Macro Id="RPC_SERVER_ENDPOINT" Description="Represents the endpoint name class for RPC policy checks." Value="policy:/RPC/SERVER/ENDPOINT"></Macro>
+
+  <Macro Id="RPC_CLIENT_INTERFACE" Description="Represents the client-side interface UUID string class for RPC policy checks." Value="policy:/RPC/CLIENT/INTERFACE"></Macro>
+
+  <Rule Description="Grants TCB full access to RPC " ResourceIri="policy:/RPC/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Predefined name-based policies -->
+
+  <!-- 
+       These exist to enable apps not capable of modifying policy XML to
+       make use of RPC in certain predefined configurations.
+       Using endpoint names in the format <Server chamber>/<Client chamber>/<name>
+       will match certain rules based on the name and automatically allow for the use of RPC.
+       The rule format is:
+       /RPC/{SERVER,CLIENT}/ENDPOINT/<Server chamber>/<Client chamber>
+       /RPC/{SERVER,CLIENT}/INTERFACE/<Interface UUID>/<Server chamber>/<Client chamber>
+    -->
+
+  <Rule Description="Lets server in the elevated group register endpoints with names prefixed by ELEVATED/(*)" ResourceIri="$(RPC_SERVER_ENDPOINT)/ELEVATED/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Lets servers in the standard group register endpoints with names prefixed by STANDARD/(*)/" ResourceIri="$(RPC_SERVER_ENDPOINT)/STANDARD/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Lets elevated clients call into servers with names prefixed by (+)/ELEVATED/" ResourceIri="$(RPC_CLIENT_INTERFACE)/(+)/(+)/ELEVATED/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Lets standard clients call into servers registered with names prefixed by (+)/STANDARD/" ResourceIri="$(RPC_CLIENT_INTERFACE)/(+)/(+)/STANDARD/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Lets restricted clients call into servers registered with names prefixed by (+)/RESTRICTED/" ResourceIri="$(RPC_CLIENT_INTERFACE)/(+)/(+)/RESTRICTED/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+  </Rule>
+
+
+
+</CeSecurityPolicyFile>

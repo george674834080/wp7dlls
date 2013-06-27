@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<!--
+Use of this sample source code is subject to the terms of the Microsoft
+license agreement under which you licensed this sample source code. If
+you did not accept the terms of the license agreement, you are not
+authorized to use this sample source code. For the terms of the license,
+please see the license agreement between you and Microsoft or, if applicable,
+see the LICENSE.RTF on your install media or the root of your tools installation.
+THE SAMPLE SOURCE CODE IS PROVIDED "AS IS", WITH NO WARRANTIES OR INDEMNITIES.
+-->
+
+<endpointmap>
+
+  <setting id="Mobile Operator Name" value="AT&amp;T" />
+  <setting id="Mobile Operator ID" value="ATT" />
+  <setting id="Max Download Size" value="" />
+  <setting id="App Privacy Consent Text" value="We might give your stuff out..." />
+
+  <setting id="OEM ID" value="LG" />
+  <setting id="OEM Name" value="LG" />
+
+  <setting id="Localized Music Tax String" value="plus tax" />
+  <setting id="Localized Video Tax String" value="plus tax" />
+  <setting id="Localized App Tax String" value="plus tax" />
+
+  <setting id="Podcast Marketplace Enabled" value="true" />
+  <setting id="App Marketplace Enabled" value="true" />
+  <setting id="Show ESRB Ratings" value="true" />
+
+  <setting id="Music Marketplace Enabled" value="true" />
+
+  <setting id="XBox Live Available" value="true" />
+
+  <setting id="Local Background Art Dynamic" value="true" />
+  <setting id="Local Artist Bio Pivot Enabled" value="true" />
+  <setting id="Local See More Albums From Artist Enabled" value="true" />
+  <setting id="Local View In Marketplace Enabled" value="true" />
+  <setting id="Local Get More Podcasts Enabled" value="true" />
+  <setting id="Local Search From FM Enabled" value="true" />
+  <setting id="Local Market Place From Hub Enabled" value="true" />
+
+  <setting id="MO Billing Enabled" value="true" />
+  <setting id="MO End Cap Enabled" value="true" />
+
+  <setting id="OEM End Cap Enabled" value="true" />
+
+  <setting id="Client Needs Upgrade" value="false" />
+
+  <ep id="ECommerceSignIn" url="https://commerce.b.aegis.zune.net/account/signin" />
+  <ep id="AcquisitionInfoFor" url="https://commerce.b.aegis.zune.net/billing/verifypastpurchase" />
+  <ep id="GetBalances" url="https://commerce.b.aegis.zune.net/account/balances" />
+  <ep id="GetLocation" url="https://commerce.b.aegis.zune.net/asset/location" />
+  <ep id="AcquireLicense" url="https://commerce.b.aegis.zune.net/asset/acquirelicense" />
+  <ep id="AckLicenseDelivery" url="https://commerce.b.aegis.zune.net/asset/acklicensedelivery" />
+  <ep id="PurchaseAsset" url="https://commerce.b.aegis.zune.net/billing/purchaseasset" />
+  <ep id="RegisterTuner" url="https://commerce.b.aegis.zune.net/tuner/register" />
+
+  <ep id="Passport_ZEST" url="kdc.test.xboxlive.com" />
+
+  <ep id="Album" url="http://catalog.b.aegis.zune.net/v3.2/music/album/{objectid}" />
+  <ep id="AlbumSearch" url="http://catalog.b.aegis.zune.net/v3.2/music/album/?chunksize={searchchunksize}&amp;orderBy=playRank&amp;q={query}" />
+  <ep id="AlbumsList" url="http://catalog.b.aegis.zune.net/v3.2/music/chart/zune/albums?chunksize={chunksize}" />
+
+  <ep id="Artist" url="http://catalog.b.aegis.zune.net/v3.2/music/artist/{objectid}" />
+  <ep id="ArtistAlbums" url="http://catalog.b.aegis.zune.net/v3.2/music/artist/{objectid}/albums?chunksize={chunksize}&amp;orderBy=playRank&amp;isActionable=true" />
+  <ep id="ArtistInfluencers" url="http://catalog.b.aegis.zune.net/v3.2/music/artist/{objectid}/influencers?chunksize={chunksize}" />
+  <ep id="ArtistSearch" url="http://catalog.b.aegis.zune.net/v3.2/music/artist/?chunksize={searchchunksize}&amp;orderBy=playRank&amp;q={query}" />
+  <ep id="ArtistTracks" url="http://catalog.b.aegis.zune.net/v3.2/music/artist/{objectid}/tracks?chunksize={chunksize}&amp;orderBy=playRank&amp;isActionable=true" />
+  <ep id="ArtistPhotos" url="http://catalog.b.aegis.zune.net/v3.2/music/artist/{objectid}/images" />
+  <ep id="ArtistBio" url="http://catalog.b.aegis.zune.net/v3.2/music/artist/{objectid}/biography" />
+
+  <ep id="FeaturedAlbums" url="http://catalog.b.aegis.zune.net/v3.2/music/featured/albums" />
+
+  <ep id="Genre" url="http://catalog.b.aegis.zune.net/v3.2/music/genre/{objectid}" />
+  <ep id="GenreAlbums" url="http://catalog.b.aegis.zune.net/v3.2/music/chart/zune/genre/{objectid}/albums?chunksize={chunksize}" />
+  <ep id="GenresInfo" url="http://catalog.b.aegis.zune.net/v3.2/music/genre" />
+  <ep id="GenreTracks" url="http://catalog.b.aegis.zune.net/v3.2/music/chart/zune/genre/{objectid}/tracks?chunksize={chunksize}" />
+  <ep id="GenreFeaturedArtists" url="http://catalog.b.aegis.zune.net/v3.2/music/genre/{objectid}/artists?orderby=PlayRank&amp;chunksize={chunksize}" />
+  <ep id="GenreTopAlbums" url="http://catalog.b.aegis.zune.net/v3.2/music/chart/zune/genre/{objectid}/albums?chunksize={chunksize}" />
+  <ep id="GenreTopTracks" url="http://catalog.b.aegis.zune.net/v3.2/music/chart/zune/genre/{objectid}/tracks?chunksize={chunksize}" />
+  <ep id="GenreFeaturedAlbums" url="http://catalog.b.aegis.zune.net/v3.2/music/genre/{objectid}/featured/albums?chunksize={chunksize}" />
+  <ep id="GenreTopPlaylists" url="http://catalog.b.aegis.zune.net/v3.2/music/chart/zune/genre/{objectid}/playlists?chunksize={chunksize}" />
+
+  <ep id="SimilarArtists" url="http://catalog.b.aegis.zune.net/v3.2/music/artist/{objectid}/similarArtists?chunksize={chunksize}" />
+  <ep id="TopArtists" url="http://catalog.b.aegis.zune.net/v3.2/music/chart/zune/artists?chunksize={chunksize}" />
+
+  <ep id="Track" url="http://catalog.b.aegis.zune.net/v3.2/music/track/{objectid}" />
+  <ep id="TrackSearch" url="http://catalog.b.aegis.zune.net/v3.2/music/track/?chunksize={searchchunksize}&amp;orderBy=playRank&amp;q={query}" />
+  <ep id="TracksList" url="http://catalog.b.aegis.zune.net/v3.2/music/chart/zune/tracks?chunksize={chunksize}" />
+
+  <ep id="TopPodcasts" url="http://catalog.b.aegis.zune.net/v3.2/podcastchart/zune/podcasts?chunksize={chunksize}" />
+  <ep id="PodcastSearch" url="http://catalog.b.aegis.zune.net/v3.2/podcast/?q={query}&amp;chunksize={searchchunksize}" />
+  <ep id="OnePodcast" url="http://catalog.b.aegis.zune.net/v3.2/podcast/{objectid}/" />
+  <ep id="FeaturedPodcasts" url="http://catalog.b.aegis.zune.net/v3.2/music/collection/features/CF31119F-540D-4F69-87D7-B5021F5C10EE/" />
+  <ep id="NewAdditionsPodcasts" url="http://catalog.b.aegis.zune.net/v3.2/podcastCollections/5C62002F-1192-4E42-8DC0-F9AA51B35A34/" />
+  <ep id="MostSubscribedPodcasts" url="http://catalog.b.aegis.zune.net/v3.2/podcastchart/zune/podcasts?chunksize={chunksize}" />
+  <ep id="PodcastCategory" url="http://catalog.b.aegis.zune.net/v3.2/podcastCategories/{objectid}" />
+  <ep id="PodcastCategoryPodcasts" url="http://catalog.b.aegis.zune.net/v3.2/podcastCategories/{objectid}/podcasts?chunksize={chunksize}" />
+  <ep id="PodcastCategoriesInfo" url="http://catalog.b.aegis.zune.net/v3.2/podcastCategories" />
+  <ep id="PodcastCategoryNewAdditions" url="http://catalog.b.aegis.zune.net/v3.2/podcastCategories/{objectid}/podcasts?orderby=dateAdded&amp;chunksize={chunksize}" />
+  <ep id="PodcastCategoryMostSubscribed" url="http://catalog.b.aegis.zune.net/v3.2/podcastCategories/{objectid}/podcasts?orderby=subscriptionRank&amp;chunksize={chunksize}" />
+  <ep id="PodcastCategoryMostSubscribedAudio" url="http://catalog.b.aegis.zune.net/v3.2/podcastCategories/{objectid}/podcasts?type=audio&amp;orderby=subscriptionRank&amp;chunksize={chunksize}" />
+  <ep id="PodcastCategoryMostSubscribedVideo" url="http://catalog.b.aegis.zune.net/v3.2/podcastCategories/{objectid}/podcasts?type=video&amp;orderby=subscriptionRank&amp;chunksize={chunksize}" />
+
+  <ep id="ShareLink" url="http://social.b.aegis.zune.net/redirect?type={generic1}&amp;id={objectid}" />
+
+  <ep id="FacebookXBL_MOW" url="http://www.xbox.com" />
+
+  <ep id="TopPlaylists" url="http://catalog.b.aegis.zune.net/v3.2/music/chart/zune/playlists/?chunksize={chunksize}" />
+  <ep id="PlaylistInfo" url="http://catalog.b.aegis.zune.net/v3.2/music/playlist/{objectid}/" />
+  <ep id="PlaylistSearch" url="http://catalog.b.aegis.zune.net/v3.2/music/playlist?q={query}" />
+  <ep id="FeaturedPlaylists" url="http://catalog.b.aegis.zune.net/v3.2/music/playlistFeatures/" />
+  <ep id="GenrePlaylists" url="http://catalog.b.aegis.zune.net/v3.2/music/chart/zune/genre/{objectid}/playlists?chunksize={chunksize}" />
+
+  <ep id="ImageApi" url="http://image.catalog.b.aegis.zune.net/v3.2/image/{objectid}?width={imagesize}&amp;height={imagesize}&amp;resize=true&amp;contenttype=image/jpeg" />
+  <ep id="ArtistBgImage" url="http://image.catalog.b.aegis.zune.net/v3.2/en-US/music/artist/{objectid}/deviceBackgroundImage?width=480&amp;resize=true&amp;contenttype=image/jpeg"/>
+
+  <ep id="FeaturedApplications" url="http://catalog.b.aegis.zune.net/v3.2/en-US/clientTypes/WinMobile%207.0/hubTypes/apps/hub?store=Zest" />
+  <ep id="TopApplications" url="http://catalog.b.aegis.zune.net/v3.2/en-US/apps?orderBy=downloadRank&amp;cost=paid&amp;chunkSize={chunksize}&amp;clientType=WinMobile%207.0&amp;store=Zest" />
+  <ep id="NewApplications" url="http://catalog.b.aegis.zune.net/v3.2/en-US/apps?orderBy=releaseDate&amp;chunkSize={chunksize}&amp;clientType=WinMobile%207.0&amp;store=Zest" />
+  <ep id="FreeApplications" url="http://catalog.b.aegis.zune.net/v3.2/en-US/apps?orderBy=downloadRank&amp;cost=free&amp;chunkSize={chunksize}&amp;clientType=WinMobile%207.0&amp;store=Zest" />
+  <ep id="MOApplications" url="http://catalog.b.aegis.zune.net/v3.2/en-US/stores/ATT/clientTypes/WinMobile%207.0/hubTypes/apps/hub?store=ATT" />
+  <ep id="OEMApplications" url="http://catalog.b.aegis.zune.net/v3.2/en-US/stores/LG/clientTypes/WinMobile%207.0/hubTypes/apps/hub?store=LG" />
+  <ep id="XBoxLiveApplications" url="http://catalog.b.aegis.zune.net/v3.2/en-US/appCategories/apps.games/apps?clientType=WinMobile 7.0&amp;store=Zest&amp;tag=apptag.premium" />
+  <ep id="ApplicationSearch" url="http://catalog.b.aegis.zune.net/v3.2/en-US/apps?q={query}&amp;orderBy=downloadRank&amp;chunkSize={searchchunksize}&amp;clientType=WinMobile%207.0&amp;store=Zest" />
+  <ep id="Application" url="http://catalog.b.aegis.zune.net/v3.2/en-US/apps/{objectid}?clientType=WinMobile%207.0&amp;store=Zest" />
+  <ep id="ApplicationPrimaryImage" url="http://catalog.b.aegis.zune.net/v3.2/en-US/apps/{objectid}/primaryImage?width=170&amp;height=170&amp;resize=true&amp;contenttype=image/jpeg" />
+  <ep id="ApplicationBackgroundImage" url="http://catalog.b.aegis.zune.net/v3.2/en-US/apps/{objectid}/backgroundImage?width=480&amp;height=480&amp;resize=true&amp;contenttype=image/jpeg" />
+  <ep id="ApplicationScreenshot" url="http://catalog.b.aegis.zune.net/v3.2/en-US/image/{objectid}?width=100&amp;height=100&amp;resize=true&amp;contenttype=image/jpeg" />
+  <ep id="ApplicationReviews" url="http://catalog.b.aegis.zune.net/v3.2/en-US/apps/{objectid}/reviews?chunkSize={chunksize}" />
+  <ep id="ApplicationCategoriesInfo" url="http://catalog.b.aegis.zune.net/v3.2/en-US/appCategories?clientType=WinMobile%207.0&amp;store=Zest" />
+  <ep id="ApplicationPurchaseHistory" url="https://commerce.b.aegis.zune.net/v3/member/purchaseHistory?tunerType=zunePCClient&amp;mediaTypeOrCategory=Apps&amp;startDate={lastfetchtime}" />
+  <ep id="ApplicationCategory" url="http://catalog.b.aegis.zune.net/v3.2/en-US/appCategories/{objectid}?clientType=WinMobile%207.0&amp;store=Zest" />
+  <ep id="ApplicationCategoryFeatured" url="http://catalog.b.aegis.zune.net/v3.2/en-US/appCategories/{objectid}/clientTypes/WinMobile%207.0/hub?store=Zest" />
+  <ep id="ApplicationCategoryTop" url="http://catalog.b.aegis.zune.net/v3.2/en-US/appCategories/{objectid}/apps?orderBy=downloadRank&amp;cost=paid&amp;chunkSize={chunksize}&amp;clientType=WinMobile%207.0&amp;store=Zest" />
+  <ep id="ApplicationCategoryNew" url="http://catalog.b.aegis.zune.net/v3.2/en-US/appCategories/{objectid}/apps?orderBy=releaseDate&amp;chunkSize={chunksize}&amp;clientType=WinMobile%207.0&amp;store=Zest" />
+  <ep id="ApplicationCategoryFree" url="http://catalog.b.aegis.zune.net/v3.2/en-US/appCategories/{objectid}/apps?orderBy=downloadRank&amp;cost=free&amp;chunkSize={chunksize}&amp;clientType=WinMobile%207.0&amp;store=Zest" />
+  <ep id="ApplicationSynopsis" url="http://catalog.b.aegis.zune.net/v3.2/en-US/apps/{objectid}/synopsis?clientType=WinMobile%207.0&amp;store=Zest" />
+  <ep id="ApplicationCurrentUserReview" url="http://stats.b.aegis.zune.net/v4.0/en-US/members/{zuneuserid}/apps/{objectid}/review" />
+  <ep id="ApplicationESRBImage" url="http://catalog.b.aegis.zune.net/v3.2/en-US/image/{objectid}?width=320&amp;height=120&amp;resize=true&amp;contenttype=image/jpeg" />
+
+  <ep id="AppListForGameId" url="http://catalog.b.aegis.zune.net/v3.2/en-US/liveEngagement/{objectid}/apps?store=Zest&amp;clientType=WinMobile%207.0" />
+  <ep id="AppListForPublisher" url="http://catalog.b.aegis.zune.net/v3.2/en-US/publishers/{objectid}/apps?orderBy=downloadRank&amp;chunkSize={chunksize}&amp;store=Zest&amp;clientType=WinMobile%207.0"/>
+
+  <ep id="UsageData" url="https://stats.b.aegis.zune.net/usage/upload"/>
+
+  <ep id="GetCreditCards" url="https://commerce.b.aegis.zune.net/billing/getcreditcards" />
+  <ep id="GetUser" url="https://commerce.b.aegis.zune.net/v2/account/user" />
+  <ep id="PurchaseAssetV2" url="https://commerce.b.aegis.zune.net/v2/billing/purchaseasset" />
+  <ep id="ZESTSignInV2" url="https://commerce.b.aegis.zune.net/v2/account/signin" />
+  <ep id="RegisterTunerV2" url="https://commerce.b.aegis.zune.net/v2/tuner/register" />
+  <ep id="ZESTCreateUser" url="https://commerce.b.aegis.zune.net/v2/account/createuser" />
+  <ep id="ZESTUpgradeUser" url="https://commerce.b.aegis.zune.net/v2/account/upgrade" />
+  <ep id="ZESTReserveTag" url="https://commerce.b.aegis.zune.net/v2/account/reservetag" />
+
+  <ep id="MOBillingToken" url="http://212.235.50.247:80/BillingIDAcquisition/BillingToken/ATT" />
+  <ep id="Passport_MCP" url="mobilling.microsoft-int.com" />
+
+  <ep id="Passport_LIVEn" url="kdc.test.xboxlive.com" />
+  <ep id="Passport_LIVEnWeb" url="live.test.xbox.com" />
+  <ep id="LIVEnRewardsService" url="https://rewards.test.xboxlive.com/RewardsService.svc" />
+  <ep id="LIVEnGameDataService" url="https://uds.test.xboxlive.com/GameData.svc" />
+  <ep id="LIVEnProfileService" url="https://uds.test.xboxlive.com/Profiles.svc" />
+  <ep id="LIVEnFriendService" url="https://uds.test.xboxlive.com/Friend.svc" />
+  <ep id="LIVEnNotificationsService" url="https://notifications.test.xboxlive.com/Notifications.svc" />
+
+  <ep id="FeaturedMusic" url="http://catalog.b.aegis.zune.net/v3.0/en-US/music/features"/>
+  <ep id="GenreFeaturedMusic" url="http://catalog.b.aegis.zune.net/v3.0/en-US/music/genre/{objectid}/features"/>
+  <ep id="FeaturedItemImage" url="http://catalog.b.aegis.zune.net/v3.0/image/{objectid}?width=320&amp;height=320&amp;resize=true&amp;contenttype=image/jpeg"/>
+
+  <ep id="XblTicketService" url="https://activeauth.test.xboxlive.com/sts/sts.asmx"/>
+  <ep id="XblBillingService" url="https://activeauth.test.xboxlive.com/xbos/billing.asmx"/>
+  <ep id="XblUserAccountService" url="https://activeauth.test.xboxlive.com/xuacs/useraccount.asmx"/>
+  <ep id="XblGamerTagService" url="https://activeauth.test.xboxlive.com/xbos/gamertag.asmx"/>
+  <ep id="XblTermsOfServiceLink" url="http://go.microsoft.com/fwlink/?LinkId=180375"/>
+  <ep id="ZMktTermsOfServiceLink" url="http://go.microsoft.com/fwlink/?LinkId=179597"/>
+  
+  <ep id="SubmitMeteringReport" url="https://commerce.b.aegis.zune.net/tuner/submitmeteringreport"/>
+  <ep id="AckMeteringReport" url="https://commerce.b.aegis.zune.net/tuner/ackmeteringreport"/>
+
+  <ep id="ContentRedirect" url="http://social.b.aegis.zune.net"/>
+
+  <ep id="MOImage" url="http://catalog.b.aegis.zune.net/v3.2/en-us/stores/ATT/image?width=100"/>
+  <ep id="OEMImage" url="http://catalog.b.aegis.zune.net/v3.2/en-us/stores/LG/image?width=100"/>
+
+</endpointmap>

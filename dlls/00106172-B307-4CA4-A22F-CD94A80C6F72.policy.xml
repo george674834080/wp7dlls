@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<!--
+Use of this source code is subject to the terms of the Microsoft
+premium shared source license agreement under which you licensed
+this source code. If you did not accept the terms of the license
+agreement, you are not authorized to use this source code.
+For the terms of the license, please see the license agreement
+signed by you and Microsoft.
+THE SOURCE CODE IS PROVIDED "AS IS", WITH NO WARRANTIES OR INDEMNITIES.
+-->
+<CeSecurityPolicyFile Description="cmnet: Default connection manager security policy;proxysvc: Proxy database service policies.;templates.cmnet: Default connection manager security policy templates;" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.00" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">  
+<!-- cmnet: Default connection manager security policy -->
+<Namespace Prefix="/CM_CONNECTION">
+
+    <Authorization Id="CM_ACQUIRE_NON_ROAMING" Bitmask="0x00000001"></Authorization>
+
+    <Authorization Id="CM_ACQUIRE_ROAMING" Bitmask="0x00000002"></Authorization>
+
+    <Authorization Id="CM_ACQUIRE" Bitmask="0x00000003"></Authorization>
+
+    <Authorization Id="CM_CREATE" Bitmask="0x00000004"></Authorization>
+
+    <Authorization Id="CM_DISCONNECT" Bitmask="0x00000008"></Authorization>
+
+    <Authorization Id="CM_CONNECT_NON_ROAMING" Bitmask="0x00000010"></Authorization>
+
+    <Authorization Id="CM_CONNECT_ROAMING" Bitmask="0x00000020"></Authorization>
+
+    <Authorization Id="CM_CONNECT" Bitmask="0x00000030"></Authorization>
+
+    <Authorization Id="CM_ALL" Bitmask="0xC000003F"></Authorization>
+
+  </Namespace>
+
+
+  <!-- Macros -->
+
+  <Macro Id="CM_CONNECTION" Description="Connection manager connection namespace" Value="policy:/CM_CONNECTION"></Macro>
+
+  <Macro Id="CMCD_CELLULAR" Description="Cellular connection type" Value="F9A53167-4016-4198-9B41-86D9522DC019"></Macro>
+
+  <!-- Account for CM service -->
+
+  <Macro Id="CM_SERVICE_CHAMBER_SID" Description="Connection Manager service chamber for Always Connected connections" Value="S-1-5-112-0-0X10-0X00000033"></Macro>
+
+  <Account Id="$(CM_SERVICE_CHAMBER_SID)" FriendlyName="Connection Manager service chamber" Description="Connection Manager service chamber" Type="User">
+        <MemberOfGroup GroupAccountId="$(ELEVATED_RIGHTS_CHAMBER_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+  <Macro Id="HOTSPOT_SERVICE_WIFI_SID" Description="Hotspot service SID for probing WIFI connections" Value="S-1-5-112-0-0X10-0X00000050"></Macro>
+
+  <Account Id="$(HOTSPOT_SERVICE_WIFI_SID)" FriendlyName="Hotspot service WIFI SID" Description="Hotspot service WIFI SID" Type="User">
+        <MemberOfGroup GroupAccountId="$(ELEVATED_RIGHTS_CHAMBER_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+  <!-- High priority rules -->
+
+  <!-- CM service control -->
+
+  <Rule Description="Access rights for CM service control" ResourceIri="$(GLOBAL_RESOURCES)/CM_SERVICE_CONTROL" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- CM service auxiliary services support -->
+
+  <Rule Description="Access rights for CM service functionality intended for auxiliary services" ResourceIri="$(GLOBAL_RESOURCES)/CM_SERVICE_AUXILIARY_SERVICE_SUPPORT" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ, GENERIC_WRITE"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Security policy for CM notification listeners -->
+
+  <Rule Description="Access rights to register CM notifications listener" ResourceIri="$(GLOBAL_RESOURCES)/CM_NOTIFICATIONS_LISTENER" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Default security policy rules for CM connections (section 5.6.1.3) -->
+
+  <Rule Description="Access rights common for all connections" ResourceIri="$(CM_CONNECTION)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="CM_ALL"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Access rights common for all connections" ResourceIri="$(CM_CONNECTION)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ, CM_ACQUIRE, CM_CREATE, CM_DISCONNECT, CM_CONNECT"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Default security policy rules for CM policies (section 5.6.2.3) -->
+
+  <Rule Description="Access rights common for all mapping policies" ResourceIri="$(RESOURCES)/(+)/CM_POLICY/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ, GENERIC_WRITE"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Access rights for roaming connections policy" ResourceIri="$(GLOBAL_RESOURCES)/CM_ROAMING_CONNECTIONS_POLICY" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ, GENERIC_WRITE"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Access rights for disabled connections policy" ResourceIri="$(GLOBAL_RESOURCES)/CM_DISABLED_CONNECTIONS_POLICY" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ, GENERIC_WRITE"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Access rights to private registry keys (5.7.2) -->
+
+  <Rule Description="CM private registry key" ResourceIri="$(HKLM)/COMM/CONNMGR/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Standard priority rules -->
+
+  <!-- Access rights to the device driver -->
+  <Rule Description="Access rights to the device driver" ResourceIri="policy:/DEVICEMANAGER/DEVICE/CMS/0" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Default security policy rule templates for CM connections (section 5.6.1.3) -->
+
+  <Rule Description="Access rights to connection by owner" ResourceIri="policy:/CM_CONNECTION/(CHAMBER-IN-GROUP:$(STANDARD_RIGHTS_CHAMBER_GROUP_NAME))/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="CM_ALL"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Access rights to connection by owner" ResourceIri="policy:/CM_CONNECTION/(CHAMBER-IN-GROUP:$(ELEVATED_RIGHTS_CHAMBER_GROUP_NAME))/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="CM_ALL"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Access rights to connection by owner" ResourceIri="policy:/CM_CONNECTION/(CHAMBER-IN-GROUP:$(SYSTEM_CHAMBER_GROUP_NAME))/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="CM_ALL"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Access rights to connection by owner" ResourceIri="policy:/CM_CONNECTION/(CHAMBER-IN-GROUP:$(SELF_ISOLATED_ELEVATED_RIGHTS_CHAMBER_GROUP_NAME))/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(SELF_ISOLATED_ELEVATED_RIGHTS_CHAMBER_GROUP_NAME)" AuthorizationIds="CM_ALL"></Match>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="CM_ALL"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Default security policy rule templates for CM policies (section 5.6.2.3) -->
+
+  <Rule Description="Access rights to mapping policy by owner" ResourceIri="policy:/RESOURCES/(CHAMBER-IN-GROUP:$(STANDARD_RIGHTS_CHAMBER_GROUP_NAME))/CM_POLICY/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ, GENERIC_WRITE"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Access rights to mapping policy by owner" ResourceIri="policy:/RESOURCES/(CHAMBER-IN-GROUP:$(ELEVATED_RIGHTS_CHAMBER_GROUP_NAME))/CM_POLICY/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ, GENERIC_WRITE"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Access rights to mapping policy by owner" ResourceIri="policy:/RESOURCES/(CHAMBER-IN-GROUP:$(SYSTEM_CHAMBER_GROUP_NAME))/CM_POLICY/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ, GENERIC_WRITE"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Access rights to mapping policy by owner" ResourceIri="policy:/RESOURCES/(CHAMBER-IN-GROUP:$(SELF_ISOLATED_ELEVATED_RIGHTS_CHAMBER_GROUP_NAME))/CM_POLICY/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(SELF_ISOLATED_ELEVATED_RIGHTS_CHAMBER_GROUP_NAME)" AuthorizationIds="GENERIC_READ, GENERIC_WRITE"></Match>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ, GENERIC_WRITE"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- proxysvc: Proxy database service policies. -->
+  <!-- Macros for the RPC endpoint and interface UUID -->
+
+  <Macro Id="PROXYSVC_ENDPOINT_NAME" Description="Proxy database server endpoint name." Value="proxydb"></Macro>
+
+  <Macro Id="PROXYSVC_INTERFACE_UUID" Description="Proxy database server interface uuid." Value="242adefb-e360-49a6-a86a-1601727bfa6c"></Macro>
+
+  <!-- Access rules -->
+
+  <Rule Description="Access policy for the endpoint 'PROXYSVC_ENDPOINT_NAME'." ResourceIri="$(RPC_SERVER_ENDPOINT)/$(PROXYSVC_ENDPOINT_NAME)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Access policy for the client side interface." ResourceIri="$(RPC_CLIENT_INTERFACE)/$(PROXYSVC_INTERFACE_UUID)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- CFM: CFM service policies. -->
+  
+  <!-- Access rights to the device driver -->
+  <Rule Description="Access rights to the device driver" ResourceIri="policy:/DEVICEMANAGER/DEVICE/CFM/0" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Give Mediaapps access to the right stuff so that we can setup an MO Billing Connection/Proxy/Hostmap -->
+
+  <Rule Description="Mediaapps access to CM_SERVICE_AUXILIARY_SERVICE_SUPPORT" ResourceIri="$(GLOBAL_RESOURCES)/CM_SERVICE_AUXILIARY_SERVICE_SUPPORT" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(SID_MEUX_STANDARD)" AuthorizationIds="GENERIC_READ, GENERIC_WRITE"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Mediaapps access to CM_POLICY" ResourceIri="$(RESOURCES)/(+)/CM_POLICY/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(SID_MEUX_STANDARD)" AuthorizationIds="GENERIC_READ, GENERIC_WRITE"></Match>
+    </Authorize>
+  </Rule>
+  
+</CeSecurityPolicyFile>

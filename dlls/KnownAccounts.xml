@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<KnownAccounts xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <KnownAccount icon="res://ASIcons!%s.yahoo.png"
+                name="25261" 
+                accountType="POPIMAP"
+                restrictedCountries="440,441"
+                resourceDLL="AccountSettingsRes.dll"/>
+  <KnownAccount icon="res://ASIcons!%s.genericmail.png"
+                name="25201"
+                description="25202"
+                accountType="POPIMAP"
+                priority="999"
+                resourceDLL="AccountSettingsRes.dll"/>
+</KnownAccounts>

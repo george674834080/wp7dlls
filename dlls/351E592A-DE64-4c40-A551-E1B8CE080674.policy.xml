@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<!--
+Use of this source code is subject to the terms of the Microsoft
+premium shared source license agreement under which you licensed
+this source code. If you did not accept the terms of the license
+agreement, you are not authorized to use this source code.
+For the terms of the license, please see the license agreement
+signed by you and Microsoft.
+THE SOURCE CODE IS PROVIDED "AS IS", WITH NO WARRANTIES OR INDEMNITIES.
+-->
+<CeSecurityPolicyFile Description="template security policy" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.4.9876" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">
+
+  <!-- Macros -->
+
+
+ <Macro Id="TCB_CA" Description="SHA1 Hash of TCB CA" Value="CERTIFICATES/HASH/SHA1/4E719A55C9DA0A922AA1338B5C700CCDBCA96FEE"></Macro>
+ <Macro Id="CORPCERT_23" Description="SHA1 Hash of Corp Cert 23" Value="CERTIFICATES/HASH/SHA1/3036E3B25B88A55B86FC90E6E9EAAD5081445166"></Macro>
+<Macro Id="CORPCERT_X" Description="Microsoft Code Signing PCA2" Value="CERTIFICATES/HASH/SHA1/D07EA64088A80085F01BD40AA4EAD82F470482A6"></Macro>
+
+<Macro Id="ISSER_OF_CERT10006" Description="Microsoft Code Signing PCA" Value="CERTIFICATES/HASH/SHA1/FDD1314ED3268A95E198603BA8316FA63CBCD82D"></Macro>
+
+
+<Macro Id="RESTRICTED_CA" Description="SHA1 Hash of restricted CA" Value="CERTIFICATES/HASH/SHA1/F0A83A051E32BEAC46C140B977657CCEA5A9A741"></Macro>
+
+<Macro Id="LPC_CA" Description="SHA1 Hash of LPC CA" Value="CERTIFICATES/HASH/SHA1/6A1ECA944B42125B18435B788A74D1B5EFB0057C"></Macro>
+
+
+<Macro Id="STANDARD_CA" Description="SHA1 Hash of Standard Rights CA" Value="CERTIFICATES/HASH/SHA1/7B0E7B6D3825CDAC34F2148BD785412B57F6BD28"></Macro>
+
+
+<Macro Id="ELEVATED_CA" Description="SHA1 Hash of Elevated Rights CA" Value="CERTIFICATES/HASH/SHA1/2C11ADB8F577C47480E66580A4714DB90A3C0C07"></Macro>
+
+<!-- PRIORITY_STANDARD Rules -->
+
+<Rule Description="System identity group honors Corp cert #23" ResourceIri="$(LOADERVERIFIER_GLOBAL)/$(CORPCERT_23)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_IDENTITY_GROUP_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE"></Match>
+    </Authorize>
+</Rule>
+
+<Rule Description="System Identity Group honors Microsoft Code Signing PCA" ResourceIri="$(LOADERVERIFIER_GLOBAL)/$(ISSER_OF_CERT10006)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_IDENTITY_GROUP_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE"></Match>
+    </Authorize>
+</Rule>
+
+
+<Rule Description="System identity group honors CORPCERT_X" ResourceIri="$(LOADERVERIFIER_GLOBAL)/$(CORPCERT_X)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_IDENTITY_GROUP_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE"></Match>
+    </Authorize>
+</Rule>
+
+<Rule Description="Least Privilege Group honors Restricted Cert" ResourceIri="$(LOADERVERIFIER_GLOBAL)/$(RESTRICTED_CA)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(LEAST_PRIVILEGE_IDENTITY_GROUP_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE"></Match>
+    </Authorize>
+</Rule>
+
+<Rule Description="Least Privilege Group honors LPC CA" ResourceIri="$(LOADERVERIFIER_GLOBAL)/$(LPC_CA)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(LEAST_PRIVILEGE_IDENTITY_GROUP_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE"></Match>
+    </Authorize>
+</Rule>
+
+
+<Rule Description="Restricted and Standard Rights Groups honor Starndard Rights Cert" ResourceIri="$(LOADERVERIFIER_GLOBAL)/$(STANDARD_CA)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_IDENTITY_GROUP_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE"></Match>
+    </Authorize>
+</Rule>
+
+<Rule Description="Restricted, Standard Rights and Elevated Rights Groups honor Elevated Rights Cert" ResourceIri="$(LOADERVERIFIER_GLOBAL)/$(ELEVATED_CA)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_IDENTITY_GROUP_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE"></Match>
+    </Authorize>
+</Rule>
+
+<Rule Description="System identity group honors TCB_CA Cert" ResourceIri="$(LOADERVERIFIER_GLOBAL)/$(TCB_CA)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_IDENTITY_GROUP_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE"></Match>
+    </Authorize>
+</Rule>
+
+<Rule Description="Least Privilege Group honors marketplace dev portal LPC CA (GeoTrust PreProd CA3 cert)" ResourceIri="$(LOADERVERIFIER_GLOBAL)/CERTIFICATES/HASH/SHA1/EFF83D3D45C5FA1A94389C7A2E9641E3D168555C" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(LEAST_PRIVILEGE_IDENTITY_GROUP_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE"></Match>
+    </Authorize>
+</Rule>
+ 
+<Rule Action="CreateNew" Description="LPC Identity groups honor Windows Mobile TCB Test Signing Cert" ResourceIri="$(LOADERVERIFIER_GLOBAL)/AUTHORIZATION/CERT_AUTHZ/SHA1/C9AB14E6E3BE23AA79E399709052B014C4412BC3" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match Action="Add" AccountId="$(LEAST_PRIVILEGE_IDENTITY_GROUP_NAME)" AuthorizationIds="LV_ACCESS_LOAD"></Match>
+    </Authorize>
+  </Rule>
+
+<Rule Action="CreateNew" Description="LPC Identity groups honors Cert 10006 as signing certificate" ResourceIri="$(LOADERVERIFIER_GLOBAL)/AUTHORIZATION/CERT_AUTHZ/SHA1/D468FAEB5190BF9DECD9827AF470F799C41A769C" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match Action="Add" AccountId="$(LEAST_PRIVILEGE_IDENTITY_GROUP_NAME)" AuthorizationIds="LV_ACCESS_LOAD"></Match>
+    </Authorize>
+  </Rule>
+
+<Rule Description="LPC Identity groups honors Cert 10006 (2011 reissue) as signing certificate" ResourceIri="$(LOADERVERIFIER_GLOBAL)/AUTHORIZATION/CERT_AUTHZ/SHA1/9BF69D5E8D01A92F413B60A4BE003E323CB52F7F" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match Action="Add" AccountId="$(LEAST_PRIVILEGE_IDENTITY_GROUP_NAME)" AuthorizationIds="LV_ACCESS_LOAD"></Match>
+    </Authorize>
+  </Rule>
+
+<Rule Description="Allow LPCs try to launch non-ROM exe to any Chamber for images that contain LoaderVerifierTestCert package" ResourceIri="$(LOADERVERIFIER_ACCOUNT_CAN_LAUNCH)/(+)/(+)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(LEAST_PRIVILEGE_CHAMBER_GROUP_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE"></Match>
+    </Authorize>
+  </Rule>
+</CeSecurityPolicyFile>

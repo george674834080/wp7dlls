@@ -1,0 +1,29 @@
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<wap-provisioningdoc>
+
+    <!-- Copying RunZmfTaskLaunch.lnk to \Windows\StartUp\RunZmfTaskLaunch.lnk -->
+    <characteristic type="FileOperation">
+        <characteristic type="\Windows\StartUp" translation="install">
+            <characteristic type="MakeDir" />
+            <characteristic type="RunZmfTaskLaunch.lnk" translation="install">
+                <characteristic type="Copy">
+                    <parm name="Source" value="\Windows\RunZmfTaskLaunch.lnk" translation="install" />
+                    <parm name="RemoveAttributes" value="SRH" />
+                </characteristic>
+            </characteristic>
+        </characteristic>
+    </characteristic>
+
+    <!-- Delete \windows\Startup\RmObsoleteCache.lnk -->
+    <characteristic type="FileOperation">
+        <characteristic type="\Windows\StartUp\RmObsoleteCache.lnk" translation="install">
+            <characteristic type="Delete">
+                <parm name="ForceDelete"/>
+            </characteristic>
+        </characteristic>
+    </characteristic>
+
+</wap-provisioningdoc>
+

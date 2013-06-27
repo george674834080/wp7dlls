@@ -1,0 +1,11 @@
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<wap-provisioningdoc>
+  <characteristic type="AppInstall">
+    <characteristic type="{fd74fc03-8904-4631-950e-1cb2590e4212}">
+      <parm name="InstallInfo" value="\windows\STKApplication.xap;\windows\STKApplication_License.xml;{7d19d56f-2cad-4fb4-8f50-b9f7266bd387};{54f0c870-4c54-4f37-ace3-842326a378b9};FALSE"/>
+    </characteristic>
+  </characteristic>
+</wap-provisioningdoc>
+

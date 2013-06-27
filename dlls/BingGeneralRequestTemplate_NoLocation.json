@@ -1,0 +1,1 @@
+{"Context":{"ApplicationId":"%1","UserId":"%2","Version":"%3","Culture":"%4"},"Properties":[{"Key":"Highlight","Value":"true"}],"Queries":[{"Domains":[{"Domain":%9},{"Domain":102,"Range":{"Count":1},"Detail":{"AppIntent":{"AppStoreRequests":[{"AppResultsCount":"%17","AppStoreId":3,"MobileDeviceTypeId":"%18"}]}}}],"QueryString":"%5"}]}

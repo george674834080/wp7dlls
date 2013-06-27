@@ -1,0 +1,7 @@
+<wap-provisioningdoc>
+  <characteristic type="AppInstall">
+    <characteristic type="{6a540b21-b5c0-4d24-8903-b5b5eb97df58}">
+      <parm name="InstallInfo" value="\windows\HelpHowTo.xap;\windows\HelpHowTo_License.xml;{0542d72e-b2e3-436a-b6e9-0e7170905485};{D8F34F8F-6389-4a7e-AF56-485D7AFCD561};FALSE" /> 
+    </characteristic>
+  </characteristic>
+</wap-provisioningdoc>

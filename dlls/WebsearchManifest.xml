@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<Provisioning xmlns="http://dbPreProvisioning"
+    RuntimeType="Native"
+    Title="@SearchMapsCMRes.dll,-20036"
+    Version="1.0"
+    Genre=""
+    ProductID="{5B04B775-356B-4AA0-AAF8-6491FFEA5661}"
+    UsePlatformTheme="true"
+    SingleInstanceHost="true">
+
+  <IconPath xmlns="">res://StartMenu!AppIconMaps.png</IconPath>
+  <ImagePath xmlns="">\Windows\Websearch.exe</ImagePath>
+  <ImageParams xmlns=""></ImageParams>
+
+  <Tasks xmlns="">
+    <!--Default task has to be maps since the app icon is maps-->
+    <!--We dont have an app icon for search since it is launched with its h/w key-->
+    <DefaultTask Name="Maps"
+                 NavigationPage="MapsHome" ActivationPolicy="Replace"/>
+    <ExtendedTask Name="SearchHome"
+                  NavigationPage="Home" ActivationPolicy="Replace"/>
+    <ExtendedTask Name="SearchResults"
+                  NavigationPage="SearchResults" ActivationPolicy="Multisession"/>
+    <ExtendedTask Name="LocalCard"
+                  NavigationPage="PlaceCard" ActivationPolicy="Replace"/>
+    <ExtendedTask Name="PlaceCard"
+                  NavigationPage="PlaceCard" ActivationPolicy="Replace"/>
+    <ExtendedTask Name="MovieCard"
+                  NavigationPage="MovieCard" ActivationPolicy="ResumeSameParams"/>      
+    <ExtendedTask Name="ProductCard"
+                  NavigationPage="ProductCard" ActivationPolicy="ResumeSameParams"/>      
+    <ExtendedTask Name="VoiceSearch"
+                  NavigationPage="VoiceSearch" ActivationPolicy="Replace"/>
+    <ExtendedTask Name="BingItImage"
+                  NavigationPage="ARImage" ActivationPolicy="Multisession"/>
+
+    <!--Add additional Search and Maps tasks here-->
+    
+  </Tasks>
+
+  <Tokens xmlns="">
+    <PrimaryToken TokenID="Default"
+                  TaskName="Maps"
+                  TaskParameters=""
+                  Pinned="false">
+      <TemplateType1>
+        <IconImageURI>res://StartMenu!TokenMaps.png</IconImageURI>
+        <Title>@SearchMapsCMRes.dll,-20036</Title>
+      </TemplateType1>
+    </PrimaryToken>
+    
+    <!--We dont expect any secondary tokens for maps or search-->
+
+  </Tokens>
+</Provisioning>

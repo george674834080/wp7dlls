@@ -1,0 +1,13 @@
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<wap-provisioningdoc>
+
+  <!-- Creating directory \DOCFILE -->
+  <characteristic type="FileOperation">
+    <characteristic type="\DOCFILE" translation="install">
+      <characteristic type="MakeDir" />
+    </characteristic>
+  </characteristic>
+
+</wap-provisioningdoc>

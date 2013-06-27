@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<CeSecurityPolicyFile Description="BaseDrivers_NK security policy" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.4.9876" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">
+
+  <!--
+  Metadata is stored on the device but off to the side - it is not used by the
+  policy engine. It is used for validation and reference if more data is imported
+  later.
+  
+  Metadata values can be imported more than once, but all definitions must match.
+  It is an error to refer to metadata that is not defined (i.e. use an undefined
+  Authorization Id in an ACL).
+  -->
+
+  <Namespace Prefix="/DEVICEMANAGER" Description="Generic rights that apply to all namespaces" ForceUppercase="true">
+
+  </Namespace>
+
+
+  <!-- Macros -->
+
+  <!-- udevice.exe standard account macro -->
+  <!-- account defined in udevice_wm.accounts.xml/udevice_cebase.accounts.xml-->
+  <Macro Id="SID_UDEVICE_STANDARD" Value="S-1-5-112-0-0X20-0X00000001"></Macro>
+
+  <Macro Id="DEVICEMANAGER_BUS" Description="Device Manager Bus Name Access" Value="policy:/DEVICEMANAGER/BUS"></Macro>
+
+  <Macro Id="DEVICEMANAGER_DEVICE" Description="Device Manager Device Name Access" Value="policy:/DEVICEMANAGER/DEVICE"></Macro>
+    
+  <Macro Id="DEVICEMANAGER_ICLASS" Description="Device Manager IClass Name Access" Value="policy:/DEVICEMANAGER/ICLASS"></Macro>
+
+  <Rule Description="Grant TCB full access to all device drivers" ResourceIri="policy:/DEVICEMANAGER/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Low priority rules -->
+
+  <!-- No access to anyone for IRI: policy:/DEVICEMANAGER/BUS/* -->
+  
+  <Rule Description="Base device 'bus name' policy rule" ResourceIri="$(DEVICEMANAGER_BUS)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  
+<!-- Exceptions to bus name policy rule -->
+
+  <Rule Description="Services 'bus name' policy rule" ResourceIri="$(DEVICEMANAGER_BUS)/SERVICES" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  
+
+  <!-- No access to anyone for IRI policy:/DEVICEMANAGER/DEVICE/* -->
+  <!-- ALL_ACCESS to elevated -->
+  
+  <Rule Description="Base device 'device name' policy rule" ResourceIri="$(DEVICEMANAGER_DEVICE)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  
+  <!-- No access to anyone for IRI policy:/DEVICEMANAGER/ICLASS/* -->
+  <!-- ALL_ACCESS to SYSTEM -->
+  <Rule Description="Base device 'iclass name' policy rule" ResourceIri="$(DEVICEMANAGER_ICLASS)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <!-- ALL_ACCESS to everyone for IRI policy:/RESOURCES/GLOBAL/DEVICEMANAGER/BUSPARENT -->
+  <Rule Description="Allow everyone to be a bus parent" ResourceIri="policy:/RESOURCES/GLOBAL/DEVICEMANAGER/BUSPARENT" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>  
+  
+  <!-- ALL_ACCESS to standard chambers for IRI policy:/RESOURCES/$(SID)/DEVICEMANAGER/ACTIVATEDEVICE -->
+  <Rule Description="Allow Standard chambers to activate drivers in any chamber" ResourceIri="policy:/RESOURCES/(+)/DEVICEMANAGER/ACTIVATEDEVICE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>  
+  
+  <!-- ALL_ACCESS to elevated for IRI policy:/RESOURCES/$(SID)/DEVICEMANAGER/DEACTIVATEDEVICE -->
+  <Rule Description="Allow System and elevated to deactivate drivers in any chamber" ResourceIri="policy:/RESOURCES/(+)/DEVICEMANAGER/DEACTIVATEDEVICE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule> 
+  
+  <!-- ALL_ACCESS to elevated for IRI policy:/RESOURCES/$(SID)/DEVICEMANAGER/ENABLEDEVICE -->
+  <Rule Description="Allow System and elevated to enable drivers in any chamber" ResourceIri="policy:/RESOURCES/(+)/DEVICEMANAGER/ENABLEDEVICE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule> 
+  
+  <!-- ALL_ACCESS to elevated for IRI policy:/RESOURCES/$(SID)/DEVICEMANAGER/DISABLEDEVICE -->
+  <Rule Description="Allow System and elevated to/disable drivers in any chamber" ResourceIri="policy:/RESOURCES/(+)/DEVICEMANAGER/DISABLEDEVICE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule> 
+
+  <!-- all access to all users for IRI policy:/RESOURCES/GLOBAL/RESOURCEMANAGER/* -->
+  <Rule Description="Base resource mananger policy (covers RESMGR_IRQ and RESMGR_IOSPACE)" ResourceIri="$(GLOBAL_RESOURCES)/RESOURCEMANAGER/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Exceptions to IRI policy:/DEVICEMANAGER/ICLASS/* -->
+  <!-- ROOT BUS (busEnum.dll) ALL_ACCESS to system & elevated & standard groups -->
+  <Rule Description="Root Bus driver policy rule by IClass" ResourceIri="$(DEVICEMANAGER_ICLASS)/B3CC6EBA-5507-4196-8E41-2BF42E4A47C9" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <!-- services BUS (servicesEnum.dll) ALL_ACCESS to system & elevated & standard groups -->
+  <Rule Description="Services Enum bus driver policy rule by IClass" ResourceIri="$(DEVICEMANAGER_ICLASS)/6D4317A0-B5A2-462C-9C59-1E70D2600522" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+      <Authorize>
+        <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+      </Authorize>
+      <Stop>
+        <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+      </Stop>
+  </Rule>
+
+  <!-- Exceptions to IRI policy:/DEVICEMANAGER/ICLASS/* -->
+  <!-- PCI BUS ALL_ACCESS to system & elevated & standard groups -->
+  <Rule Description="PCI Bus driver policy rule by IClass" ResourceIri="$(DEVICEMANAGER_ICLASS)/CD149194-286F-4095-9694-D70E6AB867C3" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  
+  <!-- Exceptions to IRI policy:/DEVICEMANAGER/ICLASS/* -->
+  <!-- PCCard ALL_ACCESS to system & elevated & standard groups -->
+  <Rule Description="PCCard bus driver policy rule by IClass" ResourceIri="$(DEVICEMANAGER_ICLASS)/F6D3DC51-CC71-4916-B3FB-030A85BA0044" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <!-- Exceptions to IRI policy:/DEVICEMANAGER/ICLASS/* -->
+  <!-- SD Bus driver, ALL_ACCESS to system & elevated & standard groups -->
+   <Rule Description="SD Bus driver policy rule by IClass" ResourceIri="$(DEVICEMANAGER_ICLASS)/20FA98A8-B298-4B32-8D72-C716AEE2FA84" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  
+  <!-- Exceptions to IRI policy:/DEVICEMANAGER/ICLASS/* -->
+  <!-- USB Function Controller Driver and Bus driver ALL_ACCESS to all groups -->
+  <Rule Description="USBFn driver policy rule by IClass" ResourceIri="$(DEVICEMANAGER_ICLASS)/E2BDC372-598F-4619-BC50-54B3F7848D35" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- ALL_ACCESS to elevated and above for IRI: policy:/DEVICEMANAGER/BUS/USBHC/ -->
+  <Rule Description="USB Host device 'bus name' policy rule" ResourceIri="$(DEVICEMANAGER_BUS)/USBHC" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Exceptions to IRI policy:/DEVICEMANAGER/ICLASS/* -->
+  <!-- Battery Driver ALL_ACCESS to all groups -->
+  <Rule Description="Rule to allow everyone to access battery driver by IClass" ResourceIri="$(DEVICEMANAGER_ICLASS)/DD176277-CD34-4980-91EE-67DBEF3D8913" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Exceptions to IRI policy:/DEVICEMANAGER/ICLASS/* -->
+  <!-- NLED Driver ALL_ACCESS to all groups -->
+  <Rule Description="Rule to allow everyone to access NLED driver by IClass" ResourceIri="$(DEVICEMANAGER_ICLASS)/CBB4F234-F35F-485B-A490-ADC7804A4EF3" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+  
+  <!-- Allow EVERYONE_GROUP_NAME to advertise the stream driver guid -->
+  <Rule Description="Allow EVERYONE_GROUP_NAME to advertise the stream driver guid" ResourceIri="$(GLOBAL_RESOURCES)/DEVICE_NOTIFICATIONS/F8A6BA98-087A-43AC-A9D8-B7F13C5BAE31" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- servicesstart.exe execute in TCB chamber -->
+  
+<!--Begin Generated accounts and routing/authz rules for $(SYSTEM_USER_NAME) -->
+
+<!--Begin Generated routing/authz rules for ServicesStart.exe -->
+<Rule Description="Route ServicesStart.exe" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/SERVICESSTART.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize ServicesStart.exe be loadable to $(SYSTEM_USER_NAME) and  chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/SERVICESSTART.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for ServicesStart.exe -->
+<!--End Generated accounts and routing/authz rules for $(SYSTEM_USER_NAME) -->
+
+  
+  <!-- udevice.exe or servicesd.exe SID for elevated chamber
+       UDEVICE_ACCOUNTID_ELEVATED -->
+  
+<!--Begin Generated accounts and routing/authz rules for S-1-5-112-0-0X10-0X00000001 -->
+<Macro Id="SID_UDEVICE_ELEVATED" Value="S-1-5-112-0-0X10-0X00000001" />
+<Account Id="$(SID_UDEVICE_ELEVATED)" FriendlyName="Udevice.exe or servicesd.exe elevated chamber" Description="Autogenerated chamber for Udevice.exe or servicesd.exe elevated chamber" Type="User">
+<MemberOfGroup GroupAccountId="$(ELEVATED_RIGHTS_CHAMBER_GROUP_NAME)" />
+</Account>
+<!--Begin Generated routing/authz rules for UDEVICE.EXE -->
+<Rule Description="Route UDEVICE.EXE" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/UDEVICE.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(SID_UDEVICE_ELEVATED)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize UDEVICE.EXE be loadable to $(SID_UDEVICE_ELEVATED) and $(SYSTEM_IDENTITY_GROUP_NAME) chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/UDEVICE.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(SID_UDEVICE_ELEVATED)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+<Match AccountId="$(SYSTEM_IDENTITY_GROUP_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for UDEVICE.EXE -->
+
+<!--Begin Generated routing/authz rules for SERVICESD.EXE -->
+<Rule Description="Route SERVICESD.EXE" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/SERVICESD.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(SID_UDEVICE_ELEVATED)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize SERVICESD.EXE be loadable to $(SID_UDEVICE_ELEVATED) and $(SYSTEM_IDENTITY_GROUP_NAME) chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/SERVICESD.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(SID_UDEVICE_ELEVATED)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+<Match AccountId="$(SYSTEM_IDENTITY_GROUP_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for SERVICESD.EXE -->
+<!--End Generated accounts and routing/authz rules for S-1-5-112-0-0X10-0X00000001 -->
+
+
+  <!-- udevice.exe SID for standard chamber. UDEVICE_ACCOUNTID_STANDARD -->
+
+  <Account Id="$(SID_UDEVICE_STANDARD)" FriendlyName="udevice.exe standard chamber" Description="Udevice.exe standard chamber" Type="User">
+    <MemberOfGroup GroupAccountId="$(STANDARD_RIGHTS_CHAMBER_GROUP_NAME)"></MemberOfGroup>
+  </Account>  
+</CeSecurityPolicyFile>

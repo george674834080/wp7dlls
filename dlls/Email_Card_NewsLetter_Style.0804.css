@@ -1,0 +1,55 @@
+/*
+Copyright (c) Microsoft Corporation.  All rights reserved.
+*/
+/*
+Use of this sample source code is subject to the terms of the Microsoft
+license agreement under which you licensed this sample source code. If
+you did not accept the terms of the license agreement, you are not
+authorized to use this sample source code. For the terms of the license,
+please see the license agreement between you and Microsoft or, if applicable,
+see the LICENSE.RTF on your install media or the root of your tools installation.
+THE SAMPLE SOURCE CODE IS PROVIDED "AS IS", WITH NO WARRANTIES OR INDEMNITIES.
+*/
+
+body
+{
+    /* Use DengXian as default for CHS if no fonts are specified */
+    font-family: DengXian;
+}
+
+iframe, frameset, frame /* Hide any frames / iframes in body*/
+{
+    display: none !important; 
+}
+
+/* Some email servers like exchange use relative font sizes. This specifies
+   the corresponding font values*/
+font[size="1"] 
+{
+    font-size: 8pt !important;
+}
+
+font[size="2"] 
+{
+    font-size: 10pt !important;
+}
+
+font[size="3"] 
+{
+    font-size: 12pt !important;
+}
+
+font[size="4"] 
+{
+    font-size: 14pt !important;
+}
+
+font[size="5"] 
+{
+    font-size: 18pt !important;
+}
+
+font[size="6"] 
+{
+    font-size: 22pt !important;
+}

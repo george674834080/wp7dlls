@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<CeSecurityPolicyFile Description="Communications Platform account and policy definitions" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.4.9876" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">
+
+    <!-- Outlook mobile chamber/account definition -->
+    <Macro Id="OM_USER_NAME" Description="Outlook mobile user SID" Value="S-1-5-112-0-0X10-0X00000006"></Macro>
+    <Macro Id="OM_USER_FRIENDLY_NAME" Description="Windows Mobile Outlook mobile apps" Value="LOC_ACCOUNT_FRIENDLY_NAME_OM_USER"></Macro>
+    <Account Id="$(OM_USER_NAME)" FriendlyName="$(OM_USER_FRIENDLY_NAME)" Action="CreateNew" Description="Outlook mobile user" Type="User">
+        <MemberOfGroup Action="Add" GroupAccountId="$(SELF_ISOLATED_STANDARD_RIGHTS_CHAMBER_GROUP_NAME)"></MemberOfGroup>
+        <MemberOfGroup GroupAccountId="$(ENTERPRISE_GROUP_NAME)"></MemberOfGroup>
+    </Account>
+    
+    <!-- Entertainment/photos UX chamber/account macro : $(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)   
+
+         *** NOTE ***
+         
+         We use the STANDARD rights chamber *group* instead of the chamber $(SID_MEUX_STANDARD) since:
+         (a) the TAP/partner/package build breaks if ENT package is not in the build 
+         (b) they are functionally identical for now since MEUX is not an isolated normal chamber
+
+         -->
+
+  <!-- CommsPlatform applications routing to OM chamber -->
+  
+<!--Begin Generated accounts and routing/authz rules for $(OM_USER_NAME) -->
+
+<!--Begin Generated routing/authz rules for BackupRecoverUtil.EXE -->
+<Rule Description="Route BackupRecoverUtil.EXE" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/BACKUPRECOVERUTIL.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(OM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize BackupRecoverUtil.EXE be loadable to $(OM_USER_NAME) and  chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/BACKUPRECOVERUTIL.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(OM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for BackupRecoverUtil.EXE -->
+<!--End Generated accounts and routing/authz rules for $(OM_USER_NAME) -->
+
+  
+    <!-- *** SNService ***
+        The following section contains mapping for the Comms Social Networking 
+        transport service (SNTransport) 
+        -->
+
+    <!-- CreateFile() on SNService is accessible to OM chamber as well as to MEUX 
+         in order to support WakeService.
+         See: http://portals/windowsphone/Seven/resources/Wiki/Wiki%20Pages/Understanding%20device%20drivers%27%20security%20policy%20in%207.aspx
+         -->
+    <Rule Action="CreateNew" Description="SNService entry point is accessible to the OM chamber only" ResourceIri="policy:/DEVICEMANAGER/DEVICE/SNS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+            <Match Action="Add" AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+        </Authorize>
+    </Rule>
+
+    <!-- RPC endpoint for SNService/SNAS can only be registered by OM chamber.
+         See snasconst.h for the constant that defined this endpoint name
+         -->
+    <Rule Action="CreateNew" Description="RPC service for SNService/SNAS" ResourceIri="$(RPC_SERVER_ENDPOINT)/ISNASApi" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <!-- Authorize any process in the OM chamber to register this endpoint -->
+            <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+        </Authorize>
+    </Rule>
+
+    <!-- RPC client interface for SNService/SNAS can be instantiated by OM chamber,
+         as well as MEUX. GENERIC_ALL is the code to be used for RPC functionality.
+         See: http://portals/windowsphone/Seven/resources/Wiki/Wiki%20Pages/7%20RPC%20Security%20Basics.aspx
+         See: snasapi.idl for the GUID -->
+    <Rule Action="CreateNew" Description="RPC client interface for SNService/SNAS API (ISNASApi)" ResourceIri="$(RPC_CLIENT_INTERFACE)/b8384987-d0ed-4ad4-95c9-f67a9d9b9914/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+            <Match Action="Add" AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+        </Authorize>
+    </Rule>
+
+    <!-- Rules pertaining to files/folders -->
+
+    <!-- Access policy for images/files under Application Data\Microsoft\WLPhotos\*.*.
+         These files need to be accessible only to the OM chamber as they are written
+         here upon download of an image and then immediately moved to an internal 
+         folder by SODA -->
+    <Rule Action="CreateNew" Description="Only applications in the OM chamber get access to images inside SNService folder" ResourceIri="$(FILESYS_PRIMARY_ROOT)/APPLICATION%20DATA/MICROSOFT/SNSERVICE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <!-- OM chamber gets full access -->
+            <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <!-- Rules pertaining to Message Queues-->
+
+    <!-- Protect SNAS message queues from everyone but OM and MEUX chambers -->
+    <Rule Action="CreateOrReplace" Description="SNAS Message Queues are accessible to OM and Ent chamber" ResourceIri="policy:/KERNEL/MSGQUEUE/$(OM_USER_NAME)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <!-- OM chamber gets full access -->
+            <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+            <!-- Meux requires READ access since it loads SNASClient.dll which reads off of this Q -->
+            <Match Action="Add" AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ"></Match>
+        </Authorize>
+    </Rule>
+
+    <!-- Rules pertaining to the registry-->
+
+    <!-- Protect SNService registry key from everyone but OM chamber -->
+    <Rule Action="CreateNew" Description="SNService registry keys are only accessible to OM chamber" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/SNSERVICE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <!-- Allow Entertainment access to SNService "RecoveryHint" reg keys. This is 
+         currently not used, but may be in future useful such that a service could predicate 
+         its behavior on whether it was "recovered" by WakeService (i.e. flushing state or 
+         starting in a more safe way to avoid reloading whatever caused it to crash initially)
+         -->
+    <Rule Action="CreateNew" Description="SNService Service keys are accessible to OM and Ent chamber" ResourceIri="$(HKLM)/Services/SNService/RecoveryHint" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match Action="Add" AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+        </Authorize>
+    </Rule>
+
+
+    <!-- Rules pertaining to files/folders accessible only to AccountSettings -->
+
+    <!-- Access policy for known-accounts xml files under WINDOWS -->
+    <Rule Action="CreateNew" Description="Known accounts xml should be only accessable to OM applications." ResourceIri="$(FILESYS_PRIMARY_ROOT)/WINDOWS/KnownAccounts.xml" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+
+        <Authorize>
+            <!-- OM chamber gets read-only access -->
+            <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="FILE_GENERIC_READ"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+  <!-- Access policy for known-accounts OEM xml file under WINDOWS -->
+  <Rule Action="CreateNew" Description="Known accounts xml should be only accessable to OM applications." ResourceIri="$(FILESYS_PRIMARY_ROOT)/WINDOWS/KnownAccountsOEM.xml" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+
+    <Authorize>
+      <!-- OM chamber gets read-only access -->
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="FILE_GENERIC_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <!-- Access policy for Live domain list file under WINDOWS -->
+  <Rule Action="CreateNew" Description="Live domain list should be only accessable to OM applications." ResourceIri="$(FILESYS_PRIMARY_ROOT)/WINDOWS/LiveDomainList.txt" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+
+    <Authorize>
+      <!-- OM chamber gets read-only access -->
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="FILE_GENERIC_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <!-- Access policy for OEM server configuration files under WINDOWS -->
+    <Rule Action="CreateNew" Description="Folder Windows/ActiveSync/OEMConfig contains OEM server configuration files. The folder should be only accessable to OM applications." ResourceIri="$(FILESYS_PRIMARY_ROOT)/ActiveSync/OEMConfig" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+
+        <Authorize>
+            <!-- OM chamber gets read-only access -->
+            <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="FILE_GENERIC_READ"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+    
+  <!-- *** FBAuthService ***
+        The following section contains mapping for the FBAuth Service 
+        -->
+
+    <!-- Rules pertaining to the registry-->
+
+    <!-- Allow Communications access to FBAuth -->
+
+     <Rule Action="CreateNew" Description="FBAuth Service keys are accessible to OM chamber" ResourceIri="$(HKLM)/Services/DelayLoad/FBAuthService/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+        </Authorize>
+    </Rule>
+
+     <!-- Protect FBAuth registry keys from everyone but OM chamber -->
+    
+    <Rule Action="CreateNew" Description="FBAuth registry keys are only accessible to OM chamber" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/Facebook/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+     <!-- FBAuth service entry point is accessible only to OM chamber -->
+    <Rule Action="CreateNew" Description="FbAuthService entry point is accessible to the OM chamber only" ResourceIri="policy:/DEVICEMANAGER/DEVICE/FBA/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+        </Authorize>
+    </Rule>
+
+    <!-- Rules pertaining to the RPC endpoint for FBAuth.
+         See FbAuthConst.h for the constant that defined this endpoint name -->
+
+    <Rule Action="CreateNew" Description="RPC service for FBAuth" ResourceIri="$(RPC_SERVER_ENDPOINT)/IFBAuthApi" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <!-- Authorize any process in the OM chamber to access this endpoint -->
+            <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+        </Authorize>
+    </Rule>
+
+    <!-- Rules pertaining to the RPC client interface for FBAuth. Currently accessible
+         to Comms and MEUX.
+         See: FbAuthapi.idl for the GUID
+         -->
+
+    <Rule Action="CreateNew" Description="RPC client interface for FBAuth API (IFBAuthApi)" ResourceIri="$(RPC_CLIENT_INTERFACE)/958d61c7-1563-4add-8a51-88573c15046b/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+            <Match Action="Add" AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+        </Authorize>
+    </Rule>
+
+  <!-- Data service RPC rules-->
+  <Rule Action="CreateNew" Description="Authorize a server from the OM chamber to register poom data service endpoint." ResourceIri="$(RPC_SERVER_ENDPOINT)/IPOOMDataService" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Action="CreateNew" Description="Authorize clients in the OM chamber to call into the IPOOMDataService interface." ResourceIri="$(RPC_CLIENT_INTERFACE)/b8384987-d0ed-4ad4-95c9-f67a9d9b9914/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Action="CreateNew" Description="Authorize starting of service" ResourceIri="policy:/RESOURCES/$(OM_USER_NAME)/DEVICEMANAGER/ACTIVATEDEVICE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Data API security resources -->
+  <Rule Action="CreateOrReplace" Description="Calendar API access" ResourceIri="$(GLOBAL_RESOURCES)/CALENDAR_API/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Action="CreateOrReplace" Description="Contacts API access" ResourceIri="$(GLOBAL_RESOURCES)/CONTACTS_API/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Data API capabilities -->
+  
+<!--Begin generating capability accounts and authorization rules for ID_CAP_CONTACTS -->
+<Macro Id="CAPMACRO_ID_CAP_CONTACTS" Value="S-1-5-112-0-0X70-0X49445F4341505F434F4E5441435453" />
+<Account Id="$(CAPMACRO_ID_CAP_CONTACTS)" FriendlyName="ID_CAP_CONTACTS:Capability for accessing contacts information" Description="Autogenerated group for capability ID_CAP_CONTACTS" Type="Group">
+<MemberOfGroup GroupAccountId="$(PUBLIC_CAPABILITIES_GROUP_NAME)" />
+</Account>
+<Rule Description="Authorization rule for capability ID_CAP_CONTACTS" ResourceIri="$(RPC_CLIENT_INTERFACE)/b8384987-d0ed-4ad4-95c9-f67a9d9b9914/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_CONTACTS)" AuthorizationIds="GENERIC_ALL" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_CONTACTS" ResourceIri="$(GLOBAL_RESOURCES)/CONTACTS_API/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_CONTACTS)" AuthorizationIds="ALL_ACCESS" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_CONTACTS" ResourceIri="policy:/RESOURCES/$(OM_USER_NAME)/DEVICEMANAGER/ACTIVATEDEVICE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_CONTACTS)" AuthorizationIds="ALL_ACCESS" />
+</Authorize>
+</Rule>
+<!--End generating capability accounts and authorization rules for ID_CAP_CONTACTS -->
+
+
+  
+<!--Begin generating capability accounts and authorization rules for ID_CAP_APPOINTMENTS -->
+<Macro Id="CAPMACRO_ID_CAP_APPOINTMENTS" Value="S-1-5-112-0-0X70-0X49445F4341505F4150504F494E544D454E5453" />
+<Account Id="$(CAPMACRO_ID_CAP_APPOINTMENTS)" FriendlyName="ID_CAP_APPOINTMENTS:Capability for accessing calendar information" Description="Autogenerated group for capability ID_CAP_APPOINTMENTS" Type="Group">
+<MemberOfGroup GroupAccountId="$(PUBLIC_CAPABILITIES_GROUP_NAME)" />
+</Account>
+<Rule Description="Authorization rule for capability ID_CAP_APPOINTMENTS" ResourceIri="$(RPC_CLIENT_INTERFACE)/b8384987-d0ed-4ad4-95c9-f67a9d9b9914/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_APPOINTMENTS)" AuthorizationIds="GENERIC_ALL" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_APPOINTMENTS" ResourceIri="$(GLOBAL_RESOURCES)/CALENDAR_API/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_APPOINTMENTS)" AuthorizationIds="ALL_ACCESS" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_APPOINTMENTS" ResourceIri="policy:/RESOURCES/$(OM_USER_NAME)/DEVICEMANAGER/ACTIVATEDEVICE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_APPOINTMENTS)" AuthorizationIds="ALL_ACCESS" />
+</Authorize>
+</Rule>
+<!--End generating capability accounts and authorization rules for ID_CAP_APPOINTMENTS -->
+
+
+</CeSecurityPolicyFile>

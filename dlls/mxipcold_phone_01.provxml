@@ -1,0 +1,27 @@
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<wap-provisioningdoc>
+
+<!-- Creating directory \My Documents\My Ringtones -->
+<characteristic type="FileOperation">
+  <characteristic type="\My Documents\My Ringtones" translation="install">
+    <characteristic type="MakeDir" />
+  </characteristic>
+</characteristic>
+
+<!-- Adding callsettings manifest file-->
+<characteristic type="AppMetadata"> 
+  <characteristic type="{5B04B775-356B-4AA0-AAF8-6491FFEA561C}">
+    <parm name="Manifest" value="\Windows\Callsettings.xml"/>
+  </characteristic>
+</characteristic>
+
+<!-- Adding field test app manifest file-->
+<characteristic type="AppMetadata">
+  <characteristic type="{5B04B775-356B-4AA0-AAF8-6491FFEA5626}">
+    <parm name="Manifest" value="\Windows\FieldTestApp.xml"/>
+  </characteristic>
+</characteristic>
+
+</wap-provisioningdoc>

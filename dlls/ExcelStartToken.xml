@@ -1,0 +1,20 @@
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+
+<Provisioning xmlns="http://dbPreProvisioning"
+  RuntimeType="Native"
+  Title="@officeres.dll,-701"
+  Version="1.0"
+  Genre=""
+  ProductID="{5B04B775-356B-4AA0-AAF8-6491FFEA5618}"
+  DisplayOnAppList="false"
+  SingleInstanceHost="false">
+  <ImagePath xmlns="">\Windows\pxl.exe</ImagePath>
+  <ImageParams xmlns=""></ImageParams>
+  <Tasks xmlns="">
+    <DefaultTask Name="Default"
+                 NavigationPage="PxlHome"
+                 ActivationPolicy="Resume"/>
+  </Tasks>
+</Provisioning>

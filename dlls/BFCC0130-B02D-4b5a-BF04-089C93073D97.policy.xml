@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<!--
+Use of this source code is subject to the terms of the Microsoft
+premium shared source license agreement under which you licensed
+this source code. If you did not accept the terms of the license
+agreement, you are not authorized to use this source code.
+For the terms of the license, please see the license agreement
+signed by you and Microsoft.
+THE SOURCE CODE IS PROVIDED "AS IS", WITH NO WARRANTIES OR INDEMNITIES.
+-->
+<CeSecurityPolicyFile Description="Default file system security policy" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.4.9876" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">
+
+  <Rule Description="Permission to access the rollback directory for elevated groups." ResourceIri="$(WINDOWS_DIRECTORY_PATH)/SYSTEM/CONFIGMGR/ELEVATED/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Description="Permission to access the rollback directory for standard rights groups." ResourceIri="$(WINDOWS_DIRECTORY_PATH)/SYSTEM/CONFIGMGR/STANDARD/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Description="Permission to access the rollback directory for everyone groups." ResourceIri="$(WINDOWS_DIRECTORY_PATH)/SYSTEM/CONFIGMGR/EVERYONE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Explicitly allowing System access to the Metabase namespace" ResourceIri="policy:/METABASE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="METABASE_ALL"></Match>
+
+      <!-- Grant access to chamber S-1-5-112-0-0X11-0X00000007 
+           of METABASE_READ to the metabase.
+         These two SIDs are for device update. DU needs to access some CSPs
+         during device state evaluations. DU doesn't have knowledge of what
+         CSPs will be accessed in advance thus we have to grant the read
+         access of all CSPs.
+         DU threads run in servicesd.exe. The detection thread impersonates to
+         S-1-5-112-0-0X11-0X00000007 and reporting thread impersonates to
+         S-1-5-112-0-0X11-0X00000008.
+         Also granted read access to chamber S-1-5-112-0-0X10-0X00000001
+        (SID_UDEVICE_ELEVATED) since it is in the DU threads token chain.
+      -->
+      <Match AccountId="S-1-5-112-0-0X11-0X00000007" AuthorizationIds="METABASE_READ"></Match>
+      <Match AccountId="S-1-5-112-0-0X10-0X00000001" AuthorizationIds="METABASE_READ"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Allow everyone read access" ResourceIri="$(HKLM)/SECURITY/PROVISIONING/REQUIREDCSPS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Only System authorized to access DmSchedulerCallback.exe" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/DMSCHEDULERCALLBACK.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Description="Scheduler Callback Registry keys can be read by anyone, but written only by TCB" ResourceIri="$(HKLM)/SYSTEM/DM/DMSCHEDULERCALLBACK/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  
+<!--Begin Generated accounts and routing/authz rules for $(SYSTEM_USER_NAME) -->
+
+<!--Begin Generated routing/authz rules for DMSCHEDULERCALLBACK.EXE -->
+<Rule Description="Route DMSCHEDULERCALLBACK.EXE" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/DMSCHEDULERCALLBACK.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize DMSCHEDULERCALLBACK.EXE be loadable to $(SYSTEM_USER_NAME) and $(SYSTEM_IDENTITY_GROUP_NAME) chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/DMSCHEDULERCALLBACK.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+<Match AccountId="$(SYSTEM_IDENTITY_GROUP_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for DMSCHEDULERCALLBACK.EXE -->
+<!--End Generated accounts and routing/authz rules for $(SYSTEM_USER_NAME) -->
+
+
+    <Rule Description="Make reboot deferral keys readable and writable by anyone" ResourceIri="$(HKLM)/SECURITY/REBOOTDEFERRAL/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+        </Authorize>
+    </Rule>
+
+    <Rule Description="Make reboot deferral settings keys readable by all, but writable by TCB only" ResourceIri="$(HKLM)/SECURITY/REBOOTDEFERRALSETTINGS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Description="Determine if Certificate Installation UI should be displayed or if import should be automatic." ResourceIri="$(GLOBAL_RESOURCES)/CRYPTO/CertAutoImport" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_EXECUTE"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+  <!-- By default security chamber for DMSRV is TCB -->
+  
+<!--Begin Generated accounts and routing/authz rules for $(SYSTEM_USER_NAME) -->
+
+<!--Begin Generated routing/authz rules for DMSRV.EXE -->
+<Rule Description="Route DMSRV.EXE" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/DMSRV.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize DMSRV.EXE be loadable to $(SYSTEM_USER_NAME) and  chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/DMSRV.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for DMSRV.EXE -->
+<!--End Generated accounts and routing/authz rules for $(SYSTEM_USER_NAME) -->
+
+
+  <Rule Description="Policy for OMADM mutex used to protect OMADM APIs" ResourceIri="policy:/KERNEL/MUTEX/GLOBAL/__OMADM_NAMED_MUTEX__" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Description="Allow read-only access for Everyone to NormalReplaceURIs key" ResourceIri="$(HKLM)/SECURITY/PROVISIONING/OMADM/NORMALREPLACEURIS" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Protect OMA DM Accounts key" ResourceIri="$(HKLM)/SECURITY/PROVISIONING/OMADM/ACCOUNTS" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+      <Match AccountId="$(ALL_DM_ACCOUNTS_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Action="CreateNew" Description="Protect data for each OMA DM account" ResourceIri="$(HKLM)/SECURITY/PROVISIONING/OMADM/ACCOUNTS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Description="Protect OMA DM sessions" ResourceIri="$(HKLM)/SECURITY/PROVISIONING/OMADM/SESSIONS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_ELEVATED">
+    <Authorize>
+      <Match Action="Add" AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Description="Only TCB and elevated chambers can call OmaDmSvcInitiateSession/OmaDmSvcAbortSession/OmaDmSvcCloseSession" ResourceIri="$(GLOBAL_RESOURCES)/OMADMAPI/OmaDmSessionAPI" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Only TCB and elevated chambers can call OmaDmSvcSetAcctInfo/OmaDmSvcDeleteAcctInfo" ResourceIri="$(GLOBAL_RESOURCES)/OMADMAPI/OmaDmAcctInfo" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+   <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  
+<!--Begin Generated accounts and routing/authz rules for S-1-5-112-0-0X10-0X0000034 -->
+<Macro Id="HFAHOST_EXE_SID" Value="S-1-5-112-0-0X10-0X0000034" />
+<Account Id="$(HFAHOST_EXE_SID)" FriendlyName="hfahost.exe" Description="Autogenerated chamber for hfahost.exe" Type="User">
+<MemberOfGroup GroupAccountId="$(ELEVATED_RIGHTS_CHAMBER_GROUP_NAME)" />
+</Account>
+<!--Begin Generated routing/authz rules for hfahost.exe -->
+<Rule Description="Route hfahost.exe" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/HFAHOST.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(HFAHOST_EXE_SID)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize hfahost.exe be loadable to $(HFAHOST_EXE_SID) and  chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/HFAHOST.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(HFAHOST_EXE_SID)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for hfahost.exe -->
+<!--End Generated accounts and routing/authz rules for S-1-5-112-0-0X10-0X0000034 -->
+
+
+  <Rule Description="Only System authorized to execute hfahost.exe" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/HFAHOST.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>  
+  
+  <Rule Description="ADC MMS success registry can be written by anyone" ResourceIri="$(HKLM)/SYSTEM/AUTODATACOLLECTION/SERVICES/MMS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(MMSTRANS_USER_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Device management accounts -->
+
+  <Macro Id="ALL_DM_ACCOUNTS_GROUP_NAME" Description="SID representing all device management accounts on a device" Value="S-1-5-112-700"></Macro>
+  <Macro Id="ALL_DM_ACCOUNTS_FRIENDLY_NAME" Description="All DM accounts group" Value="All DM Chamber Group"></Macro>
+  <Account Id="$(ALL_DM_ACCOUNTS_GROUP_NAME)" FriendlyName="$(ALL_DM_ACCOUNTS_FRIENDLY_NAME)" Description="Device management accounts" Type="Group">
+    <MemberOfGroup GroupAccountId="$(EVERYONE_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+  <Macro Id="DM_OPERATOR_GROUP_NAME" Description="SECROLE_OPERATOR" Value="S-1-5-112-0-0X41"></Macro>
+  <Macro Id="DM_OPERATOR_GROUP_FRIENDLY_NAME" Description="Operator device management security role" Value="ACCOUNT_FRIENDLY_NAME_DM_OPERATOR_GROUP"></Macro>
+  <Account Id="$(DM_OPERATOR_GROUP_NAME)" FriendlyName="$(DM_OPERATOR_GROUP_FRIENDLY_NAME)" Description="SECROLE_OPERATOR" Type="Group">
+    <MemberOfGroup GroupAccountId="$(ALL_DM_ACCOUNTS_GROUP_NAME)"></MemberOfGroup>
+    <MemberOfGroup GroupAccountId="$(ELEVATED_RIGHTS_CHAMBER_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+  <Macro Id="DM_MANAGER_GROUP_NAME" Description="SECROLE_MANAGER" Value="S-1-5-112-0-0X42"></Macro>
+  <Macro Id="DM_MANAGER_GROUP_FRIENDLY_NAME" Description="Manager device management security role" Value="ACCOUNT_FRIENDLY_NAME_DM_MANAGER_GROUP"></Macro>
+  <Account Id="$(DM_MANAGER_GROUP_NAME)" FriendlyName="$(DM_MANAGER_GROUP_FRIENDLY_NAME)" Description="SECROLE_MANAGER" Type="Group">
+    <MemberOfGroup GroupAccountId="$(ALL_DM_ACCOUNTS_GROUP_NAME)"></MemberOfGroup>
+    <MemberOfGroup GroupAccountId="$(SYSTEM_CHAMBER_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+  <Macro Id="DM_USER_AUTH_GROUP_NAME" Description="SECROLE_USER_AUTH" Value="S-1-5-112-0-0X43"></Macro>
+  <Macro Id="DM_USER_AUTH_GROUP_FRIENDLY_NAME" Description="Device management security role for users who are not device managers" Value="ACCOUNT_FRIENDLY_NAME_DM_USER_AUTH_GROUP"></Macro>
+  <Account Id="$(DM_USER_AUTH_GROUP_NAME)" FriendlyName="$(DM_USER_AUTH_GROUP_FRIENDLY_NAME)" Description="SECROLE_USER_AUTH" Type="Group">
+    <MemberOfGroup GroupAccountId="$(ALL_DM_ACCOUNTS_GROUP_NAME)"></MemberOfGroup>
+    <MemberOfGroup GroupAccountId="$(STANDARD_RIGHTS_CHAMBER_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+
+  <Macro Id="ENTERPRISE_GROUP_NAME" Description="Enterprise IT administrator device management group" Value="S-1-5-112-0-0X4C"></Macro>
+  <Account Id="$(ENTERPRISE_GROUP_NAME)" FriendlyName="Enterprise IT Administrator Group" Description="Enterprise IT administrator device management group" Type="Group">
+    <MemberOfGroup GroupAccountId="$(EVERYONE_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+
+
+  <Macro Id="DM_USER_UNAUTH_GROUP_NAME" Description="SECROLE_USER_UNAUTH" Value="S-1-5-112-0-0X45"></Macro>
+  <Macro Id="DM_USER_UNAUTH_GROUP_FRIENDLY_NAME" Description="Device management security role for users who are not authenticated on the device" Value="ACCOUNT_FRIENDLY_NAME_DM_USER_UNAUTH_GROUP"></Macro>
+  <Account Id="$(DM_USER_UNAUTH_GROUP_NAME)" FriendlyName="$(DM_USER_UNAUTH_GROUP_FRIENDLY_NAME)" Description="SECROLE_USER_UNAUTH" Type="Group">
+    <MemberOfGroup GroupAccountId="$(EVERYONE_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+  <Macro Id="DM_OPERATOR_TPS_GROUP_NAME" Description="SECROLE_OPERATOR_TPS" Value="S-1-5-112-0-0X46"></Macro>
+  <Macro Id="DM_OPERATOR_TPS_GROUP_FRIENDLY_NAME" Description="Trusted provisioning server device management security role" Value="ACCOUNT_FRIENDLY_NAME_DM_OPERATOR_TPS_GROUP"></Macro>
+  <Account Id="$(DM_OPERATOR_TPS_GROUP_NAME)" FriendlyName="$(DM_OPERATOR_TPS_GROUP_FRIENDLY_NAME)" Description="SECROLE_OPERATOR_TPS" Type="Group">
+    <MemberOfGroup GroupAccountId="$(ALL_DM_ACCOUNTS_GROUP_NAME)"></MemberOfGroup>
+    <MemberOfGroup GroupAccountId="$(ELEVATED_RIGHTS_CHAMBER_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+  <Macro Id="DM_KNOWN_PPG_GROUP_NAME" Description="SECROLE_KNOWN_PPG" Value="S-1-5-112-0-0X47"></Macro>
+  <Macro Id="DM_KNOWN_PPG_GROUP_FRIENDLY_NAME" Description="Known push proxy gateway device management security role" Value="ACCOUNT_FRIENDLY_NAME_DM_KNOWN_PPG_GROUP"></Macro>
+  <Account Id="$(DM_KNOWN_PPG_GROUP_NAME)" FriendlyName="$(DM_KNOWN_PPG_GROUP_FRIENDLY_NAME)" Description="SECROLE_KNOWN_PPG" Type="Group">
+    <MemberOfGroup GroupAccountId="$(EVERYONE_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+  <Macro Id="DM_TRUSTED_PPG_GROUP_NAME" Description="SECROLE_TRUSTED_PPG" Value="S-1-5-112-0-0X48"></Macro>
+  <Macro Id="DM_TRUSTED_PPG_GROUP_FRIENDLY_NAME" Description="Device trusted push proxy gateway device management security role" Value="ACCOUNT_FRIENDLY_NAME_DM_TRUSTED_PPG_GROUP"></Macro>
+  <Account Id="$(DM_TRUSTED_PPG_GROUP_NAME)" FriendlyName="$(DM_TRUSTED_PPG_GROUP_FRIENDLY_NAME)" Description="SECROLE_TRUSTED_PPG" Type="Group">
+    <MemberOfGroup GroupAccountId="$(EVERYONE_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+  <Macro Id="DM_PPG_AUTH_GROUP_NAME" Description="SECROLE_PPG_AUTH" Value="S-1-5-112-0-0X49"></Macro>
+  <Macro Id="DM_PPG_AUTH_GROUP_FRIENDLY_NAME" Description="Authenticated push initiator device management security role" Value="ACCOUNT_FRIENDLY_NAME_DM_PPG_AUTH_GROUP"></Macro>
+  <Account Id="$(DM_PPG_AUTH_GROUP_NAME)" FriendlyName="$(DM_PPG_AUTH_GROUP_FRIENDLY_NAME)" Description="SECROLE_PPG_AUTH" Type="Group">
+    <MemberOfGroup GroupAccountId="$(EVERYONE_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+  <Macro Id="DM_PPG_TRUSTED_GROUP_NAME" Description="SECROLE_PPG_TRUSTED" Value="S-1-5-112-0-0X4A"></Macro>
+  <Macro Id="DM_PPG_TRUSTED_GROUP_FRIENDLY_NAME" Description="Trusted push proxy gateway device management security role" Value="ACCOUNT_FRIENDLY_NAME_DM_PPG_TRUSTED_GROUP"></Macro>
+  <Account Id="$(DM_PPG_TRUSTED_GROUP_NAME)" FriendlyName="$(DM_PPG_TRUSTED_GROUP_FRIENDLY_NAME)" Description="SECROLE_PPG_TRUSTED" Type="Group">
+    <MemberOfGroup GroupAccountId="$(EVERYONE_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+  <Macro Id="DM_ANY_PUSH_SOURCE_GROUP_NAME" Description="SECROLE_ANY_PUSH_SOURCE" Value="S-1-5-112-0-0X4B"></Macro>
+  <Macro Id="DM_ANY_PUSH_SOURCE_GROUP_FRIENDLY_NAME" Description="Push router device management security role" Value="ACCOUNT_FRIENDLY_NAME_DM_ANY_PUSH_SOURCE_GROUP"></Macro>
+  <Account Id="$(DM_ANY_PUSH_SOURCE_GROUP_NAME)" FriendlyName="$(DM_ANY_PUSH_SOURCE_GROUP_FRIENDLY_NAME)" Description="SECROLE_ANY_PUSH_SOURCE" Type="Group">
+    <MemberOfGroup GroupAccountId="$(EVERYONE_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+  
+</CeSecurityPolicyFile>

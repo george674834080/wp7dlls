@@ -1,0 +1,80 @@
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+
+<wap-provisioningdoc>
+    
+    <!-- Settings app -->
+    <characteristic type="AppMetadata"> 
+        <characteristic type="{5B04B775-356B-4AA0-AAF8-6491FFEA5601}">
+            <parm name="Manifest" value="\Windows\settings.xml"/>
+        </characteristic>
+    </characteristic>
+    
+    <!-- Please keep the rest of the manifests in alphabetical order -->
+    
+    <!-- About CPL -->
+    <characteristic type="AppMetadata"> 
+        <characteristic type="{5B04B775-356B-4AA0-AAF8-6491FFEA5605}">
+            <parm name="Manifest" value="\Windows\about.xml"/>
+        </characteristic>
+    </characteristic>
+
+    <!-- Accessibility CPL -->
+    <characteristic type="AppMetadata"> 
+        <characteristic type="{1C3250AF-FA07-412a-A997-0E376F1B01E8}">
+            <parm name="Manifest" value="\Windows\accessibility.xml"/>
+        </characteristic>
+    </characteristic>
+
+    <!-- Brightness CPL -->
+    <characteristic type="AppMetadata"> 
+        <characteristic type="{5B04B775-356B-4AA0-AAF8-6491FFEA560B}">
+            <parm name="Manifest" value="\Windows\brightness.xml"/>
+        </characteristic>
+    </characteristic>    
+    
+    <!-- DateTime CPL -->
+    <characteristic type="AppMetadata"> 
+        <characteristic type="{5B04B775-356B-4AA0-AAF8-6491FFEA5606}">
+            <parm name="Manifest" value="\Windows\datetime.xml"/>
+        </characteristic>
+    </characteristic>
+
+    <!-- Lock CPL -->
+    <characteristic type="AppMetadata">
+        <characteristic type="{5B04B775-356B-4AA0-AAF8-6491FFEA5607}">
+            <parm name="Manifest" value="\Windows\lock.xml"/>
+        </characteristic>
+    </characteristic>
+
+  <!-- Regional & Language CPL -->
+    <characteristic type="AppMetadata"> 
+        <characteristic type="{5B04B775-356B-4AA0-AAF8-6491FFEA560C}">
+            <parm name="Manifest" value="\Windows\RegionCPL.xml"/>
+        </characteristic>
+    </characteristic>
+
+    <!-- Sounds CPL -->
+    <characteristic type="AppMetadata"> 
+        <characteristic type="{5B04B775-356B-4AA0-AAF8-6491FFEA560D}">
+            <parm name="Manifest" value="\Windows\sounds.xml"/>
+        </characteristic>
+    </characteristic>
+
+    <!-- Themes CPL -->
+    <characteristic type="AppMetadata"> 
+        <characteristic type="{5B04B775-356B-4AA0-AAF8-6491FFEA560E}">
+            <parm name="Manifest" value="\Windows\themes.xml"/>
+        </characteristic>
+    </characteristic>
+
+    <!-- Background Processing CPL -->
+    <characteristic type="AppMetadata"> 
+        <characteristic type="{25BB0297-A723-479c-BDC8-9274FC6C6470}">
+            <parm name="Manifest" value="\Windows\BGProcessingCPL.xml"/>
+        </characteristic>
+    </characteristic>    
+
+</wap-provisioningdoc>
+

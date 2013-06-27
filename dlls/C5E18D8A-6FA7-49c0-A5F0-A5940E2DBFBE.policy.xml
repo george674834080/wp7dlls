@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<CeSecurityPolicyFile Description="Security Policy for Restricted Filter Graph RPC Server" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.00" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">
+
+  <!-- Define WLIDSVC ISOLATED STANDANDARD CHAMBER MACRO -->
+  <Macro Id="WLIDSVC_STANDARD_SELF_ISOLATED" Description="Standard Self Isolated Chamber to run WLID service" Value="S-1-5-112-0-0X21-0X00000001"></Macro>
+  <Macro Id="WLIDSVC_STANDARD_SELF_ISOLATED_USER_FRIENDLY_NAME" Description="Self Isolated Chamber account to run wlid RPC servers" Value="WLID RPC Self Isolated Chamber"></Macro>
+
+  <!-- Create the Multimedia Self Isolated Supervisor Chamber -->
+  <Account Id="$(WLIDSVC_STANDARD_SELF_ISOLATED)" FriendlyName="$(WLIDSVC_STANDARD_SELF_ISOLATED_USER_FRIENDLY_NAME)" Description="WLIDSVC Isolated Account" Type="User">
+    <MemberOfGroup GroupAccountId="$(SELF_ISOLATED_STANDARD_RIGHTS_CHAMBER_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+  <!-- RPC Server Endpoint rule -->
+  <Rule Description="Authorize a server from the supervisor chamber to register the endpoint name 'liveidsvc'." ResourceIri="$(RPC_SERVER_ENDPOINT)/liveidsvc" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(WLIDSVC_STANDARD_SELF_ISOLATED)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- RPC Client Interface rule -->
+  <Rule Description="Authorize clients from normal chambers+ to call into the same interface." ResourceIri="$(RPC_CLIENT_INTERFACE)/cc105610-da03-467e-bc73-5b9e2937458d/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Rules for HKLM registry -->
+  <Rule Description="Protect Registry only available to wlid isoalted standard chamber" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/IDENTITYCRL/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(WLIDSVC_STANDARD_SELF_ISOLATED)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Description="Allow elevated chamber to read/write values, and stand chamber to read values" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/IDENTITYCRL" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <!-- Rules for HKCU registry -->
+  <!-- First we set general rules for all registries under identityCRL -->
+  <Rule Description="Protect Registry only available to wlid isoalted standard chamber" ResourceIri="$(HKCU)/SOFTWARE/MICROSOFT/IDENTITYCRL/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(WLIDSVC_STANDARD_SELF_ISOLATED)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <!-- Then we set specific rules for each registry that could be visit by client -->
+  <Rule Description="The LastUsedId would be used by client which is standard+ chamber" ResourceIri="$(HKCU)/SOFTWARE/MICROSOFT/IDENTITYCRL/LastUsedId/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Description="The Trace would be used by client which is standard+ chamber" ResourceIri="$(HKCU)/SOFTWARE/MICROSOFT/IDENTITYCRL/Trace/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Description="The Dynamic Sale is only used by client which is standard+ chamber" ResourceIri="$(HKCU)/SOFTWARE/MICROSOFT/IDENTITYCRL/DynamicSalt/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <!-- Rules for Files and Directory -->
+  <Rule Description="Protect PPCRL directory from other chambers" ResourceIri="$(FILESYS_PRIMARY_ROOT)/APPLICATION%20DATA/MICROSOFT/IDENTITYCRL/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(WLIDSVC_STANDARD_SELF_ISOLATED)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Description="Protect PPCRL directory from other chambers" ResourceIri="$(FILESYS_PRIMARY_ROOT)/APPLICATION%20DATA/MICROSOFT/IDENTITYCRL" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(WLIDSVC_STANDARD_SELF_ISOLATED)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  
+  <!-- Rules for IO control -->
+  <Rule Description="Enable Standard+ chamber to open IO WLI1:" ResourceIri="$(DEVICEMANAGER_DEVICE)/WLI/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+
+  <!-- Rules for RPC API access control -->
+  <Rule Description="Policy for WLID API access control, prevent unauthorized applications" ResourceIri="$(GLOBAL_RESOURCES)/WLIDSVC/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ"></Match>
+      <Match AccountId="$(WLIDSVC_STANDARD_SELF_ISOLATED)" AuthorizationIds="GENERIC_READ, GENERIC_WRITE"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ, GENERIC_WRITE"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Rules for RPC API access control -->
+  <Rule Description="Policy for WLID API access control, prevent unauthorized applications" ResourceIri="$(GLOBAL_RESOURCES)/WLIDSVCOMONLYAPI/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+       <Match AccountId="$(WLIDSVC_STANDARD_SELF_ISOLATED)" AuthorizationIds="GENERIC_ALL"></Match>
+      <Match AccountId="$(OM_USER_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Rules for RPC API access control -->
+  <Rule Description="Policy for WLID API access control, prevent standard and below applications" ResourceIri="$(GLOBAL_RESOURCES)/WLIDSVCELEVATEDAPI/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+       <Match AccountId="$(WLIDSVC_STANDARD_SELF_ISOLATED)" AuthorizationIds="GENERIC_ALL"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Rules for Capability ID_CAP_IDENTITY_USER access control -->
+  <Rule Description="Policy for ID_CAP_IDENTITY_USER access control" ResourceIri="$(GLOBAL_RESOURCES)/WLIDSVCCAPUSERAPI/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+       <Match AccountId="$(WLIDSVC_STANDARD_SELF_ISOLATED)" AuthorizationIds="GENERIC_READ"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ"></Match>
+    </Authorize>
+  </Rule>
+
+</CeSecurityPolicyFile>

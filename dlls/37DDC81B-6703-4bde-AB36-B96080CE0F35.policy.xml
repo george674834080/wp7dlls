@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<CeSecurityPolicyFile Description="Communications Platform account and policy definitions" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.4.9876" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">
+
+  <!-- nabsync applications routing to OM chamber -->
+  
+<!--Begin Generated accounts and routing/authz rules for $(OM_USER_NAME) -->
+
+<!--Begin Generated routing/authz rules for omadsprc.exe -->
+<Rule Description="Route omadsprc.exe" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/OMADSPRC.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(OM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize omadsprc.exe be loadable to $(OM_USER_NAME) and  chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/OMADSPRC.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(OM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for omadsprc.exe -->
+<!--End Generated accounts and routing/authz rules for $(OM_USER_NAME) -->
+
+
+  <!-- Protect MOSService registry key from everyone but OM chamber (to allow MOSPlugin access to MOSService "Flags" reg keys) -->
+  <Rule Action="CreateNew" Description="MOSService Service keys are accessible to OM chamber" ResourceIri="$(HKLM)/SERVICES/MOSSERVICE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Action="CreateNew" Description="MOSService entry point is accessible to the OM chamber only" ResourceIri="policy:/DEVICEMANAGER/DEVICE/MOS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Protect MOS Componenets registry keys from everyone but OM chamber -->
+  <Rule Action="CreateNew" Description="MOS registry keys are accessible to OM chamber" ResourceIri="$(HKLM)/SOFTWARE/VENDOR/MOS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <!-- Protect MOS Componenets Glabal Named Events from everyone but OM chamber -->
+  <Rule Description="Prevent unauthorized access of MOS Scheduler related global events" ResourceIri="policy:/KERNEL/EVENT/SYSTEM/MOS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <!-- we want only OM Chamber to have this access  -->
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Protect MOS Scheduler Named Events from everyone but OM chamber -->
+  <Rule Description="Prevent unauthorized access of MOS Scheduler events" ResourceIri="policy:/KERNEL/EVENT/Notifications/NamedEvents/MOS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <!-- we want only OM Chamber to have this access  -->
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Rules pertaining to files/folders accessible only to AccountSettings -->
+
+  <!-- Access policy for known-accounts xml files under WINDOWS -->
+  <Rule Action="CreateNew" Description="Known accounts xml should be only accessable to OM applications." ResourceIri="$(FILESYS_PRIMARY_ROOT)/WINDOWS/KnownAccounts.xml" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+
+    <Authorize>
+      <!-- OM chamber gets read-only access -->
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="FILE_GENERIC_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <!-- *** PUSHROUTER *** -->
+  <Rule Action="CreateNew" Description="Apps running in OM chamber should have read/write access to specific push router message" ResourceIri="$(GLOBAL_RESOURCES)/PR_MessageAccess/application%2Fvnd.syncml.ds.notification;x-wap-application:push.syncml" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="GENERIC_READ, GENERIC_WRITE"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Action="CreateNew" Description="Apps running in OM chamber should have read/write access to specific push router message" ResourceIri="$(GLOBAL_RESOURCES)/PR_MessageAccess/application%2Fvnd.syncml.ds.notification;" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="GENERIC_READ, GENERIC_WRITE"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- *** PUSHROUTER *** -->
+
+</CeSecurityPolicyFile>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<CeSecurityPolicyFile Description="Security Policy for PlayReady DRM" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.00" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">
+  <!-- REGISTRY RULES -->  
+    <Rule Action="CreateNew" Description="PlayReady DRM Registry entries for model string override are readable and writeable only by the Multimedia Self Isolated Chamber." ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/PlayReady/Model/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match Action="Add" AccountId="$(MULTIMEDIA_SUPERVISOR_SELF_ISOLATED)" AuthorizationIds="KEY_READ, KEY_WRITE"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+    <Rule Action="CreateNew" Description="PlayReady DRM Registry entries for licensestore path  are readable only by the Multimedia Self Isolated Chamber, writable by none." ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/DRM/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match Action="Add" AccountId="$(MULTIMEDIA_SUPERVISOR_SELF_ISOLATED)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+    <Rule Action="CreateNew" Description="PlayReady DRM Registry entries for cert / certtemplate path are readable only by the Multimedia Self Isolated Chamber, writable by none." ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/WMDRMPD/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match Action="Add" AccountId="$(MULTIMEDIA_SUPERVISOR_SELF_ISOLATED)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+    <Rule Action="CreateNew" Description="PlayReady DRM Registry entry for OEM Output Protecetion Levels Handler path is readable only by the Multimedia Self Isolated Chamber, writable by none." ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/DIRECTX/DIRECTSHOW/OPLHANDLER/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match Action="Add" AccountId="$(MULTIMEDIA_SUPERVISOR_SELF_ISOLATED)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+  <!-- DATAFILE RULES -->  
+    <Rule Action="CreateNew" Description="PlayReady DRM key file is read/write/delete only from the Multimedia Self Isolated Chamber." ResourceIri="$(WINDOWS_DIRECTORY_PATH)/KEYFILE.DAT" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match Action="Add" AccountId="$(MULTIMEDIA_SUPERVISOR_SELF_ISOLATED)" AuthorizationIds="FILE_GENERIC_READ, FILE_GENERIC_WRITE, DELETE"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+    <Rule Action="CreateNew" Description="PlayReady DRM Store file is read/write/delete only from the Multimedia Self Isolated Chamber." ResourceIri="$(FILESYS_PRIMARY_ROOT)/DRMSTORE.DAT" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match Action="Add" AccountId="$(MULTIMEDIA_SUPERVISOR_SELF_ISOLATED)" AuthorizationIds="FILE_GENERIC_READ, FILE_GENERIC_WRITE, DELETE"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+    <!-- BINARY RULES -->
+    <Rule Action="CreateNew" Description="PlayReady.DLL should be loaded only from the Multimedia Self Isolated Chamber and nowhere else." ResourceIri="$(LOADERVERIFIER_GLOBAL)/AUTHORIZATION/DLL_AUTHZ/(+)/(+)/PRIMARY/WINDOWS/PLAYREADY.DLL" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+      <Authorize>
+          <Match Action="Add" AccountId="$(MULTIMEDIA_SUPERVISOR_SELF_ISOLATED)" AuthorizationIds="LV_ACCESS_EXECUTE, LV_ACCESS_LOAD"></Match>
+      </Authorize>
+      <Stop>
+          <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+      </Stop>
+    </Rule>
+
+</CeSecurityPolicyFile>

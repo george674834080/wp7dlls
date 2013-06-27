@@ -1,0 +1,631 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<!--
+Use of this source code is subject to the terms of the Microsoft
+premium shared source license agreement under which you licensed
+this source code. If you did not accept the terms of the license
+agreement, you are not authorized to use this source code.
+For the terms of the license, please see the license agreement
+signed by you and Microsoft.
+THE SOURCE CODE IS PROVIDED "AS IS", WITH NO WARRANTIES OR INDEMNITIES.
+-->
+<CeSecurityPolicyFile Description="Default loader verifier security policy; Loader verifier capabilities" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.4.9876" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">
+
+  <!-- From default.policy.xml -->
+  <!--
+  Metadata is stored on the device but off to the side - it is not used by the
+  policy engine. It is used for validation and reference if more data is imported
+  later.
+  
+  Metadata values can be imported more than once, but all definitions must match.
+  It is an error to refer to metadata that is not defined (i.e. use an undefined
+  Authorization Id in an ACL).
+  -->
+
+  <Namespace Prefix="*" Description="Generic rights that apply to all namespaces">
+
+    <Authorization Id="GENERIC_READ" Bitmask="0x80000000"></Authorization>
+
+    <Authorization Id="GENERIC_WRITE" Bitmask="0x40000000"></Authorization>
+
+    <Authorization Id="GENERIC_EXECUTE" Bitmask="0x20000000"></Authorization>
+
+    <Authorization Id="GENERIC_ALL" Bitmask="0x10000000"></Authorization>
+
+    <Authorization Id="DELETE" Bitmask="0x00010000"></Authorization>
+
+    <Authorization Id="READ_CONTROL" Bitmask="0x00020000"></Authorization>
+
+    <Authorization Id="WRITE_DAC" Bitmask="0x00040000"></Authorization>
+
+    <Authorization Id="WRITE_OWNER" Bitmask="0x00080000"></Authorization>
+
+    <Authorization Id="SYNCHRONIZE" Bitmask="0x00100000"></Authorization>
+
+    <Authorization Id="STANDARD_RIGHTS_REQUIRED" Bitmask="0x000f0000"></Authorization>
+
+    <Authorization Id="SPECIFIC_RIGHTS_ALL" Bitmask="0x0000ffff"></Authorization>
+
+    <Authorization Id="ALL_ACCESS" Bitmask="0xffffffff"></Authorization>
+
+  </Namespace>
+
+  <!--
+  PriorityCategory should keep in sync with public\common\oak\inc\cepriority.h.
+  -->
+  <PriorityCategory Id="PRIORITY_HIGH" Description="Rules that must be applied before all others" Order="251658240"></PriorityCategory>
+
+  <PriorityCategory Id="PRIORITY_ELEVATED" Description="Rules that work in tandem with high priority rules" Order="218103808"></PriorityCategory>
+
+  <PriorityCategory Id="PRIORITY_SELF_ISOLATED_DELEGATION" Description="Rules to delegate specific resources to self-isolated chambers" Order="142606336"></PriorityCategory>
+
+  <PriorityCategory Id="PRIORITY_STANDARD" Description="Rules to apply if the underlying resources were not already delegated" Order="134217728"></PriorityCategory>
+
+  <PriorityCategory Id="PRIORITY_BASIC" Description="Rules to apply if the priority should be between PRIORITY_STANDARD and PRIORITY_LOW" Order="67108864"></PriorityCategory>
+    
+  <PriorityCategory Id="PRIORITY_LOW" Description="Rules to apply only if all else falls through" Order="16777216"></PriorityCategory>
+
+  <Macro Id="RESOURCES" Description="Resources namespace root" Value="policy:/RESOURCES"></Macro>
+    
+  <Macro Id="GLOBAL_RESOURCES" Description="Global resources root" Value="policy:/RESOURCES/GLOBAL"></Macro>
+    
+  <Rule Description="Base resource policy rule" ResourceIri="$(RESOURCES)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- From default.accounts.xml -->
+  <!-- The template substitution account -->
+
+  <Macro Id="TEMPLATE_USER_NAME" Description="No principal" Value="S-1-5-112-0-0-0"></Macro>
+  <Macro Id="TEMPLATE_USER_FRIENDLY_NAME" Description="None" Value="Template User Account"></Macro>
+  <Account Id="$(TEMPLATE_USER_NAME)" FriendlyName="$(TEMPLATE_USER_FRIENDLY_NAME)" Description="Template" Type="User"></Account>
+
+  <!-- Groups that cut across multiple account types defined later in policy -->
+
+  <Macro Id="EVERYONE_GROUP_NAME" Description="Everyone group SID" Value="S-1-5-112-0-0XFF"></Macro>
+  <Macro Id="EVERYONE_GROUP_FRIENDLY_NAME" Description="Everyone group" Value="Everyone Group"></Macro>
+
+  <Macro Id="STANDARD_RIGHTS_IDENTITY_GROUP_NAME" Description="Standard Rights Identity Group SID" Value="S-1-5-112-0-0X22"></Macro>
+  <Macro Id="STANDARD_RIGHTS_RESOURCE_GROUP_NAME" Description="Standard Rights Resource Group SID" Value="S-1-5-112-0-0X23"></Macro>
+
+  <Macro Id="ELEVATED_RIGHTS_IDENTITY_GROUP_NAME" Description="Elevated Rights Identity Group SID" Value="S-1-5-112-0-0X13"></Macro>
+  <Macro Id="ELEVATED_RIGHTS_RESOURCE_GROUP_NAME" Description="Elevated Rights Resource Group SID" Value="S-1-5-112-0-0X14"></Macro>
+  <Macro Id="SYSTEM_IDENTITY_GROUP_NAME" Description="TCB Identity Group SID" Value="S-1-5-112-0-0X01"></Macro>
+  <Macro Id="SYSTEM_RESOURCE_GROUP_NAME" Description="TCB Resource Group SID" Value="S-1-5-112-0-0X02"></Macro>
+
+<Account Id="$(SYSTEM_IDENTITY_GROUP_NAME)" FriendlyName="TCB Identity Group" Description="TCB Identity Group" Type="Group"></Account>
+
+  <Account Id="$(ELEVATED_RIGHTS_IDENTITY_GROUP_NAME)" FriendlyName="Elevated Rights Identity Group" Description="Elevated Rights Identity Group" Type="Group">
+    <MemberOfGroup GroupAccountId="$(SYSTEM_IDENTITY_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+  <Account Id="$(STANDARD_RIGHTS_IDENTITY_GROUP_NAME)" FriendlyName="Standard Rights Identity Group" Description="Standard Rights Identity Group" Type="Group">
+    <MemberOfGroup GroupAccountId="$(ELEVATED_RIGHTS_IDENTITY_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+  <Account Id="$(EVERYONE_GROUP_NAME)" FriendlyName="$(EVERYONE_GROUP_FRIENDLY_NAME)" Description="Everyone Group" Type="Group"></Account>
+
+  <Account Id="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" FriendlyName="Standard Rights Resource Group" Description="Standard Rights Resource Group" Type="Group">
+    <MemberOfGroup GroupAccountId="$(EVERYONE_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+ <Account Id="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" FriendlyName="Elevated Rights Resource Group" Description="Elevated Rights Resource Group" Type="Group">
+    <MemberOfGroup GroupAccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+ <Account Id="$(SYSTEM_RESOURCE_GROUP_NAME)" FriendlyName="TCB Resource Group" Description="TCB Resource Group" Type="Group">
+    <MemberOfGroup GroupAccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+ <Macro Id="STANDARD_RIGHTS_CHAMBER_GROUP_NAME" Description="Standard Rights Chamber Group" Value="S-1-5-112-0-0X20"></Macro>
+  <Macro Id="STANDARD_RIGHTS_GROUP_FRIENDLY_NAME" Description="Standard Rights Windows Mobile Applications" Value="Standard Rights Chamber Group"></Macro>
+  <Account Id="$(STANDARD_RIGHTS_CHAMBER_GROUP_NAME)" FriendlyName="$(STANDARD_RIGHTS_GROUP_FRIENDLY_NAME)" Description="Standard Rights Chamber Group" Type="Group">
+    <MemberOfGroup GroupAccountId="$(STANDARD_RIGHTS_IDENTITY_GROUP_NAME)"></MemberOfGroup>
+    <MemberOfGroup GroupAccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+  <Macro Id="ELEVATED_RIGHTS_CHAMBER_GROUP_NAME" Description="Elevated Rights Chamber Chamber Group" Value="S-1-5-112-0-0X10"></Macro>
+  <Macro Id="ELEVATED_RIGHTS_GROUP_FRIENDLY_NAME" Description="Privileged Windows Mobile Applications" Value="Elevated Rights Chamber Group"></Macro>
+  <Account Id="$(ELEVATED_RIGHTS_CHAMBER_GROUP_NAME)" FriendlyName="$(ELEVATED_RIGHTS_GROUP_FRIENDLY_NAME)" Description="Elevated Rights Chamber Group" Type="Group">
+    <MemberOfGroup GroupAccountId="$(ELEVATED_RIGHTS_IDENTITY_GROUP_NAME)"></MemberOfGroup>
+    <MemberOfGroup GroupAccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+  <Macro Id="SELF_ISOLATED_ELEVATED_RIGHTS_CHAMBER_GROUP_NAME" Description="Self Isolated Elevated Rights Chamber Group" Value="S-1-5-112-0-0X11"></Macro>
+  <Macro Id="SELF_ISOLATED_ELEVATED_RIGHTS_CHAMBER_GROUP_FRIENDLY_NAME" Description="Isolated, elevated rights chamber group" Value="Self Isolated Elevated Rights Chamber Group"></Macro>
+  <Account Id="$(SELF_ISOLATED_ELEVATED_RIGHTS_CHAMBER_GROUP_NAME)" FriendlyName="$(SELF_ISOLATED_ELEVATED_RIGHTS_CHAMBER_GROUP_FRIENDLY_NAME)" Description="Self-Isolated Elevated Rights Chamber Group" Type="Group">
+    <MemberOfGroup GroupAccountId="$(SYSTEM_IDENTITY_GROUP_NAME)"></MemberOfGroup>
+    <MemberOfGroup GroupAccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+  <Macro Id="SELF_ISOLATED_STANDARD_RIGHTS_CHAMBER_GROUP_NAME" Description="Self isolated standard rights chamber group" Value="S-1-5-112-0-0X21"></Macro>
+  <Macro Id="SELF_ISOLATED_STANDARD_RIGHTS_GROUP_FRIENDLY_NAME" Description="Self-Isolated, standard rights chamber group" Value="Self-Isolated Standard Rights Chamber Group"></Macro>
+  <Account Id="$(SELF_ISOLATED_STANDARD_RIGHTS_CHAMBER_GROUP_NAME)" FriendlyName="$(SELF_ISOLATED_STANDARD_RIGHTS_GROUP_FRIENDLY_NAME)" Description="Self-Isolated Standard Rights" Type="Group">
+    <MemberOfGroup GroupAccountId="$(SYSTEM_IDENTITY_GROUP_NAME)"></MemberOfGroup>
+    <MemberOfGroup GroupAccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+  <Macro Id="SYSTEM_CHAMBER_GROUP_NAME" Description="TCB Chamber Group" Value="S-1-5-112-0-0X00"></Macro>
+  <Macro Id="SYSTEM_CHAMBER_GROUP_FRIENDLY_NAME" Description="TCB Chamber Group" Value="TCB Chamber Group"></Macro>  
+  <Account Id="$(SYSTEM_CHAMBER_GROUP_NAME)" FriendlyName="$(SYSTEM_CHAMBER_GROUP_FRIENDLY_NAME)" Description="TCB Chamber Group" Type="Group">
+    <MemberOfGroup GroupAccountId="$(SYSTEM_IDENTITY_GROUP_NAME)"></MemberOfGroup>
+    <MemberOfGroup GroupAccountId="$(SYSTEM_RESOURCE_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+  <Macro Id="SYSTEM_USER_NAME" Description="TCB user SID" Value="S-1-5-112-0-0-1"></Macro>
+  <Macro Id="SYSTEM_USER_FRIENDLY_NAME" Description="TCB Chamber" Value="TCB"></Macro>
+  <Account Id="$(SYSTEM_USER_NAME)" FriendlyName="$(SYSTEM_USER_FRIENDLY_NAME)" Description="Local System" Type="User">
+    <MemberOfGroup GroupAccountId="$(SYSTEM_CHAMBER_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+  <!-- From capability.accounts.xml -->
+  <!-- The Capability account -->
+  <Macro Id="PUBLIC_CAPABILITIES_GROUP_NAME" Description="Public capabilities group" Value="S-1-5-112-0-0X70"></Macro>
+
+  <Macro Id="PRIVATE_CAPABILITIES_GROUP_NAME" Description="Private capabilities group" Value="S-1-5-112-0-0X71"></Macro>
+
+  <Account Id="$(PUBLIC_CAPABILITIES_GROUP_NAME)" FriendlyName="Public capabilities group" Description="All public capability accounts are members of this group" Type="Group"></Account>
+
+  <Account Id="$(PRIVATE_CAPABILITIES_GROUP_NAME)" FriendlyName="Private capabilities group" Description="All private capability accounts are members of this group" Type="Group"></Account>
+
+  <!-- Least Privilege Chamber Group -->
+  <Macro Id="LEAST_PRIVILEGE_CHAMBER_GROUP_NAME" Description="Least Privilege Chamber Group" Value="S-1-5-112-0-0X80"></Macro>
+
+  <Macro Id="LEAST_PRIVILEGE_IDENTITY_GROUP_NAME" Description="Least Privilege Identity Group" Value="S-1-5-112-0-0X81"></Macro>
+
+  <Account Id="$(LEAST_PRIVILEGE_IDENTITY_GROUP_NAME)" FriendlyName="Least Privilege Identity Group" Description="Least Privilege Identity Group" Type="Group">
+    <MemberOfGroup GroupAccountId="$(SYSTEM_IDENTITY_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+  <Account Id="$(LEAST_PRIVILEGE_CHAMBER_GROUP_NAME)" FriendlyName="Least Privilege Chamber Group" Description="All LPC chambers are members of this group" Type="Group">
+    <MemberOfGroup GroupAccountId="$(EVERYONE_GROUP_NAME)"></MemberOfGroup>
+    <MemberOfGroup GroupAccountId="$(LEAST_PRIVILEGE_IDENTITY_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+  <!-- From testchambers.policy.xml -->
+  <Macro Id="ISOLATED_ELEVATED_RIGHTS_TEST_CHAMBER_SID" Value="S-1-5-112-0-0X11-0X10000001"></Macro>
+  <Account Id="$(ISOLATED_ELEVATED_RIGHTS_TEST_CHAMBER_SID)" FriendlyName="Isolated Elevated Rights group test chamber" Description="Isolated Elevated Rights group test chamber" Type="User">
+    <MemberOfGroup GroupAccountId="$(SELF_ISOLATED_ELEVATED_RIGHTS_CHAMBER_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+  <Macro Id="ISOLATED_ELEVATED_RIGHTS_TEST_CHAMBER_SID2" Value="S-1-5-112-0-0X11-0X10000002"></Macro>
+  <Account Id="$(ISOLATED_ELEVATED_RIGHTS_TEST_CHAMBER_SID2)" FriendlyName="Isolated Elevated Rights group test chamber (2)" Description="Isolated Elevated Rights group test chamber (2)" Type="User">
+    <MemberOfGroup GroupAccountId="$(SELF_ISOLATED_ELEVATED_RIGHTS_CHAMBER_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+  
+  <Macro Id="ELEVATED_RIGHTS_TEST_CHAMBER_SID" Value="S-1-5-112-0-0X10-0X10000001"></Macro>
+  <Account Id="$(ELEVATED_RIGHTS_TEST_CHAMBER_SID)" FriendlyName="Elevated Rights group test chamber" Description="Elevated Rights group test chamber" Type="User">
+    <MemberOfGroup GroupAccountId="$(ELEVATED_RIGHTS_CHAMBER_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+  
+  <Macro Id="ELEVATED_RIGHTS_TEST_CHAMBER_SID2" Value="S-1-5-112-0-0X10-0X10000002"></Macro>
+  <Account Id="$(ELEVATED_RIGHTS_TEST_CHAMBER_SID2)" FriendlyName="Elevated Rights group test chamber (2)" Description="Elevated Rights group test chamber (2)" Type="User">
+    <MemberOfGroup GroupAccountId="$(ELEVATED_RIGHTS_CHAMBER_GROUP_NAME)"></MemberOfGroup>
+  </Account>  
+
+  <Macro Id="STANDARD_RIGHTS_TEST_CHAMBER_SID" Value="S-1-5-112-0-0X20-0X10000001"></Macro>
+  <Account Id="$(STANDARD_RIGHTS_TEST_CHAMBER_SID)" FriendlyName="Standard Rights group test chamber" Description="Standard Rights group test chamber" Type="User">
+    <MemberOfGroup GroupAccountId="$(STANDARD_RIGHTS_CHAMBER_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+  <Macro Id="STANDARD_RIGHTS_TEST_CHAMBER_SID2" Value="S-1-5-112-0-0X20-0X10000002"></Macro>
+  <Account Id="$(STANDARD_RIGHTS_TEST_CHAMBER_SID2)" FriendlyName="Standard Rights group test chamber (2)" Description="Standard Rights group test chamber (2)" Type="User">
+    <MemberOfGroup GroupAccountId="$(STANDARD_RIGHTS_CHAMBER_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+ 
+  <Macro Id="LEAST_PRIVILEGE_TEST_CHAMBER_SID" Value="S-1-5-112-0-0X80-0X10000001"></Macro>
+  <Account Id="$(LEAST_PRIVILEGE_TEST_CHAMBER_SID)" FriendlyName="Least privilege group test chamber" Description="Least privilege group test chamber" Type="User">
+    <MemberOfGroup GroupAccountId="$(LEAST_PRIVILEGE_CHAMBER_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+  <Macro Id="LEAST_PRIVILEGE_TEST_CHAMBER_SID2" Value="S-1-5-112-0-0X80-0X10000002"></Macro>
+  <Account Id="$(LEAST_PRIVILEGE_TEST_CHAMBER_SID2)" FriendlyName="Least privilege group test chamber (2)" Description="Least privilege group test chamber (2)" Type="User">
+    <MemberOfGroup GroupAccountId="$(LEAST_PRIVILEGE_CHAMBER_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+  
+  <Macro Id="DYNAMIC_LPC_TEST_CHAMBER_SID" Value="S-1-5-112-0-0X80-0X10000003"></Macro>
+  <Account Id="$(DYNAMIC_LPC_TEST_CHAMBER_SID)" FriendlyName="Dynamic least privilege group test chamber" Description="Dynamic least privilege group test chamber" Type="User">
+    <MemberOfGroup GroupAccountId="$(LEAST_PRIVILEGE_CHAMBER_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+  <Macro Id="DYNAMIC_LPC_TEST_CHAMBER_SID2" Value="S-1-5-112-0-0X80-0X10000004"></Macro>
+  <Account Id="$(DYNAMIC_LPC_TEST_CHAMBER_SID2)" FriendlyName="Dynamic least privilege group test chamber (2)" Description="Dynamic least privilege group test chamber (2)" Type="User">
+    <MemberOfGroup GroupAccountId="$(LEAST_PRIVILEGE_CHAMBER_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+  <!-- From test.capability.xml -->
+  
+<!--Begin generating capability accounts and authorization rules for ID_CAP_TESTPUBLIC1 -->
+<Macro Id="CAPMACRO_ID_CAP_TESTPUBLIC1" Value="S-1-5-112-0-0X70-0X49445F4341505F544553545055424C494331" />
+<Account Id="$(CAPMACRO_ID_CAP_TESTPUBLIC1)" FriendlyName="ID_CAP_TESTPUBLIC1:Small public test capability" Description="Autogenerated group for capability ID_CAP_TESTPUBLIC1" Type="Group">
+<MemberOfGroup GroupAccountId="$(PUBLIC_CAPABILITIES_GROUP_NAME)" />
+</Account>
+<Rule Description="Authorization rule for capability ID_CAP_TESTPUBLIC1" ResourceIri="policy:/RESOURCES/GLOBAL/CAPABILITYTEST/READRESOURCE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_TESTPUBLIC1)" AuthorizationIds="GENERIC_READ" />
+</Authorize>
+</Rule>
+<!--End generating capability accounts and authorization rules for ID_CAP_TESTPUBLIC1 -->
+
+<!--Begin generating capability accounts and authorization rules for ID_CAP_TESTPUBLIC2 -->
+<Macro Id="CAPMACRO_ID_CAP_TESTPUBLIC2" Value="S-1-5-112-0-0X70-0X49445F4341505F544553545055424C494332" />
+<Account Id="$(CAPMACRO_ID_CAP_TESTPUBLIC2)" FriendlyName="ID_CAP_TESTPUBLIC2:Large public test capability" Description="Autogenerated group for capability ID_CAP_TESTPUBLIC2" Type="Group">
+<MemberOfGroup GroupAccountId="$(PUBLIC_CAPABILITIES_GROUP_NAME)" />
+</Account>
+<Rule Description="Authorization rule for capability ID_CAP_TESTPUBLIC2" ResourceIri="policy:/RESOURCES/GLOBAL/CAPABILITYTEST/MANYRESOURCES/PUBLIC/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_TESTPUBLIC2)" AuthorizationIds="ALL_ACCESS" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_TESTPUBLIC2" ResourceIri="policy:/RESOURCES/GLOBAL/CAPABILITYTEST/MANYRESOURCES/SHARED" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_TESTPUBLIC2)" AuthorizationIds="ALL_ACCESS" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_TESTPUBLIC2" ResourceIri="policy:/RESOURCES/GLOBAL/CAPABILITYTEST/MANYRESOURCES/SHARED/SUB/(+)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_TESTPUBLIC2)" AuthorizationIds="ALL_ACCESS" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_TESTPUBLIC2" ResourceIri="policy:/RESOURCES/GLOBAL/CAPABILITYTEST/SHAREDRESOURCE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_TESTPUBLIC2)" AuthorizationIds="GENERIC_READ" />
+</Authorize>
+</Rule>
+<!--End generating capability accounts and authorization rules for ID_CAP_TESTPUBLIC2 -->
+
+  
+<!--Begin generating capability accounts and authorization rules for ID_CAP_TESTPRIVATE1 -->
+<Macro Id="CAPMACRO_ID_CAP_TESTPRIVATE1" Value="S-1-5-112-0-0X71-0X49445F4341505F544553545052495641544531" />
+<Account Id="$(CAPMACRO_ID_CAP_TESTPRIVATE1)" FriendlyName="ID_CAP_TESTPRIVATE1:Small private test capability" Description="Autogenerated group for capability ID_CAP_TESTPRIVATE1" Type="Group">
+<MemberOfGroup GroupAccountId="$(PRIVATE_CAPABILITIES_GROUP_NAME)" />
+</Account>
+<Rule Description="Authorization rule for capability ID_CAP_TESTPRIVATE1" ResourceIri="policy:/RESOURCES/GLOBAL/CAPABILITYTEST/WRITERESOURCE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_TESTPRIVATE1)" AuthorizationIds="GENERIC_WRITE" />
+</Authorize>
+</Rule>
+<!--End generating capability accounts and authorization rules for ID_CAP_TESTPRIVATE1 -->
+
+<!--Begin generating capability accounts and authorization rules for ID_CAP_TESTPRIVATE2 -->
+<Macro Id="CAPMACRO_ID_CAP_TESTPRIVATE2" Value="S-1-5-112-0-0X71-0X49445F4341505F544553545052495641544532" />
+<Account Id="$(CAPMACRO_ID_CAP_TESTPRIVATE2)" FriendlyName="ID_CAP_TESTPRIVATE2:Large private test capability" Description="Autogenerated group for capability ID_CAP_TESTPRIVATE2" Type="Group">
+<MemberOfGroup GroupAccountId="$(PRIVATE_CAPABILITIES_GROUP_NAME)" />
+</Account>
+<Rule Description="Authorization rule for capability ID_CAP_TESTPRIVATE2" ResourceIri="policy:/RESOURCES/GLOBAL/CAPABILITYTEST/MANYRESOURCES/SHARED/ONE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_TESTPRIVATE2)" AuthorizationIds="ALL_ACCESS" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_TESTPRIVATE2" ResourceIri="policy:/RESOURCES/GLOBAL/CAPABILITYTEST/MANYRESOURCES/SHARED/TWO" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_TESTPRIVATE2)" AuthorizationIds="GENERIC_READ,GENERIC_WRITE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_TESTPRIVATE2" ResourceIri="policy:/RESOURCES/GLOBAL/CAPABILITYTEST/MANYRESOURCES/PRIVATE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_TESTPRIVATE2)" AuthorizationIds="ALL_ACCESS" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_TESTPRIVATE2" ResourceIri="policy:/RESOURCES/GLOBAL/CAPABILITYTEST/SHAREDRESOURCE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_TESTPRIVATE2)" AuthorizationIds="GENERIC_WRITE" />
+</Authorize>
+</Rule>
+<!--End generating capability accounts and authorization rules for ID_CAP_TESTPRIVATE2 -->
+
+
+  <!-- From loaderverifier.common.policy.xml -->
+  <Namespace Prefix="/LOADERVERIFIER">
+
+    <Authorization Id="LV_ACCESS_ALLOW" Bitmask="0x00000001"></Authorization>
+   <Authorization Id="LV_ACCESS_BLOCK" Bitmask="0x00000002"></Authorization>
+   <Authorization Id="LV_ACCESS_LOAD" Bitmask="0x00000004"></Authorization>
+   <Authorization Id="LV_ACCESS_EXECUTE" Bitmask="0x00000008"></Authorization>
+  </Namespace>
+
+  <!-- Macros -->
+
+  <Macro Id="LOADERVERIFIER_GLOBAL" Description="Base path for all of the loader verifier rules that apply across all chambers" Value="policy:/LOADERVERIFIER/GLOBAL"></Macro>
+
+  <Macro Id="LOADERVERIFIER_ACCOUNT_CAN_LAUNCH" Description="Base path for all of the loader verifier rules that apply across all chambers" Value="policy:/LOADERVERIFIER/ACCOUNT/(+)/ACCOUNT_CAN_LAUNCH"></Macro>
+
+  <Macro Id="LOADERVERIFIER_ACCOUNT_CAN_LAUNCH_INROM_ROOT" Description="Base path for all of the loader verifier rules that apply across all chambers" Value="policy:/LOADERVERIFIER/ACCOUNT/(+)/ACCOUNT_CAN_LAUNCH/NONE/NONE/PRIMARY"></Macro>
+
+  <Macro Id="LOADERVERIFIER_ROUTE_BY_NAME" Description="Base path for all of the loader verifier rules that apply across all chambers" Value="policy:/LOADERVERIFIER/GLOBAL/ROUTE_TO_ACCOUNT/(+)/(+)"></Macro>
+
+  <Macro Id="LOADERVERIFIER_ROUTE_BY_NAME_ROM_ONLY" Description="Base path for all of the loader verifier rules that apply across all chambers" Value="policy:/LOADERVERIFIER/GLOBAL/ROUTE_TO_ACCOUNT/NONE/NONE"></Macro>
+
+  <Macro Id="LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT" Description="Base path for ROM EXE authorization" Value="policy:/LOADERVERIFIER/GLOBAL/AUTHORIZATION/PE_AUTHZ/NONE/NONE/PRIMARY"></Macro>
+  <Macro Id="LOADERVERIFIER_DLL_AUTHZ_INROM_ROOT" Description="Base path for ROM DLL authorization" Value="policy:/LOADERVERIFIER/GLOBAL/AUTHORIZATION/DLL_AUTHZ/NONE/NONE/PRIMARY"></Macro>
+
+  <!-- Default Loader Verifier Rules -->
+  <Rule Description="Allow exe be launched to any chamber from standard chamber and above" ResourceIri="$(LOADERVERIFIER_ACCOUNT_CAN_LAUNCH)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE"></Match>
+    </Authorize>
+  </Rule>
+
+
+ <Rule Description="Allow every Chamber try to load non-rom exe into its own Chamber, if not blocked by other policies" ResourceIri="policy:/LOADERVERIFIER/ACCOUNT/(MATCH-CHAMBER)/ACCOUNT_CAN_LAUNCH/(+)/(+)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(TEMPLATE_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE"></Match>
+    </Authorize>
+  </Rule>
+  
+  <Rule Description="Default rule that does not require signing certificate chained to specific root certificate" ResourceIri="$(LOADERVERIFIER_GLOBAL)/REQUIRED_CERTIFICATE_ROOT/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE"></Match>
+    </Authorize>
+  </Rule>
+
+
+  <Rule Description="Default rule to unblock code from loading into any chamber" ResourceIri="$(LOADERVERIFIER_GLOBAL)/AUTHORIZATION/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE"></Match>
+    </Authorize>
+  </Rule>
+
+
+<Rule Description="By default, every ROM DLL can be loaded into any chamber" ResourceIri="$(LOADERVERIFIER_DLL_AUTHZ_INROM_ROOT)/WINDOWS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_IDENTITY_GROUP_NAME)" AuthorizationIds="LV_ACCESS_LOAD"></Match>
+    </Authorize>
+  </Rule>
+<!-- ROM and non-ROM modules are authorized differently, but share part of the IRI. ../PE_AUTHZ/NONE/NONE/...is for ROM, 
+     and ../PE_AUTHZ/SHA1/(*) for non-ROM files. To support different Authenticode Hash algorithm like SHA1,SHA256, we
+     need to duplicate the following rule: because we cannot use ../PE_AUTHZ/(*) which covers both ROM and non-ROM
+     Another Solution is: using totally different iri for ROM and non-ROM file. For example use /PE_AUTHZROM/ for ROM.
+     however, this kind of change involves much more changes and is more risky for now.
+-->
+<Rule Description="By default, every non-ROM module with SHA1 hash in Authenticode Signature can be loaded into any chamber if its signature allows" ResourceIri="$(LOADERVERIFIER_GLOBAL)/AUTHORIZATION/PE_AUTHZ/SHA1/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_IDENTITY_GROUP_NAME)" AuthorizationIds="LV_ACCESS_LOAD"></Match>
+    </Authorize>
+  </Rule>
+<Rule Description="By default, every non-ROM module with SHA256 hash in Authenticode Signature can be loaded into any chamber if its signature allows" ResourceIri="$(LOADERVERIFIER_GLOBAL)/AUTHORIZATION/PE_AUTHZ/SHA256/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_IDENTITY_GROUP_NAME)" AuthorizationIds="LV_ACCESS_LOAD"></Match>
+    </Authorize>
+  </Rule>
+<Rule Description="By default, every non-ROM module with SHA384 hash in Authenticode Signature can be loaded into any chamber if its signature allows" ResourceIri="$(LOADERVERIFIER_GLOBAL)/AUTHORIZATION/PE_AUTHZ/SHA384/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_IDENTITY_GROUP_NAME)" AuthorizationIds="LV_ACCESS_LOAD"></Match>
+    </Authorize>
+  </Rule>
+<Rule Description="By default, every non-ROM module with SHA512 hash in Authenticode Signature can be loaded into any chamber if its signature allows" ResourceIri="$(LOADERVERIFIER_GLOBAL)/AUTHORIZATION/PE_AUTHZ/SHA512/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_IDENTITY_GROUP_NAME)" AuthorizationIds="LV_ACCESS_LOAD"></Match>
+    </Authorize>
+  </Rule>
+
+<Rule Description="By default, all ROM EXEs can be loaded into Standard Rights Chambers and less privileged ones" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_IDENTITY_GROUP_NAME)" AuthorizationIds="LV_ACCESS_LOAD"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Action="CreateNew" Description="Exempt Standard Rights Resource Groups chamber from required rule that authorizes only PE file(s) with specific signing certificate to be loaded in the chamber" ResourceIri="$(LOADERVERIFIER_GLOBAL)/AUTHORIZATION/CERT_AUTHZ/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match Action="Add" AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="LV_ACCESS_LOAD"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Action="CreateNew" Description="Only TCB gets access to LVModRouting API" ResourceIri="policy:/RESOURCES/GLOBAL/LOADERVERIFIER/ROUTING" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+    <Authorize>
+      <Match Action="Add" AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+  </Rule>
+
+<!-- Rule for Unsigned Managed Dll's -->
+<!-- Originally from loaderverifier.capability.xml -->
+
+  
+<!--Begin generating capability accounts and authorization rules for ID_CAP_LOADUNSIGNEDMANAGEDDLL -->
+<Macro Id="CAPMACRO_ID_CAP_LOADUNSIGNEDMANAGEDDLL" Value="S-1-5-112-0-0X71-0X49445F4341505F4C4F4144554E5349474E45444D414E41474544444C4C" />
+<Account Id="$(CAPMACRO_ID_CAP_LOADUNSIGNEDMANAGEDDLL)" FriendlyName="ID_CAP_LOADUNSIGNEDMANAGEDDLL:Capability to load unsigned managed dll into chamber's process space" Description="Autogenerated group for capability ID_CAP_LOADUNSIGNEDMANAGEDDLL" Type="Group">
+<MemberOfGroup GroupAccountId="$(PRIVATE_CAPABILITIES_GROUP_NAME)" />
+</Account>
+<Rule Description="Authorization rule for capability ID_CAP_LOADUNSIGNEDMANAGEDDLL" ResourceIri="$(LOADERVERIFIER_GLOBAL)/AUTHORIZATION/UNSIGNEDMANAGEDDLL_AUTHZ" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_LOADUNSIGNEDMANAGEDDLL)" AuthorizationIds="LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End generating capability accounts and authorization rules for ID_CAP_LOADUNSIGNEDMANAGEDDLL -->
+
+
+  
+<!--Begin generating capability accounts and authorization rules for ID_CAP_LOADUNSIGNEDNATIVEDLL -->
+<Macro Id="CAPMACRO_ID_CAP_LOADUNSIGNEDNATIVEDLL" Value="S-1-5-112-0-0X71-0X49445F4341505F4C4F4144554E5349474E45444E4154495645444C4C" />
+<Account Id="$(CAPMACRO_ID_CAP_LOADUNSIGNEDNATIVEDLL)" FriendlyName="ID_CAP_LOADUNSIGNEDNATIVEDLL:Capability to load unsigned native dll into chamber's process space" Description="Autogenerated group for capability ID_CAP_LOADUNSIGNEDNATIVEDLL" Type="Group">
+<MemberOfGroup GroupAccountId="$(PRIVATE_CAPABILITIES_GROUP_NAME)" />
+</Account>
+<Rule Description="Authorization rule for capability ID_CAP_LOADUNSIGNEDNATIVEDLL" ResourceIri="$(LOADERVERIFIER_GLOBAL)/AUTHORIZATION/UNSIGNEDNATIVEDLL_AUTHZ" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_LOADUNSIGNEDNATIVEDLL)" AuthorizationIds="LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End generating capability accounts and authorization rules for ID_CAP_LOADUNSIGNEDNATIVEDLL -->
+
+
+<!-- adb: Default kernel security policy -->
+<!-- ADB rule -->
+  <Rule Description="Protect the account DB from everyone but the system" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/SECURITY/ACCOUNTDB.VOL" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Description="Policy for access check on ADB functions" ResourceIri="$(GLOBAL_RESOURCES)/ADB/FUNCTIONS" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  
+  <Rule Description="Protect LoaderVerifier Registry Keys" ResourceIri="$(HKLM)/COMM/SECURITY/LVMOD/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <!-- Prevent unnecessary in-proc COM server DLLs from loading into LPC for attack surface reduction. --> 
+  
+<Rule Description="Block LPC to load the APPINSTALLCSP.DLL" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/APPINSTALLCSP.DLL" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_ALL_ACCESS" />
+<Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_GENERIC_READ, FILE_GENERIC_EXECUTE" />
+</Authorize>
+<Stop>
+<Match AccountId="$(EVERYONE_GROUP_NAME)" />
+</Stop>
+</Rule>
+
+<Rule Description="Block LPC to load the NATIVEINSTALLERINFO.DLL" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/NATIVEINSTALLERINFO.DLL" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_ALL_ACCESS" />
+<Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_GENERIC_READ, FILE_GENERIC_EXECUTE" />
+</Authorize>
+<Stop>
+<Match AccountId="$(EVERYONE_GROUP_NAME)" />
+</Stop>
+</Rule>
+
+<Rule Description="Block LPC to load the NIHOSTAPPINSTALLER.DLL" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/NIHOSTAPPINSTALLER.DLL" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_ALL_ACCESS" />
+<Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_GENERIC_READ, FILE_GENERIC_EXECUTE" />
+</Authorize>
+<Stop>
+<Match AccountId="$(EVERYONE_GROUP_NAME)" />
+</Stop>
+</Rule>
+
+<Rule Description="Block LPC to load the NIHOSTAPPUNINSTALLER.DLL" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/NIHOSTAPPUNINSTALLER.DLL" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_ALL_ACCESS" />
+<Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_GENERIC_READ, FILE_GENERIC_EXECUTE" />
+</Authorize>
+<Stop>
+<Match AccountId="$(EVERYONE_GROUP_NAME)" />
+</Stop>
+</Rule>
+
+<Rule Description="Block LPC to load the EXECMANSERVER.DLL" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/EXECMANSERVER.DLL" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_ALL_ACCESS" />
+<Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_GENERIC_READ, FILE_GENERIC_EXECUTE" />
+</Authorize>
+<Stop>
+<Match AccountId="$(EVERYONE_GROUP_NAME)" />
+</Stop>
+</Rule>
+
+<Rule Description="Block LPC to load the PACMANSERVER.DLL" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/PACMANSERVER.DLL" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_ALL_ACCESS" />
+<Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_GENERIC_READ, FILE_GENERIC_EXECUTE" />
+</Authorize>
+<Stop>
+<Match AccountId="$(EVERYONE_GROUP_NAME)" />
+</Stop>
+</Rule>
+
+<Rule Description="Block LPC to load the CERTIFICATECSP.DLL" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/CERTIFICATECSP.DLL" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_ALL_ACCESS" />
+<Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_GENERIC_READ, FILE_GENERIC_EXECUTE" />
+</Authorize>
+<Stop>
+<Match AccountId="$(EVERYONE_GROUP_NAME)" />
+</Stop>
+</Rule>
+
+<Rule Description="Block LPC to load the CORESECPROVIDERS.DLL" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/CORESECPROVIDERS.DLL" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_ALL_ACCESS" />
+<Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_GENERIC_READ, FILE_GENERIC_EXECUTE" />
+</Authorize>
+<Stop>
+<Match AccountId="$(EVERYONE_GROUP_NAME)" />
+</Stop>
+</Rule>
+
+<Rule Description="Block LPC to load the DEVMGR.DLL" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/DEVMGR.DLL" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_ALL_ACCESS" />
+<Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_GENERIC_READ, FILE_GENERIC_EXECUTE" />
+</Authorize>
+<Stop>
+<Match AccountId="$(EVERYONE_GROUP_NAME)" />
+</Stop>
+</Rule>
+
+<Rule Description="Block LPC to load the FILESYS.DLL" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/FILESYS.DLL" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_ALL_ACCESS" />
+<Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_GENERIC_READ, FILE_GENERIC_EXECUTE" />
+</Authorize>
+<Stop>
+<Match AccountId="$(EVERYONE_GROUP_NAME)" />
+</Stop>
+</Rule>
+
+<Rule Description="Block LPC to load the FSDMGR.DLL" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/FSDMGR.DLL" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_ALL_ACCESS" />
+<Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_GENERIC_READ, FILE_GENERIC_EXECUTE" />
+</Authorize>
+<Stop>
+<Match AccountId="$(EVERYONE_GROUP_NAME)" />
+</Stop>
+</Rule>
+
+<Rule Description="Block LPC to load the CORESECURITYMODELCSP.DLL" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/CORESECURITYMODELCSP.DLL" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_ALL_ACCESS" />
+<Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_GENERIC_READ, FILE_GENERIC_EXECUTE" />
+</Authorize>
+<Stop>
+<Match AccountId="$(EVERYONE_GROUP_NAME)" />
+</Stop>
+</Rule>
+
+<Rule Description="Block LPC to load the DMCSPS.DLL" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/DMCSPS.DLL" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_ALL_ACCESS" />
+<Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_GENERIC_READ, FILE_GENERIC_EXECUTE" />
+</Authorize>
+<Stop>
+<Match AccountId="$(EVERYONE_GROUP_NAME)" />
+</Stop>
+</Rule>
+
+<Rule Description="Block LPC to load the REMOTEWIPECSP.DLL" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/REMOTEWIPECSP.DLL" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_ALL_ACCESS" />
+<Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_GENERIC_READ, FILE_GENERIC_EXECUTE" />
+</Authorize>
+<Stop>
+<Match AccountId="$(EVERYONE_GROUP_NAME)" />
+</Stop>
+</Rule>
+
+<Rule Description="Block LPC to load the FRAME_SERVER.DLL" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/FRAME_SERVER.DLL" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_ALL_ACCESS" />
+<Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_GENERIC_READ, FILE_GENERIC_EXECUTE" />
+</Authorize>
+<Stop>
+<Match AccountId="$(EVERYONE_GROUP_NAME)" />
+</Stop>
+</Rule>
+
+
+</CeSecurityPolicyFile>

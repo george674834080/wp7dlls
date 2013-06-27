@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="utf-8"?><e:Envelope xmlns:e="http://schemas.xmlsoap.org/soap/envelope/"><e:Body><GetLanguagesForSpeak xmlns="http://api.microsofttranslator.com/V2"><appId>0DF2CA3798F2F92586263AB40D150C8D99931D15</appId></GetLanguagesForSpeak></e:Body></e:Envelope>

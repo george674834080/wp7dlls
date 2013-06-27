@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<!--
+Use of this sample source code is subject to the terms of the Microsoft
+license agreement under which you licensed this sample source code. If
+you did not accept the terms of the license agreement, you are not
+authorized to use this sample source code. For the terms of the license,
+please see the license agreement between you and Microsoft or, if applicable,
+see the LICENSE.RTF on your install media or the root of your tools installation.
+THE SAMPLE SOURCE CODE IS PROVIDED "AS IS", WITH NO WARRANTIES OR INDEMNITIES.
+-->
+
+<endpointmap>
+
+  <setting id="Client Needs Upgrade" value="false" />
+
+  <setting id="Music Marketplace Enabled" value="false" />
+  <setting id="App Marketplace Enabled" value="false" />
+  <setting id="Podcast Marketplace Enabled" value="false" />
+  <setting id="XBox Live Available" value="true" />
+
+  <ep id="Passport_ZEST" url="kdc.xboxlive.com" />
+  <ep id="Passport_MCP" url="mobilling.microsoft.com" />
+  <ep id="Passport_LIVEn" url="kdc.xboxlive.com" />
+  <ep id="Passport_LIVEnWeb" url="live.xbox.com" />
+
+  <ep id="LIVEnRewardsService" url="https://rewards.xboxlive.com/RewardsService.svc" />
+  <ep id="LIVEnGameDataService" url="https://uds.xboxlive.com/Gamedata.svc" />
+  <ep id="LIVEnProfileService" url="https://uds.xboxlive.com/Profiles.svc" />
+  <ep id="LIVEnFriendService" url="https://uds.xboxlive.com/Friend.svc" />
+  <ep id="LIVEnNotificationsService" url="https://notifications.xboxlive.com/Notifications.svc" />
+  <ep id="LIVEnSubscribeService" url="https://notifications.xboxlive.com/V1/subscribe.svc" />
+
+  <ep id="XblTicketService" url="https://activeauth.xboxlive.com/sts/sts.asmx"/>
+  <ep id="XblBillingService" url="http://10.184.226.21:13100/xbos/billing.asmx"/>
+  <ep id="XblUserAccountService" url="https://activeauth.xboxlive.com/xuacs/useraccount.asmx"/> 
+  <ep id="XblGamerTagService" url="http://10.184.226.21:13100/xbos/gamertag.asmx"/>
+  <ep id="XblTermsOfServiceLink" url="http://go.microsoft.com/fwlink/?LinkId=180375"/>
+  <ep id="ZMktTermsOfServiceLink" url="http://go.microsoft.com/fwlink/?LinkId=179597"/>
+
+  <ep id="FacebookXBL_MOW" url="http://www.xbox.com" />
+
+  <ep id="GetUser" url="https://commerce.zune.net/v2/account/user" />
+  <ep id="ZESTSignInV2" url="https://commerce.zune.net/v2/account/signin" />
+  <ep id="ZESTCreateUser" url="https://commerce.zune.net/v2/account/createuser" />
+  <ep id="ZESTUpgradeUser" url="https://commerce.zune.net/v2/account/upgrade" />
+  <ep id="ZESTReserveTag" url="https://commerce.zune.net/v2/account/reservetag" />
+  
+</endpointmap>

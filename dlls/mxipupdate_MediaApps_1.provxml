@@ -1,0 +1,119 @@
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<wap-provisioningdoc>
+    <characteristic type="AppMetadata">
+        <characteristic type="{5B04B775-356B-4AA0-AAF8-6491FFEA5630}">
+            <parm name="Manifest" value="\Windows\ZuneAppMetadata.xml"/>
+        </characteristic>
+        <characteristic type="{5B04B775-356B-4AA0-AAF8-6491FFEA5631}">
+            <parm name="Manifest" value="\Windows\Camera.xml"/>
+        </characteristic>
+        <characteristic type="{5B04B775-356B-4AA0-AAF8-6491FFEA5632}">
+            <parm name="Manifest" value="\Windows\Photos.xml"/>
+        </characteristic>
+        <characteristic type="{5B04B775-356B-4AA0-AAF8-6491FFEA5633}">
+            <parm name="Manifest" value="\Windows\MarketplaceAppMetadata.xml"/>
+        </characteristic>
+        <characteristic type="{5B04B775-356B-4AA0-AAF8-6491FFEA5634}">
+            <parm name="Manifest" value="\Windows\Games.xml"/>
+        </characteristic>
+    </characteristic>
+
+    <characteristic type="FileOperation">
+        <characteristic type="\My Documents\Zune" translation="install">
+            <characteristic type="MakeDir" />
+        </characteristic>
+    </characteristic>
+
+    <!-- This will only take care of new device scenario. For upgrade scenario, this will 
+         run too but we will provide post provisioning app/script. <guid>.exe will preserve whatever 
+         background the user last seen before the update and it will likely found named as 
+         'pictures.jpg'.  If exists, copy that file to pictures_00.jpg, delete pictures_01.jpg 
+         through pictures_08.jpg, and finally, delete pictures.jpg. If not exists, do nothing. -->
+    <characteristic type="FileOperation">
+        <characteristic type="%CE19%\Photos" translation="install">
+          <characteristic type="MakeDir" />
+          
+          <characteristic type="Pictures_00.jpg" translation="install">
+            <characteristic type="Copy">
+              <parm name="Source" value="%CE2%\sample_photo_tile_00.jpg" translation="install" />
+              <parm name="NoOverwrite" />
+              <parm name="RemoveAttributes" value="SHR" />
+            </characteristic>
+          </characteristic>
+
+          <characteristic type="Pictures_01.jpg" translation="install">
+            <characteristic type="Copy">
+              <parm name="Source" value="%CE2%\sample_photo_tile_01.jpg" translation="install" />
+              <parm name="NoOverwrite" />
+              <parm name="RemoveAttributes" value="SHR" />
+            </characteristic>
+          </characteristic>          
+
+          <characteristic type="Pictures_02.jpg" translation="install">
+            <characteristic type="Copy">
+              <parm name="Source" value="%CE2%\sample_photo_tile_02.jpg" translation="install" />
+              <parm name="NoOverwrite" />
+              <parm name="RemoveAttributes" value="SHR" />
+            </characteristic>
+          </characteristic>
+
+          <characteristic type="Pictures_03.jpg" translation="install">
+            <characteristic type="Copy">
+              <parm name="Source" value="%CE2%\sample_photo_tile_03.jpg" translation="install" />
+              <parm name="NoOverwrite" />
+              <parm name="RemoveAttributes" value="SHR" />
+            </characteristic>
+          </characteristic>
+
+          <characteristic type="Pictures_04.jpg" translation="install">
+            <characteristic type="Copy">
+              <parm name="Source" value="%CE2%\sample_photo_tile_04.jpg" translation="install" />
+              <parm name="NoOverwrite" />
+              <parm name="RemoveAttributes" value="SHR" />
+            </characteristic>
+          </characteristic>
+
+          <characteristic type="Pictures_05.jpg" translation="install">
+            <characteristic type="Copy">
+              <parm name="Source" value="%CE2%\sample_photo_tile_05.jpg" translation="install" />
+              <parm name="NoOverwrite" />
+              <parm name="RemoveAttributes" value="SHR" />
+            </characteristic>
+          </characteristic>
+
+          <characteristic type="Pictures_06.jpg" translation="install">
+            <characteristic type="Copy">
+              <parm name="Source" value="%CE2%\sample_photo_tile_06.jpg" translation="install" />
+              <parm name="NoOverwrite" />
+              <parm name="RemoveAttributes" value="SHR" />
+            </characteristic>
+          </characteristic>
+
+          <characteristic type="Pictures_07.jpg" translation="install">
+            <characteristic type="Copy">
+              <parm name="Source" value="%CE2%\sample_photo_tile_07.jpg" translation="install" />
+              <parm name="NoOverwrite" />
+              <parm name="RemoveAttributes" value="SHR" />
+            </characteristic>
+          </characteristic>
+
+          <characteristic type="Pictures_08.jpg" translation="install">
+            <characteristic type="Copy">
+              <parm name="Source" value="%CE2%\sample_photo_tile_08.jpg" translation="install" />
+              <parm name="NoOverwrite" />
+              <parm name="RemoveAttributes" value="SHR" />
+            </characteristic>
+          </characteristic>
+
+        </characteristic>
+    </characteristic>
+
+    <!-- Uninstall Xbox LIVE Extras App  -->
+    <characteristic type="AppInstall">
+      <nocharacteristic type="{0c17d153-b5d5-df11-a844-00237de2db9e}"/>
+    </characteristic>
+
+</wap-provisioningdoc>
+

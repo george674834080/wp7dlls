@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<!--
+Use of this source code is subject to the terms of the Microsoft
+premium shared source license agreement under which you licensed
+this source code. If you did not accept the terms of the license
+agreement, you are not authorized to use this source code.
+For the terms of the license, please see the license agreement
+signed by you and Microsoft.
+THE SOURCE CODE IS PROVIDED "AS IS", WITH NO WARRANTIES OR INDEMNITIES.
+-->
+<CeSecurityPolicyFile Description="Security policy for the Key Isolation RPC server; Default list of accounts; Default primitive provider" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.00" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">
+  
+<!-- keyiso: Security policy for the Key Isolation RPC server -->
+<!-- Key protection rules -->
+    <Rule Description="Restrict access to TCB crypto keys" ResourceIri="$(GLOBAL_RESOURCES)/CRYPTOKEYS/TCB" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(NCRYPT_SUPERVISOR_SELF_ISOLATED)" AuthorizationIds="ALL_ACCESS"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Description="Restrict access to ELEVATED_RIGHTS crypto keys" ResourceIri="$(GLOBAL_RESOURCES)/CRYPTOKEYS/ELEVATED_RIGHTS" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(NCRYPT_SUPERVISOR_SELF_ISOLATED)" AuthorizationIds="ALL_ACCESS"></Match>
+            <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Description="Restrict access to STANDARD_RIGHTS crypto keys" ResourceIri="$(GLOBAL_RESOURCES)/CRYPTOKEYS/STANDARD_RIGHTS" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(NCRYPT_SUPERVISOR_SELF_ISOLATED)" AuthorizationIds="ALL_ACCESS"></Match>
+            <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Description="Restrict access to SELF_ISOLATED_ELEVATED_RIGHTS crypto keys" ResourceIri="$(GLOBAL_RESOURCES)/CRYPTOKEYS/SELF_ISOLATED_ELEVATED_RIGHTS" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(NCRYPT_SUPERVISOR_SELF_ISOLATED)" AuthorizationIds="ALL_ACCESS"></Match>
+            <Match AccountId="$(SELF_ISOLATED_ELEVATED_RIGHTS_CHAMBER_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Description="Restrict access to SELF_ISOLATED_STANDARD_RIGHTS crypto keys" ResourceIri="$(GLOBAL_RESOURCES)/CRYPTOKEYS/SELF_ISOLATED_STANDARD_RIGHTS" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(NCRYPT_SUPERVISOR_SELF_ISOLATED)" AuthorizationIds="ALL_ACCESS"></Match>
+            <Match AccountId="$(SELF_ISOLATED_STANDARD_RIGHTS_CHAMBER_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <Rule Description="Restrict access to LEAST_PRIVILEGE crypto keys" ResourceIri="$(GLOBAL_RESOURCES)/CRYPTOKEYS/LEAST_PRIVILEGE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+        </Authorize>
+    </Rule>
+
+    <Rule Description="Restrict access to Shared crypto keys" ResourceIri="$(GLOBAL_RESOURCES)/CRYPTOKEYS/SHARED" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <!-- Protect raw key files -->
+    <Rule Description="Restrict access to private key files to CNG Key Storage Self Isolated Chamber" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/APPLICATION%20DATA/KEYSTORAGE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match AccountId="$(NCRYPT_SUPERVISOR_SELF_ISOLATED)" AuthorizationIds="ALL_ACCESS"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <!-- RPC Server Endpoint rule -->
+    <Rule Description="Authorize a server from the CNG Key Storage Self Isolated Chamber to register the endpoint name 'KeyIso'." ResourceIri="$(RPC_SERVER_ENDPOINT)/KeyIso" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(NCRYPT_SUPERVISOR_SELF_ISOLATED)" AuthorizationIds="GENERIC_ALL"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <!-- RPC Client Interface rule -->
+    <Rule Description="Authorize clients from all chambers to call into the NCrypKeyIso interface." ResourceIri="$(RPC_CLIENT_INTERFACE)/b25a52bf-e5dd-4f4a-aea6-8ca7272a0e86/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+        </Authorize>
+    </Rule>
+
+    <!-- Key Isolation Service -->
+    <Rule Description="Allow the CNG Key Isolation service to be called from any chamber" ResourceIri="$(DEVICEMANAGER_DEVICE)/KIS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+        </Authorize>
+    </Rule>
+
+    <Rule Description="Allow the CNG Key Isolation service to be activated from any chamber" ResourceIri="$(RESOURCES)/$(NCRYPT_SUPERVISOR_SELF_ISOLATED)/DEVICEMANAGER/ACTIVATEDEVICE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+        </Authorize>
+    </Rule>
+
+    <Rule Description="Allow the CNG Key Isolation service all access to the Cryptography key to store the machine GUID" ResourceIri="$(HKLM)/COMM/SECURITY/CRYPTOGRAPHY" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match AccountId="$(NCRYPT_SUPERVISOR_SELF_ISOLATED)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+        </Authorize>
+    </Rule>
+
+    <!-- Default list of accounts originally from ncrypt.accounts.xml-->
+    <Macro Id="NCRYPT_SUPERVISOR_SELF_ISOLATED" Description="Supervisor Self Isolated Chamber to run CNG Key Storage service" Value="S-1-5-112-0-0X11-0X00000004"></Macro>
+
+    <!-- Create the CNG Key Isolation Self Isolated Supervisor Chamber -->
+    <Account Id="$(NCRYPT_SUPERVISOR_SELF_ISOLATED)" FriendlyName="CNG Key Storage Self Isolated Chamber" Description="CNG Key Storage Isolated Account" Type="User">
+        <MemberOfGroup GroupAccountId="$(SELF_ISOLATED_ELEVATED_RIGHTS_CHAMBER_GROUP_NAME)"></MemberOfGroup>
+    </Account>
+
+    <!-- Default Primitive Provider originally from bcrypt.policy.xml -->
+    
+    <!-- High priority rules -->
+    <Rule Description="Configuration entries are writable by TCB and read-only by everyone else" ResourceIri="$(HKLM)/COMM/SECURITY/CRYPTOGRAPHY/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+        <Stop>
+          <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <!-- CNG Configuration service rule -->
+    <Rule Description="Allow the CNG Configuration service to be called from any chamber" ResourceIri="$(DEVICEMANAGER_DEVICE)/CCS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+        </Authorize>
+    </Rule>
+
+</CeSecurityPolicyFile>

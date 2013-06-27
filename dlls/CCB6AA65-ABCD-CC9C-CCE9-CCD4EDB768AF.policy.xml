@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<CeSecurityPolicyFile Description="Simtoolkit policies" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.00" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">
+<!-- simtoolkit: Security Policies -->
+
+
+  <!-- Secure service registry entries -->
+
+  <Rule Description="SimToolkit Registry" PriorityCategoryId="PRIORITY_HIGH" ResourceIri="$(HKLM)/SERVICES/SimToolKit/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)">
+
+
+      <!-- we want only TCB to have this access         -->
+      <!-- and TCB always has full access to everything -->
+      <!-- allow ELEVATED chamber to have read access   -->
+
+      <Authorize>
+        <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+        </Authorize>
+
+
+    <Stop>
+
+      <!-- Deny semantics on Everyone -->
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+
+    </Stop>
+
+  </Rule>
+
+
+  <!-- Secure service entry points -->
+  <!-- Allow Everyone to access in the policy, but will validate in code, only
+       the SIMApplication can access to "$(DEVICEMANAGER_DEVICE)/STK/(*)"-->
+
+
+</CeSecurityPolicyFile>

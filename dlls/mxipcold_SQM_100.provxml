@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+
+<wap-provisioningdoc>
+    <characteristic type="FileOperation">
+
+        <!--
+          Launch OnBootSqm.exe after the system is up by adding it to the StartUp directory
+          %CE4% is \Windows\StartUp.
+        -->
+        <characteristic type="%CE4%" translation="install">
+            <characteristic type="OnBootSqm.lnk" translation="install">
+                <characteristic type="Copy">
+                    <parm name="Source" value="\Windows\OnBootSqm.lnk" translation="install" />
+                </characteristic>
+            </characteristic>
+        </characteristic>
+
+    </characteristic>
+</wap-provisioningdoc>

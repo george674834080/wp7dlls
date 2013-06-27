@@ -1,0 +1,24 @@
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+
+<wap-provisioningdoc>
+    <characteristic type="AppMetadata"> 
+        <characteristic type="{5B04B775-356B-4AA0-AAF8-6491FFEA5603}">
+            <parm name="Manifest" value="\Windows\calc7.xml"/>
+        </characteristic>
+    </characteristic>
+
+    <characteristic type="AppMetadata"> 
+        <characteristic type="{08180483-59DD-419b-B938-B7082424D69A}">
+            <parm name="Manifest" value="\Windows\wlidsetup.xml"/>
+        </characteristic>
+    </characteristic>
+
+    <characteristic type="AppMetadata"> 
+        <characteristic type="{5B04B775-356B-4AA0-AAF8-6491FFEA560A}">
+            <parm name="Manifest" value="\Windows\Alarms.xml"/>
+        </characteristic>
+    </characteristic>
+</wap-provisioningdoc>
+

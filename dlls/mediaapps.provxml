@@ -1,0 +1,52 @@
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+
+<wap-provisioningdoc>
+
+<!-- Creating directory \LOC_DIRDOCUMENTS -->
+<characteristic type="FileOperation">
+  <characteristic type="\LOC_DIRDOCUMENTS" translation="install">
+    <characteristic type="MakeDir" />
+  </characteristic>
+</characteristic>
+
+
+<!-- Creating directory LOC_DIRDOCUMENTS\LOC_DIRMYPICTURES -->
+<characteristic type="FileOperation">
+  <characteristic type="LOC_DIRDOCUMENTS\LOC_DIRMYPICTURES" translation="install">
+    <characteristic type="MakeDir" />
+  </characteristic>
+</characteristic>
+
+
+<!-- Copying Waterfall.jpg to LOC_DIRMYDOCSMYPICS\Waterfall.jpg -->
+<characteristic type="FileOperation">
+  <characteristic type="LOC_DIRMYDOCSMYPICS" translation="install">
+    <characteristic type="MakeDir" />
+    <characteristic type="Waterfall.jpg" translation="install">
+      <characteristic type="Copy">
+        <parm name="Source" value="\Windows\Waterfall.jpg" translation="install" />
+        <parm name="RemoveAttributes" value="RH" />
+      </characteristic>
+    </characteristic>
+  </characteristic>
+</characteristic>
+
+
+<!-- Copying Flower.jpg to LOC_DIRMYDOCSMYPICS\Flower.jpg -->
+<characteristic type="FileOperation">
+  <characteristic type="LOC_DIRMYDOCSMYPICS" translation="install">
+    <characteristic type="MakeDir" />
+    <characteristic type="Flower.jpg" translation="install">
+      <characteristic type="Copy">
+        <parm name="Source" value="\Windows\Flower.jpg" translation="install" />
+        <parm name="RemoveAttributes" value="RH" />
+      </characteristic>
+    </characteristic>
+  </characteristic>
+</characteristic>
+
+
+</wap-provisioningdoc>
+

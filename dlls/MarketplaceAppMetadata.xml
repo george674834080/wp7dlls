@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<Provisioning xmlns="http://dbPreProvisioning"
+  RuntimeType="Native"
+  Title="@ZuneRes.dll,-1161"
+  Version="1.0"
+  Genre=""
+  ProductID="{5B04B775-356B-4AA0-AAF8-6491FFEA5633}"
+  UsePlatformTheme="true"
+  SingleInstanceHost="true">
+  <IconPath xmlns="">res://StartMenu!allapp.marketplace.png</IconPath>
+  <ImagePath xmlns="">\Windows\Meux.exe</ImagePath>
+  <ImageParams xmlns="">-dothemarketplacejump</ImageParams>
+  <Tasks xmlns="">
+    <DefaultTask Name="MarketplaceHub" NavigationPage="_DoesNotExist" ActivationPolicy="Replace"/>
+    <!-- Don't define any more tasks here; put them in ZuneAppMetadata.xml.
+         The only reason we have a separate ProductID defined here is so that
+         Marketplace will appear as a separate entry in the shell's app list.
+         We always want to run under the ProductID defined in ZuneAppMetadata,
+         though, so any task that starts up with this ProductID will be 
+         summarily sent to the MarketplaceHub page in the ZuneAppMetadata
+         ProductID.
+         
+         This redirect happens in meux.exe's WinMain when it detects the
+         -dothemarketplacejump parameter.
+    -->
+  </Tasks>
+  <Tokens xmlns="">
+    <PrimaryToken TokenID="Marketplace"
+           TaskName="MarketplaceHub"
+           TaskParameters=""
+           DisplayPosition="10"
+           Pinned="true">
+      <TemplateType1>
+        <IconImageURI>res://StartMenu!token.marketplace.png</IconImageURI>
+        <Title>@ZuneRes.dll,-1161</Title>
+      </TemplateType1>
+    </PrimaryToken>
+  </Tokens>
+</Provisioning>

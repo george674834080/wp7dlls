@@ -1,0 +1,1 @@
+{"Context":{"ApplicationId":"%1","UserId":"%2","Version":"%3","Culture":"%4"},"Properties":[{"Key":"Highlight","Value":"true"}],"Queries":[{"Domains":[{"Domain":42,"Range":{"Count":10}}],"Locations":[{"DetectionMethod":0,"LocationInformation":{"Coordinate":{"Latitude":%5,"Longitude":%6},"Offset":0}}]}]}

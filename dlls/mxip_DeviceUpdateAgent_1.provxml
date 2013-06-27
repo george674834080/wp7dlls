@@ -1,0 +1,15 @@
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<wap-provisioningdoc>
+    <characteristic type="AppMetadata"> 
+        <characteristic type="{5B04B775-356B-4AA0-AAF8-6491FFEA5640}">
+            <parm name="Manifest" value="\Windows\DeviceUpdateSettings.xml"/>
+        </characteristic>
+    </characteristic>
+    <characteristic type="Registry">
+        <characteristic type="HKLM\Software\Microsoft\Windows\DeviceUpdate\Agent\Installation">
+           <parm name="DuaUpdateRebootType" value="1" datatype="integer"/>
+        </characteristic>
+    </characteristic>
+</wap-provisioningdoc>

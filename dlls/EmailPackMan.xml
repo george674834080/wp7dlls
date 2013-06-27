@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<Provisioning xmlns="http://dbPreProvisioning"
+  RuntimeType="Native"
+  Title="@MapiShellNotifRes.dll,-10100"
+  Version="1.0"
+  Genre=""
+  ProductID="{5B04B775-356B-4AA0-AAF8-6491FFEA5614}"
+  UsePlatformTheme="true"
+  SingleInstanceHost="true">
+  
+  <IconPath xmlns="">res://ASIcons!allapp.genericmail.png</IconPath>
+  <ImagePath xmlns="">\Windows\Email.exe</ImagePath>
+  <ImageParams xmlns=""></ImageParams>
+  
+  <Tasks xmlns="">
+    <DefaultTask Name="Default"
+        NavigationPage="AccountSetupPage"/>
+    <ExtendedTask Name="AccountSetup"
+        NavigationPage="AccountSetupPage"/>
+    <ExtendedTask Name="MessageList"
+        NavigationPage="MessageListPage"
+        ActivationPolicy="Multisession"/>
+    <ExtendedTask Name="ShareContent"
+        NavigationPage="ShareAccountPickerPage"
+        ActivationPolicy="Multisession"/>
+    <ExtendedTask Name="DisplayMessage"
+        NavigationPage="ReadCardPage"/>
+    <ExtendedTask Name="ComposeMessage"
+        NavigationPage="ComposeCardPage"
+        ActivationPolicy="ResumeSameParams"/>
+    <ExtendedTask Name="Conversation"
+        NavigationPage="ConversationPage"
+        ActivationPolicy="Multisession"/>
+    <ExtendedTask Name="ServerSearchResult"
+        NavigationPage="ServerSearchResultPage"
+        ActivationPolicy="Replace"/>
+  </Tasks>
+  <Tokens xmlns="">
+    <PrimaryToken TokenID="Default"
+        TaskName="Default"
+        TaskParameters=""
+        DisplayPosition="4"
+        Pinned="true">
+      <TemplateType1>
+        <BackgroundImageURI></BackgroundImageURI>
+        <IconImageURI>res://ASIcons!token.genericmail.png</IconImageURI>
+        <Title>@MapiShellNotifRes.dll,-10100</Title>
+      </TemplateType1>
+    </PrimaryToken>
+  </Tokens>
+
+</Provisioning>

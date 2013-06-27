@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<Provisioning xmlns="http://dbPreProvisioning"
+  RuntimeType="Native"
+  Title="~SaveRingtone"
+  Version="1.0"
+  Genre=""
+  ProductID="{D8CF8EC7-EC6D-4892-AAB9-1E3A4B5FA24B}"
+  SingleInstanceHost="false"
+  DisplayOnAppList="false">
+  <IconPath xmlns="">res://StartMenu!AppIconGeneric.png</IconPath>
+  <ImagePath xmlns="">\Windows\SaveRingtone.exe</ImagePath>
+  <ImageParams xmlns=""></ImageParams>
+  <Tasks xmlns="">
+    <DefaultTask Name="SaveRingtone"
+                 NavigationPage="SaveRingtone" />
+  </Tasks>
+</Provisioning>

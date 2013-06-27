@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<Provisioning xmlns="http://dbPreProvisioning"
+  RuntimeType="Native"
+  Title="@CalendarRes.dll,-9034"
+  Version="1.0"
+  Genre=""
+  ProductID="{5B04B775-356B-4AA0-AAF8-6491FFEA5612}"
+  UsePlatformTheme="true"
+  SingleInstanceHost="true">
+  <IconPath xmlns="">res://StartMenu!AppIconCalendar.png</IconPath>
+  <ImagePath xmlns="">\Windows\CalendarApp.exe</ImagePath>
+  <ImageParams xmlns=""></ImageParams>
+  <Tasks xmlns="">
+    <DefaultTask Name="Default" NavigationPage="Home" ActivationPolicy="Replace"/>
+    <ExtendedTask Name="CalendarSummaryCard" ActivationPolicy="Replace"/>
+    <ExtendedTask Name="CalendarEditCard" ActivationPolicy="MultiSession"/>
+    <ExtendedTask Name="TaskSummaryCard" ActivationPolicy="Replace"/>
+    <ExtendedTask Name="TaskEditCard" ActivationPolicy="MultiSession"/>
+  </Tasks>  
+  <Tokens xmlns="">
+    <PrimaryToken TokenID="Default"
+           TaskName="Default"
+           TaskParameters=""
+           DisplayPosition="7"
+           Pinned="true">
+      <TemplateType4>
+        <AppointmentTitle>@CalendarRes.dll,-9034</AppointmentTitle>
+      </TemplateType4>
+    </PrimaryToken>
+  </Tokens>
+</Provisioning>

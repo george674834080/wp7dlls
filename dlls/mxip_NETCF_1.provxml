@@ -1,0 +1,19 @@
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+
+<wap-provisioningdoc>
+
+<!-- Copying CFLauncher.lnk to \Windows\StartUp\CFLauncher.lnk -->
+<characteristic type="FileOperation">
+	<characteristic type="\Windows\StartUp" translation="install">
+		<characteristic type="MakeDir" />
+		<characteristic type="CFLauncher.lnk" translation="install">
+			<characteristic type="Copy">
+				<parm name="Source" value="\Windows\CFLauncher.lnk" translation="install" />
+				<parm name="RemoveAttributes" value="RH" />
+			</characteristic>
+		</characteristic>
+	</characteristic>
+</characteristic>
+</wap-provisioningdoc>

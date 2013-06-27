@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<CeSecurityPolicyFile Description="MSIME security policies" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.4.9876" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">
+
+  <Rule Action="CreateOrReplace" Description="protect the CHS static main dictionary" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/chsmain.sdc" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match Action="Add" AccountId="$(SID_MTF_SERVER)" AuthorizationIds="FILE_GENERIC_READ"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+  </Rule>
+
+  <Rule Action="CreateOrReplace" Description="protect the CHS static alphabet spell dictionary" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/chspy.spd" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match Action="Add" AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="FILE_GENERIC_READ"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+  </Rule>
+    
+  <Rule Action="CreateOrReplace" Description="protect the CHS static digit spell dictionary" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/chspyd.spd" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match Action="Add" AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="FILE_GENERIC_READ"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+    
+  <Rule Action="CreateOrReplace" Description="protect the CHS frequecy dynamic tuning dictionary" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/chsdynrnk.dat" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(SID_MTF_SERVER)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Action="CreateOrReplace" Description="protect the CHS user dictionary" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/chsmain.udc" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+      <Authorize>
+        <Match Action="Add" AccountId="$(SID_MTF_SERVER)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+      </Authorize>
+      <Stop>
+        <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+      </Stop>
+    </Rule>
+
+  <Rule Action="CreateOrReplace" Description="protect the CHT static main dictionary" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/chtmain.sdc" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match Action="Add" AccountId="$(SID_MTF_SERVER)" AuthorizationIds="FILE_GENERIC_READ"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+  </Rule>
+
+    <Rule Action="CreateOrReplace" Description="protect the CHT static spell dictionary" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/chtzhy.spd" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match Action="Add" AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="FILE_GENERIC_READ"></Match>
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+  <Rule Action="CreateOrReplace" Description="protect the CHT dictionary" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/chtdynrnk.dat" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(SID_MTF_SERVER)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Action="CreateOrReplace" Description="protect the CHT user dictionary" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/chtmain.udc" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+      <Authorize>
+        <Match Action="Add" AccountId="$(SID_MTF_SERVER)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+      </Authorize>
+      <Stop>
+        <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+      </Stop>
+    </Rule>
+
+  <Rule Action="CreateOrReplace" Description="Protect the JPN prediction dictionary" ResourceIri="$(WINDOWS_DIRECTORY_PATH)/msimePred_0411.dic" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(SID_MTF_SERVER)" AuthorizationIds="FILE_GENERIC_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Description="Protect MSIME setting data" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/MSIME/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(KEYBOARDCPL_EXE_SID)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+        <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Description="Protect Prediction Data source data" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/PredDS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+        <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+</CeSecurityPolicyFile>

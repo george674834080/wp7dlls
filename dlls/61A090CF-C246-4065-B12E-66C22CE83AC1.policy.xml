@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<CeSecurityPolicyFile Description="Communications Platform account and policy definitions" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.4.9876" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">
+
+    <!-- Macros for the RPC endpoint and interface UUID -->
+    <Macro Id="BTS_ENDPOINT_NAME" Description="Background transfer service endpoint name." Value="btsserv"></Macro>
+
+    <Macro Id="BTS_API_INTERFACE_UUID" Description="Background transfer service client interface uuid." Value="eda02478-d508-46e2-b742-1acb85afb609"></Macro>
+
+    <Macro Id="BTS_MGMT_INTERFACE_UUID" Description="Background transfer service management client interface uuid." Value="60916721-c841-46fa-9834-6b6e1e2dcb57"></Macro>
+    
+    <!-- Rules pertaining to the registry-->
+
+    <!-- Protect Test hook registry key from everyone but OM chamber -->    
+    <Rule Action="CreateNew" Description="Test hook registry keys are only accessible to OM chamber" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/ACCOUNTSETTINGS/USW/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match Action="Add" AccountId="$(OM_USER_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>            
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+
+    <!-- Background Transfer Service (BTS) RPC Server Endpoint rule -->
+      <Rule Description="Authorize a server from the standard rights chamber to register the endpoint name 'btsserv'." ResourceIri="$(RPC_SERVER_ENDPOINT)/$(BTS_ENDPOINT_NAME)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+          <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+        </Authorize>
+      </Rule>
+
+    <!-- Background Transfer Service (BTS) RPC Client Interface rule -->
+    <Rule Description="Authorize clients from standard rights chamber to call into the BTS RPC interface." ResourceIri="$(RPC_CLIENT_INTERFACE)/$(BTS_API_INTERFACE_UUID)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+        </Authorize>
+    </Rule>
+    
+    <!-- Background Transfer Service Management (BTSMGMT) RPC Client Interface rule -->
+    <Rule Action="CreateNew" Description="Authorize clients from the TCB chamber only to call into the BTSMGMT RPC interface." ResourceIri="$(RPC_CLIENT_INTERFACE)/$(BTS_MGMT_INTERFACE_UUID)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+        </Authorize>
+    </Rule>
+
+    <!-- Protect restart registry key from everyone but Background Transfer Service account -->    
+    <Rule Action="CreateNew" Description="Background Transfer Request restart key policy." ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/BTSERV/SETTINGS/RESTART/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+        <Authorize>
+            <Match Action="Add" AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>            
+        </Authorize>
+        <Stop>
+            <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+        </Stop>
+    </Rule>
+ 
+</CeSecurityPolicyFile>

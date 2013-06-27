@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<Provisioning xmlns="http://dbPreProvisioning"
+  RuntimeType="Native"
+  Title="@ZuneRes.dll,-1162"
+  Version="1.0"
+  Genre=""
+  ProductID="{5B04B775-356B-4AA0-AAF8-6491FFEA5630}"
+  UsePlatformTheme="true"
+  SingleInstanceHost="true">
+  <IconPath xmlns="">res://StartMenu!AppIconZune.png</IconPath>
+  <ImagePath xmlns="">\Windows\Meux.exe</ImagePath>
+  <ImageParams xmlns=""></ImageParams>
+  <Tasks xmlns="">
+    <!-- The following is !IMPORTANT INFORMATION!
+    
+         When adding a new "marketplace" task (that is, a task that is exclusively
+         marketplace-related), that task must be added in two other places to
+         maintain consistency within the product:
+         
+         1. Add the task name to Zune!Directory.uix#SharedDirectory.IsMarketplaceTask
+         2. Add the task name to the list of "Marketplace"-labelled tasks in
+            private\shellw\gserver\shell32g\ShellFrame\dll\TaskSwitcher.cpp.
+    -->
+    
+    <DefaultTask  Name="MusicAndVideoHub"               NavigationPage="MusicAndVideoHubPage"           ActivationPolicy="Replace"/>
+    <ExtendedTask Name="MarketplaceHub"                 NavigationPage="MarketplaceHubPage"             ActivationPolicy="Replace"/> <!-- used by the hop from marketplaceapp to main app-->
+    <ExtendedTask Name="GamesMarketplace"               NavigationPage="GamesMarketplaceHub"            ActivationPolicy="Replace"/> <!-- technically, should be ExternalMarketplaceRequest variant, but gamesux does the tunerconfig fetch already -->
+    <ExtendedTask Name="RadioSettings"                  NavigationPage="RadioSettings"                  ActivationPolicy="Replace"/>
+    <ExtendedTask Name="MarketplaceSettings"            NavigationPage="MarketplaceSettings"            ActivationPolicy="Replace"/>
+    
+    <!-- url: the name of the file to play (can be music or video), controls: which playback controls to show, orientation: 0-landscape only, 1-portrait only -->
+    <ExtendedTask Name="_PlayUrl"                       NavigationPage="_PlayUrl"                       ActivationPolicy="Replace"   DehydrationSuppressing="true"/>
+    
+    <!-- zmi: the ID of the media item to play (can be decimal or hex prefixed with '0x'). Videos ONLY! -->
+    <ExtendedTask Name="_PlayZmi"                       NavigationPage="_PlayZmi"                       ActivationPolicy="Replace"/>
+
+    <!-- zmi: the ID of the media item/container to play (can be decimal or hex prefixed with '0x'). -->
+    <ExtendedTask Name="_PlayLocalMusic"                NavigationPage="_PlayLocalMusic"                ActivationPolicy="Replace"/>
+    <ExtendedTask Name="_PlayLocalMusicContainer"       NavigationPage="_PlayLocalMusicContainer"       ActivationPolicy="Replace"/>
+    <ExtendedTask Name="_PlayLocalMusicSmartDJ"         NavigationPage="_PlayLocalMusicSmartDJ"         ActivationPolicy="Replace"/>
+    <ExtendedTask Name="_PlayLocalAudioPodcastSeries"   NavigationPage="_PlayLocalAudioPodcastSeries"   ActivationPolicy="Replace"/>
+    <ExtendedTask Name="_PlayLocalVideoPodcastSeries"   NavigationPage="_PlayLocalVideoPodcastSeries"   ActivationPolicy="Replace"/>
+    <ExtendedTask Name="_PlayLocalVideoFromBookmark"    NavigationPage="_PlayLocalVideoFromBookmark"    ActivationPolicy="Replace"/>
+
+    <!-- zmo: the zmedia object id of the media item/container to play. -->
+    <ExtendedTask Name="_PlayMarketplaceItem"           NavigationPage="_PlayMarketplaceItem"           ActivationPolicy="Replace"/>
+    <ExtendedTask Name="_PlayMarketplaceContainer"      NavigationPage="_PlayMarketplaceContainer"      ActivationPolicy="Replace"/>
+    <ExtendedTask Name="_PlayMarketplaceSmartDJ"        NavigationPage="_PlayMarketplaceSmartDJ"        ActivationPolicy="Replace"/>
+
+    <!-- The Now Playing tasks have all been removed (see bug 275758).  Instead, use _NowPlaying with
+         the Context parameter. -->
+    
+    <ExtendedTask Name="LocalPodcasts"                  NavigationPage="LocalPodcastPivot"              ActivationPolicy="Replace"/>
+
+    <!-- WheresMyApp: GamesHub and StartMenu will send us here if you
+         action on a downloading or pending item -->
+    <ExtendedTask Name="Downloads"                      NavigationPage="Downloads"                      ActivationPolicy="Replace"/>
+
+    <ExtendedTask Name="AppPurchaseHistory"             NavigationPage="AppPurchaseHistory"             ActivationPolicy="Replace"/>
+
+    <!--
+    All external requests for Marketplace pages come through here.
+    
+    Arguments are:
+    
+        page    [required] which page we're going to.  valid values are: "AppDetails", "AppReviews", "MarketplaceSearch", "MarketplaceItem", "MarketplaceHub", "AppMarketplaceHub", "MusicMarketplaceHub", "XboxLiveGamesMarketplaceHub"
+        id      [AppDetails, AppReviews only] the product/Zest ID of the app to show.
+        url     [MarketplaceItem only] where to navigate to, of the form: zune://navigate/?mediatypeID=serviceguid
+        hint    [MarketplaceSearch only] is one of "application", "music", or "podcast"
+        term    [MarketplaceSearch only] is the string to search for.
+    -->
+    <ExtendedTask Name="ExternalMarketplaceRequest"    NavigationPage="ExternalMarketplaceRequest"      ActivationPolicy="Replace"/>
+
+    <!-- AccountSetupReason: numeric reason for being at account setup -->
+    <ExtendedTask Name="AccountSetup"                   NavigationPage="AccountSetup"                   ActivationPolicy="Replace"/>
+
+    <!--
+    _NowPlaying: navigates to the specified now playing page and (optionally)
+                 attaches to the specified queue.  We use one task for all now playing views
+                 to guarantee that only one now playing view will be in the task switcher
+                 at any given time.
+       
+    Arguments are:
+    
+       Context      [required] which now playing scene we want to navigate to.  Valid values are
+                            "Audio", "Video", "Podcast", "Radio".
+       QueueId      [required for Context=Video] the ID of the queue to attach to.
+       FrequencyKHz [required for Context=Radio] specify the frequency in khz, 
+       StartPlaying [required for Context=Radio] specify 1 to start playing when you get to the scene );
+    -->
+    <ExtendedTask Name="_NowPlaying"                    NavigationPage="_NowPlaying"                    ActivationPolicy="Replace"/>
+  </Tasks>
+
+  <Tokens xmlns="">
+    <PrimaryToken TokenID="MusicAndVideo"
+           TaskName="MusicAndVideoHub"
+           TaskParameters=""
+           DisplayPosition="9"
+           Pinned="true">
+      <TemplateType7>
+        <BackgroundImageURI></BackgroundImageURI>        
+        <Title>@ZuneRes.dll,-1160</Title>
+        <IconImageURI>res://StartMenu!token.zune.png</IconImageURI>
+        <ImageURI>res://StartMenu!TokenMusicAndVideoIcon.png</ImageURI>
+      </TemplateType7>
+    </PrimaryToken>
+  </Tokens>
+</Provisioning>

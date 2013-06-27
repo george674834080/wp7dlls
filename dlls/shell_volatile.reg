@@ -1,0 +1,11 @@
+REGEDIT4
+;
+; Copyright (c) Microsoft Corporation.  All rights reserved.
+;
+[HKEY_LOCAL_MACHINE\System\State\ActiveSync]
+[HKEY_LOCAL_MACHINE\System\State\BatteryUX]
+[HKEY_CURRENT_USER\System\State\Shell]
+[HKEY_LOCAL_MACHINE\System\State\Power]
+[HKEY_LOCAL_MACHINE\System\State\Battery]
+
+

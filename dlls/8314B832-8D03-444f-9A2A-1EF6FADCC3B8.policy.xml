@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<!--
+Use of this source code is subject to the terms of the Microsoft
+premium shared source license agreement under which you licensed
+this source code. If you did not accept the terms of the license
+agreement, you are not authorized to use this source code.
+For the terms of the license, please see the license agreement
+signed by you and Microsoft.
+THE SOURCE CODE IS PROVIDED "AS IS", WITH NO WARRANTIES OR INDEMNITIES.
+-->
+<CeSecurityPolicyFile Description="Default loader verifier security policy; Loader verifier capabilities" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.4.9876" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">
+
+<Macro Id="LOADERVERIFIER_CERTIFICATES_SHA1" Description="Base path for all of the loader verifier rules that apply across all chambers" Value="policy:/LOADERVERIFIER/GLOBAL/CERTIFICATES/HASH/SHA1"></Macro>
+
+<Rule Description="Microsoft Mobile Device Unprivileged PCA(Cert #127) is honored by Standard Right Identity Group" ResourceIri="$(LOADERVERIFIER_CERTIFICATES_SHA1)/1C8229F5C8D6E256BDCB427CC5521EC2F8FF011A" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_IDENTITY_GROUP_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE"></Match>
+    </Authorize>
+</Rule>
+
+<Rule Description="Microsoft Mobile Device Privileged PCA(Cert #126) is honored by Elevated Right Identity Group" ResourceIri="$(LOADERVERIFIER_CERTIFICATES_SHA1)/CED778D7BB4CB41D26C40328CC9C0397926B4EEA" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_IDENTITY_GROUP_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE"></Match>
+    </Authorize>
+</Rule>
+
+
+<Rule Description="Microsoft Mobile Device TCB PCA is only honored by WLIDSVC_STANDARD_SELF_ISOLATED" ResourceIri="$(LOADERVERIFIER_CERTIFICATES_SHA1)/88BCAEC267EF8B366C6E6215AC4028E7A1BE2DEB" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(WLIDSVC_STANDARD_SELF_ISOLATED)" AuthorizationIds="LV_ACCESS_EXECUTE"></Match>
+    </Authorize>
+</Rule>
+
+<Rule Description="VeriSign Mobile Root Authority for Microsoft is honored by LPC Identity Group" ResourceIri="$(LOADERVERIFIER_CERTIFICATES_SHA1)/069DBCCA9590D1B5ED7C73DE65795348E58D4AE3" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(LEAST_PRIVILEGE_IDENTITY_GROUP_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE"></Match>
+    </Authorize>
+</Rule>
+
+<Rule Description="Microsoft Marketplace PCA 2011 is honored by LPC Identity Group" ResourceIri="$(LOADERVERIFIER_CERTIFICATES_SHA1)/EB9204785126C26ADADCBBD44FE2B0C642A71078" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(LEAST_PRIVILEGE_IDENTITY_GROUP_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE"></Match>
+    </Authorize>
+</Rule>
+
+</CeSecurityPolicyFile>

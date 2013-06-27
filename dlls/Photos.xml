@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<Provisioning xmlns="http://dbPreProvisioning"
+  RuntimeType="Native"
+  Title="@PhotoRes.dll,-2002"
+  Version="1.0"
+  Genre=""
+  ProductID="{5B04B775-356B-4AA0-AAF8-6491FFEA5632}"
+  UsePlatformTheme="true"
+  SingleInstanceHost="true">
+  <IconPath xmlns="">res://StartMenu!AppIconPhotos.png</IconPath>
+  <ImagePath xmlns="">\Windows\PhotoEnt.exe</ImagePath>
+  <ImageParams xmlns=""></ImageParams>
+  <Tasks xmlns="">
+    <DefaultTask Name="Default" NavigationPage="PhotosHub" ActivationPolicy="Replace" />
+    <ExtendedTask Name="Favorites" NavigationPage="GalleryFavorites" ActivationPolicy="Replace" />
+    <ExtendedTask Name="PhotoViewer" NavigationPage="SPV" ActivationPolicy="Replace" />
+    <ExtendedTask Name="Cropper" NavigationPage="Cropping" />
+    <ExtendedTask Name="AllPhotos" NavigationPage="GalleryAllPhotos" ActivationPolicy="Replace" />
+    <ExtendedTask Name="Albums" NavigationPage="GalleryAlbums" ActivationPolicy="Replace" />
+    <ExtendedTask Name="PhotoPicker" NavigationPage="GalleryAlbums"  DehydrationSuppressing="true"/>
+    <ExtendedTask Name="SavePhoto" NavigationPage="SavePhoto" />
+    <ExtendedTask Name="VideoPicker" NavigationPage="GalleryCameraRoll" />
+    <ExtendedTask Name="CPL" NavigationPage="CPL" ActivationPolicy="Replace" />
+    <ExtendedTask Name="AlbumViewer" NavigationPage="GalleryPhotoAlbum" ActivationPolicy="Replace" />
+  </Tasks>  
+  <Tokens xmlns="">
+    <PrimaryToken TokenID="Default"
+           TaskName="Default"
+           TaskParameters=""
+           DisplayPosition="8"
+           Pinned="true">
+      <TemplateType14>
+        <Photo01ImageURI>file://\Application Data\Photos\Pictures_00.jpg</Photo01ImageURI>
+        <Photo02ImageURI>file://\Application Data\Photos\Pictures_01.jpg</Photo02ImageURI>
+        <Photo03ImageURI>file://\Application Data\Photos\Pictures_02.jpg</Photo03ImageURI>
+        <Photo04ImageURI>file://\Application Data\Photos\Pictures_03.jpg</Photo04ImageURI>
+        <Photo05ImageURI>file://\Application Data\Photos\Pictures_04.jpg</Photo05ImageURI>
+        <Photo06ImageURI>file://\Application Data\Photos\Pictures_05.jpg</Photo06ImageURI>
+        <Photo07ImageURI>file://\Application Data\Photos\Pictures_06.jpg</Photo07ImageURI>
+        <Photo08ImageURI>file://\Application Data\Photos\Pictures_07.jpg</Photo08ImageURI>
+        <Photo09ImageURI>file://\Application Data\Photos\Pictures_08.jpg</Photo09ImageURI>
+        <Title>@PhotoRes.dll,-2002</Title>
+      </TemplateType14>
+    </PrimaryToken>
+  </Tokens>
+</Provisioning>

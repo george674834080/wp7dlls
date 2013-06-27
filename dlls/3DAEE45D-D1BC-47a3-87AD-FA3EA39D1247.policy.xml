@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<CeSecurityPolicyFile Description="Security Policy for Restricted Filter Graph RPC Server" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.00" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">
+  <!-- Define DSSVC ISOLATED STANDANDARD CHAMBER MACRO -->
+  <Macro Id="DSSVC_STANDARD_SELF_ISOLATED" Description="Standard Self Isolated Chamber to run data sharing service" Value="S-1-5-112-0-0X21-0X00000006"></Macro> 
+
+  <Macro Id="DSSVC_STANDARD_SELF_ISOLATED_USER_FRIENDLY_NAME" Description="Self Isolated Chamber account to run data sharing RPC servers" Value="DataSharing RPC Self Isolated Chamber"></Macro>
+
+  <!-- Create the data sharing Self Isolated standard Chamber -->
+  <Account Id="$(DSSVC_STANDARD_SELF_ISOLATED)" FriendlyName="$(DSSVC_STANDARD_SELF_ISOLATED_USER_FRIENDLY_NAME)" Description="DSSVC Isolated Account" Type="User">
+    <MemberOfGroup GroupAccountId="$(SELF_ISOLATED_STANDARD_RIGHTS_CHAMBER_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+  <!-- RPC Server Endpoint rule -->
+  <Rule Description="Authorize a server from the standard chamber to register the endpoint name 'dssvc'." ResourceIri="$(RPC_SERVER_ENDPOINT)/dssvc" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(DSSVC_STANDARD_SELF_ISOLATED)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- RPC Client Interface rule -->
+  <Rule Description="Authorize clients from every chamber is able to call into the same interface." ResourceIri="$(RPC_CLIENT_INTERFACE)/bf4dc912-e52f-4904-8ebe-9317c1bdd497/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Rules for HKLM registry -->
+  <Rule Description="Protect Registry only available to datasharing isoalted standard chamber" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/DATASHARING/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(DSSVC_STANDARD_SELF_ISOLATED)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Description="Allow elevated chamber to read values" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/DATASHARING" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <!-- Rules for Files and Directory -->
+  <Rule Description="Protect data sharing directory from other chambers" ResourceIri="$(FILESYS_PRIMARY_ROOT)/APPLICATION%20DATA/MICROSOFT/DATASHARING/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(DSSVC_STANDARD_SELF_ISOLATED)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Description="Protect data sharing directory from other chambers" ResourceIri="$(FILESYS_PRIMARY_ROOT)/APPLICATION%20DATA/MICROSOFT/DATASHARING/BTS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  
+  <!-- Rules for IO control -->
+  <Rule Description="Enable Standard+ chamber to open IO DSS1:" ResourceIri="$(DEVICEMANAGER_DEVICE)/DSS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+
+  <!-- Rules for RPC API access control -->
+  <Rule Description="Policy for DataSharing API access control, only allow DSSVC chamber" ResourceIri="$(GLOBAL_RESOURCES)/DSSELFISOAPI/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(DSSVC_STANDARD_SELF_ISOLATED)" AuthorizationIds="GENERIC_READ"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Rules for RPC API access control -->
+  <Rule Description="Policy for DataSharing API access control, prevent standard and below applications" ResourceIri="$(GLOBAL_RESOURCES)/DSSELEVATEDAPI/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+       <Match AccountId="$(DSSVC_STANDARD_SELF_ISOLATED)" AuthorizationIds="GENERIC_READ"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ"></Match>
+    </Authorize>
+  </Rule>
+
+
+  <!-- Rules for RPC API access control -->
+  <Rule Description="Policy for DataSharing API access control, prevent restricted applications" ResourceIri="$(GLOBAL_RESOURCES)/DSSSTANDARDAPI/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ"></Match>
+      <Match AccountId="$(DSSVC_STANDARD_SELF_ISOLATED)" AuthorizationIds="GENERIC_READ"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Rules for Ringtones temporary directory access control -->
+  <Rule Description="Allow Data Sharing Service to read/write into the Ringtones/Temp Directory" ResourceIri="$(FILESYS_PRIMARY_ROOT)/MY%20DOCUMENTS/RINGTONES/TEMP/(+)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(DSSVC_STANDARD_SELF_ISOLATED)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+  
+</CeSecurityPolicyFile>

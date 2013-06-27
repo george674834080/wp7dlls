@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<Provisioning xmlns="http://dbPreProvisioning" 
+  RuntimeType="Native" 
+  Title="@SettingsRes.dll,-236" 
+  Version="1.0" 
+  Genre="" 
+  ProductID="{5B04B775-356B-4AA0-AAF8-6491FFEA5625}" 
+  SingleInstanceHost="false" 
+  DisplayOnAppList="false">
+  <IconPath xmlns="">res://StartMenu!AppIconGeneric.png</IconPath>
+  <ImagePath xmlns="">\Windows\MyPhoneCPL.exe</ImagePath>
+  <ImageParams xmlns="">FindSecure</ImageParams>
+  <Tasks xmlns="">
+    <DefaultTask Name="_default" NavigationPage="FindSecure" />
+  </Tasks>
+  <Tokens xmlns="">
+    <PrimaryToken TokenID="Default" TaskName="_default" TaskParameters="" Pinned="false">
+      <TemplateType2>
+        <BackgroundImageURI>
+        </BackgroundImageURI>
+        <Title>Find My Phone</Title>
+      </TemplateType2>
+    </PrimaryToken>
+  </Tokens>
+</Provisioning>

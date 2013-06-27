@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<!--
+Use of this source code is subject to the terms of the Microsoft
+premium shared source license agreement under which you licensed
+this source code. If you did not accept the terms of the license
+agreement, you are not authorized to use this source code.
+For the terms of the license, please see the license agreement
+signed by you and Microsoft.
+THE SOURCE CODE IS PROVIDED "AS IS", WITH NO WARRANTIES OR INDEMNITIES.
+-->
+<CeSecurityPolicyFile Description="eaphost: Wlan Service policy definitions and rules;wlancfgsp: Wlan Service policy definitions and rules;wlansvc_common: Wlan Service policy definitions and rules;wlansvc_macros: Wlan Service policy definitions and rules;" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.00" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">
+  <!-- eaphost: Wlan Service policy definitions and rules -->
+  <!-- Macros for the RPC endpoint and interface UUID -->
+  <Macro Id="EAPHOSTSVC_ENDPOINT_NAME" Description="EAPHOST RPC server endpoint name." Value="EapHostPeerSessionApis"></Macro>
+
+  <Macro Id="EAPHOSTSVC_INTERFACE_UUID" Description="EAPHOST RPC server interface uuid." Value="a89e7a81-1c2d-42fc-b6a2-2d765dc3c947"></Macro>
+
+  <Macro Id="THIRDPARTYSVC_ENDPOINT_NAME" Description="EAPHOST Third Party RPC server endpoint name." Value="ThirdPartyProxyRemote"></Macro>
+
+  <Macro Id="THIRDPARTYSVC_INTERFACE_UUID" Description="EAPHOST Third Party RPC server interface uuid." Value="24dedf1b-a5a1-4244-9766-4ad9277f2c08"></Macro>
+
+  <!-- EAPHOST and Third Party RPC Servers -->
+  <Rule Description="Access policy for EAPHOST RPC server endpoint" ResourceIri="$(RPC_SERVER_ENDPOINT)/$(EAPHOSTSVC_ENDPOINT_NAME)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Access policy for EAPHOST RPC client interface" ResourceIri="$(RPC_CLIENT_INTERFACE)/$(EAPHOSTSVC_INTERFACE_UUID)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Access policy for EAPHOST Thid Party RPC server endpoint" ResourceIri="$(RPC_SERVER_ENDPOINT)/$(THIRDPARTYSVC_ENDPOINT_NAME)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Access policy for EAPHOST Third Party RPC client interface" ResourceIri="$(RPC_CLIENT_INTERFACE)/$(THIRDPARTYSVC_INTERFACE_UUID)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Access rules for HKLM/Comm/EAP/Extension and HKLM/Comm/EapHost/Extension -->
+  <Rule Description="EAPHOST legacy registry key" ResourceIri="$(HKLM)/COMM/EAP/EXTENSION/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Description="EAPHOST native registry key" ResourceIri="$(HKLM)/COMM/EAPHOST/EXTENSION/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+
+  <!-- wlancfgsp: Wlan Service policy definitions and rules -->
+  <!--
+    Access rules for HKLM/Software/Microsoft/WlanConfigCsp
+    -->
+  <Rule Description="WLAN Configuration Service Provider private registry key" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/WLANCONFIGCSP/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+
+  <!-- wlansvc_common: Wlan Service policy definitions and rules -->
+  <!-- ACM RPC Server -->
+  <Rule Description="Access policy for ACM RPC server endpoint" ResourceIri="$(RPC_SERVER_ENDPOINT)/$(ACM_ENDPOINT_NAME)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Access policy for ACM RPC client interface" ResourceIri="$(RPC_CLIENT_INTERFACE)/$(ACM_INTERFACE_UUID)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Access policy for IHV RPC server endpoint" ResourceIri="$(RPC_SERVER_ENDPOINT)/$(IHV_ENDPOINT_NAME)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Access policy for IHV RPC client interface" ResourceIri="$(RPC_CLIENT_INTERFACE)/$(IHV_INTERFACE_UUID)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- MSMAPI RPC Server -->
+  <Rule Description="Access policy for MSMAPI RPC server endpoint" ResourceIri="$(RPC_SERVER_ENDPOINT)/$(MSMAPI_ENDPOINT_NAME)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Access policy for MSMAPI RPC client interface" ResourceIri="$(RPC_CLIENT_INTERFACE)/$(MSMAPI_INTERFACE_UUID)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <!--
+    Access rules for HKLM/Software/Microsoft/Wlansvc
+    -->
+  <Rule Description="ACM service private registry key" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/WLANSVC/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <!--
+    Access rules for common APIs
+    -->
+  <Rule Description="Only supervisor can change network filter list. Standard users can retrieve it" ResourceIri="$(GLOBAL_RESOURCES)/WLAN_SECURABLE_OBJECT/$(WLAN_SECURE_PERMIT_LIST)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+  <Rule Description="Only supervisor can change network filter list. Standard users can retrieve it" ResourceIri="$(GLOBAL_RESOURCES)/WLAN_SECURABLE_OBJECT/$(WLAN_SECURE_DENY_LIST)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+  <Rule Description="Only supervisor can enable or disable ACM. Standard users can check if it is enabled" ResourceIri="$(GLOBAL_RESOURCES)/WLAN_SECURABLE_OBJECT/$(WLAN_SECURE_AC_ENABLED)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+  <Rule Description="Standard users can enable or disable background scans" ResourceIri="$(GLOBAL_RESOURCES)/WLAN_SECURABLE_OBJECT/$(WLAN_SECURE_BC_SCAN_ENABLED)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+  <Rule Description="Only supervisor can change BSS type. Standard users can query current BSS type" ResourceIri="$(GLOBAL_RESOURCES)/WLAN_SECURABLE_OBJECT/$(WLAN_SECURE_BSS_TYPE)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+  <Rule Description="Standard users can show/hide denied networks in available networks list" ResourceIri="$(GLOBAL_RESOURCES)/WLAN_SECURABLE_OBJECT/$(WLAN_SECURE_SHOW_DENIED)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+  <Rule Description="Only supervisor can change interface properties. Standard users can query the properties" ResourceIri="$(GLOBAL_RESOURCES)/WLAN_SECURABLE_OBJECT/$(WLAN_SECURE_INTERFACE_PROPERTIES)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+  <Rule Description="Only supervisor can use WlanInvControl function" ResourceIri="$(GLOBAL_RESOURCES)/WLAN_SECURABLE_OBJECT/$(WLAN_SECURE_IHV_CONTROL)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+  <Rule Description="Standard users can enable/disable media streaming mode of the interface" ResourceIri="$(GLOBAL_RESOURCES)/WLAN_SECURABLE_OBJECT/$(WLAN_SECURE_MEDIA_STREAMING_MODE_ENABLED)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+  <Rule Description="Only supervisor can change operation mode of the interface. Standard users can query the mode" ResourceIri="$(GLOBAL_RESOURCES)/WLAN_SECURABLE_OBJECT/$(WLAN_SECURE_CURRENT_OPERATION_MODE)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+  <Rule Description="Only supervisor can change hosted network mode of the interface. Standard users can query the mode" ResourceIri="$(GLOBAL_RESOURCES)/WLAN_SECURABLE_OBJECT/$(WLAN_SECURE_HOSTED_NETWORK)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <!--
+    Access rules for internal functionality
+    -->
+  <Rule Description="Standard users can read security settings, only supervisors can change them (N/A to WM/CE)" ResourceIri="$(GLOBAL_RESOURCES)/WLAN_SECURABLE_OBJECT/$(WLAN_PROTECT_WLAN_SECURITY_SETTINGS)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_READ"></Match>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+  <Rule Description="Standard users can read and write xp style profiles (N/A to WM/CE)" ResourceIri="$(GLOBAL_RESOURCES)/WLAN_SECURABLE_OBJECT/$(WLAN_PROTECT_XP_STYLE_ALL_USER_PROFILES)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <!--
+    Access rules for wlan named events
+    -->
+  <Rule Description="Access rights to wlan named events" ResourceIri="policy:/KERNEL/EVENT/SYSTEM/WlanServerInitialized" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- wlansvc_macros: Wlan Service policy definitions and rules -->
+  <Macro Id="WLAN_SECURE_PERMIT_LIST" Description="WLAN securable object" Value="0"></Macro>
+  <Macro Id="WLAN_SECURE_DENY_LIST" Description="WLAN securable object" Value="1"></Macro>
+  <Macro Id="WLAN_SECURE_AC_ENABLED" Description="WLAN securable object" Value="2"></Macro>
+  <Macro Id="WLAN_SECURE_BC_SCAN_ENABLED" Description="WLAN securable object" Value="3"></Macro>
+  <Macro Id="WLAN_SECURE_BSS_TYPE" Description="WLAN securable object" Value="4"></Macro>
+  <Macro Id="WLAN_SECURE_SHOW_DENIED" Description="WLAN securable object" Value="5"></Macro>
+  <Macro Id="WLAN_SECURE_INTERFACE_PROPERTIES" Description="WLAN securable object" Value="6"></Macro>
+  <Macro Id="WLAN_SECURE_IHV_CONTROL" Description="WLAN securable object" Value="7"></Macro>
+  <Macro Id="WLAN_SECURE_ALL_USER_PROFILES_ORDER" Description="WLAN securable object" Value="8"></Macro>
+  <Macro Id="WLAN_SECURE_ADD_NEW_ALL_USER_PROFILES" Description="WLAN securable object" Value="9"></Macro>
+  <Macro Id="WLAN_SECURE_ADD_NEW_PER_USER_PROFILES" Description="WLAN securable object" Value="10"></Macro>
+  <Macro Id="WLAN_SECURE_MEDIA_STREAMING_MODE_ENABLED" Description="WLAN securable object" Value="11"></Macro>
+  <Macro Id="WLAN_SECURE_CURRENT_OPERATION_MODE" Description="WLAN securable object" Value="12"></Macro>
+  <Macro Id="WLAN_SECURE_HOSTED_NETWORK" Description="WLAN securable object" Value="13"></Macro>
+  <Macro Id="WLAN_PROTECT_WLAN_SECURITY_SETTINGS" Description="Internal WLAN securable object" Value="14"></Macro>
+  <Macro Id="WLAN_PROTECT_XP_STYLE_ALL_USER_PROFILES" Description="Internal WLAN securable object" Value="15"></Macro>
+
+  <Macro Id="ACM_ENDPOINT_NAME" Description="ACM RPC server endpoint name." Value="acrpcserver"></Macro>
+
+  <Macro Id="ACM_INTERFACE_UUID" Description="ACM RPC server interface UUID." Value="266f33b4-c7c1-4bd1-8f52-ddb8f2214ea9"></Macro>
+
+  <Macro Id="IHV_ENDPOINT_NAME" Description="IHV RPC server endpoint name." Value="WLANIhv"></Macro>
+
+  <Macro Id="IHV_INTERFACE_UUID" Description="IHV RPC server interface UUID." Value="98e96949-bc59-47f1-92d1-8c25b46f85c7"></Macro>
+
+  <Macro Id="MSMAPI_ENDPOINT_NAME" Description="MSMAPI RPC server endpoint name." Value="IhvExtRpcServer"></Macro>
+
+  <Macro Id="MSMAPI_INTERFACE_UUID" Description="MSMAPI RPC server interface UUID." Value="c3f42c6e-d4cc-4e5a-938b-9c5e8a5d8c2e"></Macro>
+
+  <!-- wlanext: Wlan Service policy definitions and rules -->
+  <!-- IHV Extensions run in supervisor chamber -->
+  
+<!--Begin Generated accounts and routing/authz rules for S-1-5-112-0-0X20-0X00000006 -->
+<Macro Id="WLANEXT_EXE_SID" Value="S-1-5-112-0-0X20-0X00000006" />
+<Account Id="$(WLANEXT_EXE_SID)" FriendlyName="wlanext.exe" Description="Autogenerated chamber for wlanext.exe" Type="User">
+<MemberOfGroup GroupAccountId="$(ELEVATED_RIGHTS_CHAMBER_GROUP_NAME)" />
+</Account>
+<!--Begin Generated routing/authz rules for wlanext.exe -->
+<Rule Description="Route wlanext.exe" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/WLANEXT.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(WLANEXT_EXE_SID)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize wlanext.exe be loadable to $(WLANEXT_EXE_SID) and  chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/WLANEXT.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(WLANEXT_EXE_SID)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for wlanext.exe -->
+<!--End Generated accounts and routing/authz rules for S-1-5-112-0-0X20-0X00000006 -->
+
+
+  <!-- WISPr Service policy definitions and rules -->
+  <!--
+    Access rules for HKLM/Software/Microsoft/WISPrClient
+    -->
+  <Rule Description="WLAN Configuration Service Provider private registry key" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/WISPrClient/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <!-- Account for WISPr Service -->
+
+  <Macro Id="WISPR_SERVICE_CHAMBER_SID" Description="WISPr service chamber" Value="S-1-5-112-0-0X10-0X00000036"></Macro>
+
+  <Account Id="$(WISPR_SERVICE_CHAMBER_SID)" FriendlyName="WISPr service chamber" Description="WISPr service chamber" Type="User">
+    <MemberOfGroup GroupAccountId="$(ELEVATED_RIGHTS_CHAMBER_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+</CeSecurityPolicyFile>

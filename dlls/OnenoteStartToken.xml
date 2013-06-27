@@ -1,0 +1,25 @@
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+
+<Provisioning xmlns="http://dbPreProvisioning"
+  RuntimeType="Native"
+  Title="@officeres.dll,-704"
+  Version="1.0"
+  Genre=""
+  ProductID="{5B04B775-356B-4AA0-AAF8-6491FFEA561B}"
+  DisplayOnAppList="false"
+  SingleInstanceHost="false">
+  <ImagePath xmlns="">\Windows\OneNoteMobile.exe</ImagePath>
+  <ImageParams xmlns=""></ImageParams>
+  <Tasks xmlns="">
+    <DefaultTask Name="Default"
+                 NavigationPage="Main"
+                 ActivationPolicy="Resume"/>
+  </Tasks>
+  <Tokens xmlns="">
+    <PrimaryToken TokenID="Default" TaskName="Default" TaskParameters="" Pinned="false">
+      <TemplateType9/>
+    </PrimaryToken>
+  </Tokens>
+</Provisioning>

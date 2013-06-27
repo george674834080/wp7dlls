@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<CeSecurityPolicyFile Description="Default file system security policy" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.4.9876" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">
+
+  <!-- StartHost chamber/account definitions -->
+  <Macro Id="STARTHOST_EXE_SID" Description="StartHost user SID" Value="S-1-5-112-0-0X20-0X00000015"></Macro>
+  <Macro Id="STARTHOST_EXE_FRIENDLY_NAME" Description="Windows Phone Start Host Application" Value="LOC_ACCOUNT_FRIENDLY_NAME_STARTHOST_EXE"></Macro>
+  <Account Id="$(STARTHOST_EXE_SID)" FriendlyName="$(STARTHOST_EXE_FRIENDLY_NAME)" Action="CreateNew" Description="Start Host Executable" Type="User">
+    <MemberOfGroup Action="Add" GroupAccountId="$(STANDARD_RIGHTS_CHAMBER_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+  
+<!--Begin Generated accounts and routing/authz rules for $(STARTHOST_EXE_SID) -->
+
+<!--Begin Generated routing/authz rules for starthost.exe -->
+<Rule Description="Route starthost.exe" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/STARTHOST.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(STARTHOST_EXE_SID)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize starthost.exe be loadable to $(STARTHOST_EXE_SID) and  chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/STARTHOST.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(STARTHOST_EXE_SID)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for starthost.exe -->
+<!--End Generated accounts and routing/authz rules for $(STARTHOST_EXE_SID) -->
+
+  
+  <Rule Description="Allow starthost.exe to access the package manager installer apis" ResourceIri="$(GLOBAL_RESOURCES)/PACKAGEMANAGER/INSTALLAPI" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STARTHOST_EXE_SID)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+  
+  <Rule Description="Allow starthost.exe to access the package manager debugger apis" ResourceIri="$(GLOBAL_RESOURCES)/PACKAGEMANAGER/DEBUGGERAPI" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STARTHOST_EXE_SID)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Allow starthost.exe to wait on the Shell Init event" ResourceIri="policy:/KERNEL/EVENT/SYSTEM/ShellInit" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STARTHOST_EXE_SID)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+  
+  <Rule Description="Give starthost.exe access to the Search token store" ResourceIri="$(FILESYS_PRIMARY_ROOT)/APPLICATION%20DATA/SEARCH/TOKENS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STARTHOST_EXE_SID)" AuthorizationIds="FILE_GENERIC_READ"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Give starthost.exe access to StartHostScreenShotRequest API" ResourceIri="$(GLOBAL_RESOURCES)/SHELL/SHCaptureStartHostScreenShot" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STARTHOST_EXE_SID)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+</CeSecurityPolicyFile>

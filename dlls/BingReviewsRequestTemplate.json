@@ -1,0 +1,1 @@
+{"Context":{"ApplicationId":"%1","UserId":"%2","Version":"%3","Culture":"%4"},"Properties":[{"Key":"Common.cxt","Value":"269582"},{"Key":"MsnRR.ypId","Value":"%5"},{"Key":"MsnRR.SortBy","Value":"Date"},{"Key":"MsnRR.SortOrder","Value":"Desc"}],"Queries":[{"Domains":[{"Domain":31,"Range":{"Count":%6,"Start":%7}}]}]}

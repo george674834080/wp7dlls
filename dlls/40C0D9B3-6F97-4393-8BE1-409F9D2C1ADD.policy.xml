@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<!--
+Use of this source code is subject to the terms of the Microsoft
+premium shared source license agreement under which you licensed
+this source code. If you did not accept the terms of the license
+agreement, you are not authorized to use this source code.
+For the terms of the license, please see the license agreement
+signed by you and Microsoft.
+THE SOURCE CODE IS PROVIDED "AS IS", WITH NO WARRANTIES OR INDEMNITIES.
+-->
+<CeSecurityPolicyFile Description="Location Service macros and default policies." Vendor="Microsoft" RequiredOSVersion="7.0" FileVersion="7.0" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">
+
+    <Rule Description="Allow access to Battery Service IOCTL interface" ResourceIri="$(DEVICEMANAGER_DEVICE)/BAT/0" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+        <Authorize>
+            <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+        </Authorize>
+    </Rule>
+
+    <Rule Description="Allow access to switching the savings states and configuration" PriorityCategoryId="PRIORITY_HIGH" ResourceIri="$(HKLM)/System/CurrentControlSet/BatteryService/Savings/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)">
+      <Authorize>
+        <!-- Grant all access to standard users. -->
+        <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+      </Authorize>
+    </Rule>
+
+
+    <!-- Secure named event objects used by the battery service (case sensitive) -->
+
+    <Rule Description="BatteryService Time Change Notification Event" PriorityCategoryId="PRIORITY_HIGH" ResourceIri="policy:/KERNEL/EVENT/GLOBAL/BatteryService_TimeChangeRegistration_Event" SpeakerAccountId="$(SYSTEM_USER_NAME)">
+
+      <Authorize>
+        <Match Action="Add" AccountId="$(ELEVATED_RIGHTS_CHAMBER_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+      </Authorize>
+
+      <Stop>
+        <!-- Deny semantics on Everyone -->
+        <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+      </Stop>
+
+    </Rule>
+
+
+</CeSecurityPolicyFile>

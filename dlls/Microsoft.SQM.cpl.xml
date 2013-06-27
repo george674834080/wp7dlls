@@ -1,0 +1,15 @@
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<wap-provisioningdoc>
+    <characteristic type="Registry">
+        <characteristic type="HKLM\System\SQM">
+            <parm-query name="UploadEnabled"/>
+        </characteristic>
+    </characteristic>
+    <characteristic type="DeviceInformation">
+        <parm-query name="SqmInfo"/>
+        <parm-query name="SqmCostInfo"/>
+        <parm-query name="SqmLink" itemId="100"/>
+    </characteristic>
+</wap-provisioningdoc>

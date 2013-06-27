@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<!--
+Use of this sample source code is subject to the terms of the Microsoft
+license agreement under which you licensed this sample source code. If
+you did not accept the terms of the license agreement, you are not
+authorized to use this sample source code. For the terms of the license,
+please see the license agreement between you and Microsoft or, if applicable,
+see the LICENSE.RTF on your install media or the root of your tools installation.
+THE SAMPLE SOURCE CODE IS PROVIDED "AS IS", WITH NO WARRANTIES OR INDEMNITIES.
+-->
+<manifest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+          xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <assembly>
+    <name>Microsoft.Phone.Media.Extended</name>
+    <version>7.0.0.0</version>
+    <publickeytoken>24eec0d8c86cda1e</publickeytoken>
+    <relpath>Microsoft.Phone.Media.Extended.dll</relpath>
+  </assembly>
+  <assembly>
+    <name>Microsoft.Xna.Framework</name>
+    <version>4.0.0.0</version>
+    <publickeytoken>842cf8be1de50553</publickeytoken>
+    <relpath>Microsoft.Xna.Framework.dll</relpath>
+  </assembly>
+  <assembly>
+    <name>Microsoft.Xna.Framework.Game</name>
+    <version>4.0.0.0</version>
+    <publickeytoken>842cf8be1de50553</publickeytoken>
+    <relpath>Microsoft.Xna.Framework.Game.dll</relpath>
+  </assembly>
+  <assembly>
+    <name>Microsoft.Xna.Framework.Graphics</name>
+    <version>4.0.0.0</version>
+    <publickeytoken>842cf8be1de50553</publickeytoken>
+    <relpath>Microsoft.Xna.Framework.Graphics.dll</relpath>
+  </assembly>
+  <assembly>
+    <name>Microsoft.Xna.Framework.Avatar</name>
+    <version>4.0.0.0</version>
+    <publickeytoken>842cf8be1de50553</publickeytoken>
+    <relpath>Microsoft.Xna.Framework.Avatar.dll</relpath>
+  </assembly>
+  <assembly>
+    <name>Microsoft.Xna.Framework.AvatarExtensions</name>
+    <version>4.0.0.0</version>
+    <publickeytoken>842cf8be1de50553</publickeytoken>
+    <relpath>Microsoft.Xna.Framework.AvatarExtensions.dll</relpath>
+  </assembly>
+  <assembly>
+    <name>Microsoft.Xna.Framework.GamerServices</name>
+    <version>4.0.0.0</version>
+    <publickeytoken>842cf8be1de50553</publickeytoken>
+    <relpath>Microsoft.Xna.Framework.GamerServices.dll</relpath>
+  </assembly>
+  <assembly>
+    <name>Microsoft.Xna.Framework.GamerServicesExtensions</name>
+    <version>4.0.0.0</version>
+    <publickeytoken>842cf8be1de50553</publickeytoken>
+    <relpath>Microsoft.Xna.Framework.GamerServicesExtensions.dll</relpath>
+  </assembly>
+  <assembly>
+    <name>Microsoft.Xna.Framework.Input.Touch</name>
+    <version>4.0.0.0</version>
+    <publickeytoken>842cf8be1de50553</publickeytoken>
+    <relpath>Microsoft.Xna.Framework.Input.Touch.dll</relpath>
+  </assembly>
+  <assembly>
+    <name>Microsoft.Xna.Framework.Interop</name>
+    <version>4.0.0.0</version>
+    <publickeytoken>842cf8be1de50553</publickeytoken>
+    <relpath>Microsoft.Xna.Framework.Interop.dll</relpath>
+  </assembly>
+  <assembly>
+    <name>System.Device</name>
+    <version>2.0.5.0</version>
+    <publickeytoken>24eec0d8c86cda1e</publickeytoken>
+    <relpath>System.Device.dll</relpath>
+  </assembly>
+  <assembly>
+    <name>Microsoft.Devices.Sensors</name>
+    <version>7.0.0.0</version>
+    <publickeytoken>24eec0d8c86cda1e</publickeytoken>
+    <relpath>Microsoft.Devices.Sensors.dll</relpath>
+  </assembly>
+  <assembly>
+    <name>Microsoft.Phone.Interop</name>
+    <version>7.0.0.0</version>
+    <publickeytoken>24eec0d8c86cda1e</publickeytoken>
+    <relpath>Microsoft.Phone.Interop.dll</relpath>
+  </assembly>
+  <assembly>
+    <name>Microsoft.MobileDevices.Test.AppPlatform.Common.SLM.TestDispatcher</name>
+    <version>2.0.5.0</version>
+    <publickeytoken>901afcbaad18fcdd</publickeytoken>
+    <relpath>Microsoft.MobileDevices.Test.AppPlatform.Common.SLM.TestDispatcher.dll</relpath>
+  </assembly>
+  <assembly>
+    <name>Microsoft.MobileDevices.Test.AppPlatform.Common.SLM.MessageLibrary</name>
+    <version>2.0.5.0</version>
+    <publickeytoken>901afcbaad18fcdd</publickeytoken>
+    <relpath>Microsoft.MobileDevices.Test.AppPlatform.Common.SLM.MessageLibrary.dll</relpath>
+  </assembly> 
+  <assembly>
+    <name>Microsoft.Phone.Test.AppPlatform.YTestService</name>
+    <version>2.0.5.0</version>
+    <publickeytoken>901afcbaad18fcdd</publickeytoken>
+    <relpath>Microsoft.Phone.Test.AppPlatform.YTestService.dll</relpath>
+  </assembly> 
+  <assembly>
+    <name>Microsoft.Xna.QualityTools.TestFramework.SLM</name>
+    <version>0.0.0.0</version>
+    <publickeytoken>901afcbaad18fcdd</publickeytoken>
+    <relpath>Microsoft.Xna.QualityTools.TestFramework.SLM.dll</relpath>
+  </assembly>  
+  <assembly>
+    <name>Microsoft.Phone.InteropServices</name>
+    <version>7.0.0.0</version>
+    <publickeytoken>24eec0d8c86cda1e</publickeytoken>
+    <relpath>Microsoft.Phone.InteropServices.dll</relpath>
+    <interop>True</interop>
+  </assembly>
+  <assembly>
+    <name>Microsoft.Phone</name>
+    <version>7.0.0.0</version>
+    <publickeytoken>24eec0d8c86cda1e</publickeytoken>
+    <relpath>Microsoft.Phone.dll</relpath>
+  </assembly>
+
+  <assembly>
+    <name>Microsoft.Phone.Data.Internal</name>
+    <version>7.0.0.0</version>
+    <publickeytoken>24eec0d8c86cda1e</publickeytoken>
+    <relpath>Microsoft.Phone.Data.Internal.dll</relpath>
+  </assembly>
+  <assembly>
+    <name>System.Data.Linq</name>
+    <version>7.0.0.0</version>
+    <publickeytoken>24eec0d8c86cda1e</publickeytoken>
+    <relpath>System.Data.Linq.dll</relpath>
+  </assembly>
+  <assembly>
+    <name>YUTLogger</name>
+    <version>1.0.0.0</version>
+    <publickeytoken>901afcbaad18fcdd</publickeytoken>
+    <relpath>YUTLogger.dll</relpath>
+  </assembly>
+</manifest>

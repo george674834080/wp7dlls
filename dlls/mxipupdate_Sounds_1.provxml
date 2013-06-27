@@ -1,0 +1,22 @@
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+
+<wap-provisioningdoc>
+
+    <!-- SaveRingtone APP -->
+    <characteristic type="AppMetadata">
+      <characteristic type="{D8CF8EC7-EC6D-4892-AAB9-1E3A4B5FA24B}">
+        <parm name="Manifest" value="\Windows\SaveRingtone.xml"/>
+      </characteristic>
+    </characteristic>
+
+    <!-- create the Ringtones directory -->
+    <characteristic type="FileOperation">
+        <characteristic type="\My Documents\Ringtones" translation="install">
+            <characteristic type="MakeDir" />
+        </characteristic>
+    </characteristic>
+    
+</wap-provisioningdoc>
+

@@ -1,0 +1,500 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<CeSecurityPolicyFile Description="Default CellCore security policy" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.4.9876" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">
+  <!-- Macros for the RPC endpoint and interface UUID -->
+  <Macro Id="BNS_ENDPOINT_NAME" Description="Backgroud notification service endpoint name." Value="bnssvc"></Macro>
+  <Macro Id="BNS_INTERFACE_UUID" Description="Backgroud notification service interface uuid." Value="50113647-7d82-4b36-bd27-b4ff64642ad4"></Macro>
+  <Macro Id="BNS_INTERFACE_I_UUID" Description="Backgroud notification service internal interface uuid." Value="c5615769-8095-4678-a351-770b5f78e4c6"></Macro>
+  <Macro Id="PUSH_ENDPOINT_NAME" Description="Push endpoint name." Value="mspushsvc"></Macro>
+  <Macro Id="PUSH_AUTO_ENDPOINT_NAME" Description="Push endpoint name with auto bind." Value="mspushsvcauto"></Macro>
+  <Macro Id="MPM_ENDPOINT_NAME" Description="Managed Push Manager name." Value="mpmsvc"></Macro>
+  <Macro Id="PUSH_INTERFACE_UUID" Description="Push interface uuid." Value="a7244ed4-d9ce-47fd-9a4b-1f75f32b3a5a"></Macro>
+  <Macro Id="PUSH_AUTO_INTERFACE_UUID" Description="Push interface uuid with auto bind." Value="258df392-65ec-4e58-ba36-235f4d657174"></Macro>
+  <Macro Id="MPM_INTERFACE_UUID" Description="Push interface uuid." Value="d150cca1-5eb2-4564-a49d-da3b92f253b2"></Macro>
+  <Macro Id="SID_LIVE_TOKEN" Description="SID of LIVE TOKEN APP" Value="S-1-5-112-0-0X21-0X00000005"></Macro>
+  <Account Id="$(SID_LIVE_TOKEN)" FriendlyName="Live token app" Action="CreateNew" Description="Live token app" Type="User">
+    <MemberOfGroup Action="Add" GroupAccountId="$(SELF_ISOLATED_STANDARD_RIGHTS_CHAMBER_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+  <Macro Id="SID_PACMANINSTALLER" Description="SID of PACMANINSTALLER" Value="S-1-5-112-0-0X21-0X0000000A"></Macro>
+  <Account Id="$(SID_PACMANINSTALLER)" FriendlyName="PacManInstaller" Description="PacManInstaller" Type="User">
+    <MemberOfGroup Action="Add" GroupAccountId="$(SELF_ISOLATED_STANDARD_RIGHTS_CHAMBER_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+  <!-- Access rules for RPC service -->
+  <Rule Description="Authorize a server from the supervisor chamber to register background notification service endpoint." ResourceIri="$(RPC_SERVER_ENDPOINT)/$(BNS_ENDPOINT_NAME)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule Description="Authorize clients in the everyone to call into the a background notification service interface." ResourceIri="$(RPC_CLIENT_INTERFACE)/$(BNS_INTERFACE_UUID)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule Description="Authorize clients in the TCB only to call into the a background notification service internal interface." ResourceIri="$(RPC_CLIENT_INTERFACE)/$(BNS_INTERFACE_I_UUID)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Description="Authorize a server from the supervisor chamber to register endpoint." ResourceIri="$(RPC_SERVER_ENDPOINT)/$(PUSH_ENDPOINT_NAME)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule Description="Authorize clients in the everyone to call into the an interface." ResourceIri="$(RPC_CLIENT_INTERFACE)/$(PUSH_INTERFACE_UUID)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule Description="Authorize a server from the supervisor chamber to register endpoint." ResourceIri="$(RPC_SERVER_ENDPOINT)/$(PUSH_AUTO_ENDPOINT_NAME)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule Description="Authorize clients in the everyone to call into the an interface." ResourceIri="$(RPC_CLIENT_INTERFACE)/$(PUSH_AUTO_INTERFACE_UUID)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <!-- Push Capability -->
+  
+<!--Begin generating capability accounts and authorization rules for ID_CAP_PUSH_NOTIFICATION -->
+<Macro Id="CAPMACRO_ID_CAP_PUSH_NOTIFICATION" Value="S-1-5-112-0-0X70-0X49445F4341505F505553485F4E4F54494649434154494F4E" />
+<Account Id="$(CAPMACRO_ID_CAP_PUSH_NOTIFICATION)" FriendlyName="ID_CAP_PUSH_NOTIFICATION:Push Client Capability" Description="Autogenerated group for capability ID_CAP_PUSH_NOTIFICATION" Type="Group">
+<MemberOfGroup GroupAccountId="$(PUBLIC_CAPABILITIES_GROUP_NAME)" />
+</Account>
+<Rule Description="Authorization rule for capability ID_CAP_PUSH_NOTIFICATION" ResourceIri="$(RPC_CLIENT_INTERFACE)/$(MPM_INTERFACE_UUID)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_PUSH_NOTIFICATION)" AuthorizationIds="ALL_ACCESS" />
+</Authorize>
+</Rule>
+<Rule Description="Authorization rule for capability ID_CAP_PUSH_NOTIFICATION" ResourceIri="$(GLOBAL_RESOURCES)/PACKAGEMANAGER/LIVETOKENAPI" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(CAPMACRO_ID_CAP_PUSH_NOTIFICATION)" AuthorizationIds="ALL_ACCESS" />
+</Authorize>
+</Rule>
+<!--End generating capability accounts and authorization rules for ID_CAP_PUSH_NOTIFICATION -->
+
+  <Rule Description="Authorize a server from the supervisor chamber to register endpoint." ResourceIri="$(RPC_SERVER_ENDPOINT)/$(MPM_ENDPOINT_NAME)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <Rule Description="Authorize clients in the everyone to call into the an interface." ResourceIri="$(RPC_CLIENT_INTERFACE)/$(MPM_INTERFACE_UUID)/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+  </Rule>
+  <!-- Push service -->
+  <Rule Description="Only system can access Push service" ResourceIri="$(DEVICEMANAGER_DEVICE)/PSH/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <!-- Allow PushSvcRelaunch to start and stop the PushSvc -->
+      <Match AccountId="$(PUSHSVCRELAUNCH_EXE_SID)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <!-- Push registry -->
+  <Rule Description="Restrict access to Push registry" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/PUSHCLIENT/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <!-- Push Policy registry -->
+  <Rule Description="Restrict access to Push Policy registry" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/PUSHCLIENT/SERVERPOLICY/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Action="CreateNew" Description="Protect TestHook registry keys - TCB writeable but readonly for everyone" ResourceIri="$(HKLM)/SECURITY/APPINSTALL/TESTHOOK/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <!-- Push registry for test -->
+  <Rule Description="allow access to Push Test registry" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/PUSHCLIENT/TEST/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+  </Rule>
+  <!-- Push registry for test -->
+  <Rule Description="allow access to NotificationAgent.dll and  Push.dll for PushSvc Availability State" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/PUSHCLIENT/STATE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+  </Rule>
+  <!-- Run PushSvcRelaunch.exe in the elevated chamber -->
+  
+<!--Begin Generated accounts and routing/authz rules for S-1-5-112-0-0X10-0X0000037 -->
+<Macro Id="PUSHSVCRELAUNCH_EXE_SID" Value="S-1-5-112-0-0X10-0X0000037" />
+<Account Id="$(PUSHSVCRELAUNCH_EXE_SID)" FriendlyName="PushServiceRelaunch chamber" Description="Autogenerated chamber for PushServiceRelaunch chamber" Type="User">
+<MemberOfGroup GroupAccountId="$(ELEVATED_RIGHTS_CHAMBER_GROUP_NAME)" />
+</Account>
+<!--Begin Generated routing/authz rules for PushSvcRelaunch.exe -->
+<Rule Description="Route PushSvcRelaunch.exe" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/PUSHSVCRELAUNCH.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(PUSHSVCRELAUNCH_EXE_SID)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize PushSvcRelaunch.exe be loadable to $(PUSHSVCRELAUNCH_EXE_SID) and  chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/PUSHSVCRELAUNCH.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(PUSHSVCRELAUNCH_EXE_SID)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for PushSvcRelaunch.exe -->
+<!--End Generated accounts and routing/authz rules for S-1-5-112-0-0X10-0X0000037 -->
+
+  <!-- Run livetoken.exe in the standard chamber -->
+  
+<!--Begin Generated accounts and routing/authz rules for $(SID_LIVE_TOKEN) -->
+
+<!--Begin Generated routing/authz rules for livetoken.exe -->
+<Rule Description="Route livetoken.exe" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/LIVETOKEN.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(SID_LIVE_TOKEN)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize livetoken.exe be loadable to $(SID_LIVE_TOKEN) and  chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/LIVETOKEN.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(SID_LIVE_TOKEN)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for livetoken.exe -->
+<!--End Generated accounts and routing/authz rules for $(SID_LIVE_TOKEN) -->
+
+  <!-- Run devicereg.exe in the TCB chamber -->
+  
+<!--Begin Generated accounts and routing/authz rules for $(SYSTEM_USER_NAME) -->
+
+<!--Begin Generated routing/authz rules for DEVICEREG.EXE -->
+<Rule Description="Route DEVICEREG.EXE" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/DEVICEREG.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize DEVICEREG.EXE be loadable to $(SYSTEM_USER_NAME) and  chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/DEVICEREG.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for DEVICEREG.EXE -->
+<!--End Generated accounts and routing/authz rules for $(SYSTEM_USER_NAME) -->
+
+  <!-- Run AppPreInstaller.exe in the TCB chamber -->
+  
+<!--Begin Generated accounts and routing/authz rules for $(SYSTEM_USER_NAME) -->
+
+<!--Begin Generated routing/authz rules for APPPREINSTALLER.EXE -->
+<Rule Description="Route APPPREINSTALLER.EXE" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/APPPREINSTALLER.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize APPPREINSTALLER.EXE be loadable to $(SYSTEM_USER_NAME) and  chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/APPPREINSTALLER.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for APPPREINSTALLER.EXE -->
+<!--End Generated accounts and routing/authz rules for $(SYSTEM_USER_NAME) -->
+
+  <!-- DeviceReg registry -->
+  <Rule Description="Restrict access to DeviceReg registry for TCB only" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/DEVICEREG/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Description="Restrict read access to DeviceReg/Install registry for Elevated chamber" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/DEVICEREG/Install/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <!-- ACLs for the Package Manager database -->
+  <Rule Action="CreateNew" Description="Allow all in Standard Rights Chamber to access the Package Manager database " ResourceIri="$(FILESYS_PRIMARY_ROOT)/APPLICATION%20DATA/MICROSOFT/PACKAGEMANAGER/PACMAN2.EDB" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+      <Match AccountId="$(STARTHOST_EXE_SID)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+      <!-- Give standard rights chamber read-only access-->
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <!-- Everybody else is denied access -->
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <!-- ACLs the \Applications\XapFiles directory to be TCB accessible only -->
+  <Rule Action="CreateNew" Description="ACL the temporary XAP file repository to be TCB only" ResourceIri="$(FILESYS_PRIMARY_ROOT)/APPLICATIONS/XAPFILES/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <!-- Everybody else is denied acess -->
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <!-- ACLs the \Applications\Installer directory to be TCB accessible only -->
+  <Rule Action="CreateNew" Description="ACL the decrypted XAP file repository to be TCB only" ResourceIri="$(FILESYS_PRIMARY_ROOT)/APPLICATIONS/INSTALLER/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <!-- Everybody else is denied acess -->
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <!-- ACLs the \Applications\Trash directory to be TCB accessible only -->
+  <Rule Action="CreateNew" Description="ACL the trash file repository to be TCB only" ResourceIri="$(FILESYS_PRIMARY_ROOT)/APPLICATIONS/TRASH/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Stop>
+      <!-- Everybody else is denied acess -->
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <!-- ACLs for the Package Manager registry -->
+  <Rule Description="Protect PacMan registry -TCB writeable but readonly for everyone" ResourceIri="$(HKLM)/SECURITY/PACMAN/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Description="Protect PacMan registry under software -TCB writeable but readonly for everyone" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/PACKAGEMANAGER/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <!-- ACLs for the Package Manager Live Token registry -->
+  <Rule Description="Protect PacMan Live Token registry -TCB and LiveToken writeable but readonly for everyone" ResourceIri="$(HKLM)/SOFTWARE/MICROSOFT/LIVETOKEN/STATE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(SID_LIVE_TOKEN)" AuthorizationIds="ALL_ACCESS"></Match>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <!-- ACLs for the Live Token mutex -->
+  <Rule Description="Policy for LiveToken mutex to process multi instance of LiveToken.exe" ResourceIri="policy:/KERNEL/MUTEX/GLOBAL/__LIVETOKEN_NAMED_MUTEX__" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(SID_LIVE_TOKEN)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <!-- ACLs for Package Manager PSL APIs-->
+  <!--  Token APIs -->
+  <Rule Action="CreateNew" Description="Restrict callers of the PackageManager TokenAPI" ResourceIri="$(GLOBAL_RESOURCES)/PACKAGEMANAGER/TOKENAPI" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+  <!--  Background notification APIs -->
+  <Rule Action="CreateNew" Description="Restrict callers of the PackageManager Background Notificaiton API" ResourceIri="$(GLOBAL_RESOURCES)/PACKAGEMANAGER/BNSAPI" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+  <!--  Install API -->
+  <Rule Action="CreateNew" Description="Restrict callers of the PackageManager InstallAPI" ResourceIri="$(GLOBAL_RESOURCES)/PACKAGEMANAGER/INSTALLAPI" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(SID_MEUX_STANDARD)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+  <!--  Debugger API -->
+  <Rule Action="CreateNew" Description="Restrict callers of the PackageManager Debugger API" ResourceIri="$(GLOBAL_RESOURCES)/PACKAGEMANAGER/DEBUGGERAPI" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+  <!--  LiveToken APIs -->
+  <Rule Action="CreateNew" Description="Restrict callers of the PackageManager LiveToken API" ResourceIri="$(GLOBAL_RESOURCES)/PACKAGEMANAGER/LIVETOKENAPI" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+  <!-- ACLs the \Applications\install\(+)\Install\(*) directory to be read accessible for SRC -->
+  <Rule Action="CreateNew" Description="ACL the application installation directory to be read + execute (so resource dlls can be read. This       access is required by all who need to read an application's title" ResourceIri="$(FILESYS_PRIMARY_ROOT)/APPLICATIONS/INSTALL/(+)/INSTALL/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(SID_PACMANINSTALLER)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+      <Match AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="FILE_GENERIC_READ, FILE_GENERIC_EXECUTE"></Match>
+    </Authorize>
+    <Stop>
+      <!-- Everybody else is denied acess -->
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <!-- ACLs the \Applications\data\(+)\data\(*) directory to be read/write accessible for live token, ZMedia/playback and Data Sharing service-->
+  <Rule Action="CreateNew" Description="ACL the Application data directory to be read/write for ZMedia service. Media clients only need list access. stsarthost and Data Sharing service needs read access" ResourceIri="$(FILESYS_PRIMARY_ROOT)/APPLICATIONS/DATA/(+)/DATA/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(SID_MEUX_STANDARD)" AuthorizationIds="FILE_LIST_DIRECTORY"></Match>
+      <Match AccountId="$(MULTIMEDIA_SUPERVISOR_SELF_ISOLATED)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+      <Match AccountId="$(DSSVC_STANDARD_SELF_ISOLATED)" AuthorizationIds="FILE_GENERIC_READ"></Match>
+    </Authorize>
+    <Stop>
+      <!-- Everybody else is denied acess -->
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <!-- ACLs the \Applications\data\(+)\data\IsolatedStore\shared\ShellContent\(*) directory to read access to StartHost-->
+  <Rule Action="CreateNew" Description="ACL the Application data\IsolatedStore\shared\Shellcontent directory to read access to StartHost" ResourceIri="$(FILESYS_PRIMARY_ROOT)/APPLICATIONS/DATA/(+)/DATA/IsolatedStore/Shared/ShellContent/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STARTHOST_EXE_SID)" AuthorizationIds="FILE_GENERIC_READ"></Match>
+    </Authorize>
+    <Stop>
+      <!-- Everybody else is denied acess -->
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <!-- ACLs the \Applications\data\(+)\data\ directory to read access to StartHost- -->
+  <Rule Action="CreateNew" Description="ACL the Application data directory directory to read access to StartHost" ResourceIri="$(FILESYS_PRIMARY_ROOT)/APPLICATIONS/DATA/(+)/DATA/(+)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(STARTHOST_EXE_SID)" AuthorizationIds="FILE_GENERIC_READ"></Match>
+    </Authorize>
+    <Stop>
+      <!-- Everybody else is denied acess -->
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <!-- ACLs the \Applications\data\(+)\data\ShellContent\(*) directory to be read/write accessible for live token and read access to StartHost-->
+  <Rule Action="CreateNew" Description="ACL the Application data\Shellcontent directory to be read/write/Delete for LiveToken and read access to StartHost" ResourceIri="$(FILESYS_PRIMARY_ROOT)/APPLICATIONS/DATA/(+)/DATA/ShellContent/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(SID_LIVE_TOKEN)" AuthorizationIds="FILE_GENERIC_READ, FILE_GENERIC_WRITE, DELETE"></Match>
+      <Match AccountId="$(STARTHOST_EXE_SID)" AuthorizationIds="FILE_GENERIC_READ"></Match>
+    </Authorize>
+    <Stop>
+      <!-- Everybody else is denied acess -->
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <!-- ACLs the \Applications\data\(+)\data\IsolatedStore\Shared\Transfers\(*) directory to be read/write accessible for Data Sharing service-->
+  <Rule Action="CreateNew" Description="ACL the Application data\IsolatedStore\Shared\Transfers\ directory to be read/write for Data Sharing service." ResourceIri="$(FILESYS_PRIMARY_ROOT)/APPLICATIONS/DATA/(+)/DATA/ISOLATEDSTORE/Shared/TRANSFERS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(DSSVC_STANDARD_SELF_ISOLATED)" AuthorizationIds="FILE_GENERIC_READ, FILE_GENERIC_WRITE, DELETE"></Match>
+    </Authorize>
+    <Stop>
+      <!-- Everybody else is denied acess -->
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <!-- ACLs the \Applications\data\(+)\data\IsolatedStore\Shared\Media\(*) directory to be read/write accessible for ZMedia service-->
+  <Rule Action="CreateNew" Description="ACL the Application data\IsolatedStore\Shared\Media\ directory to be read/write for ZMedia service." ResourceIri="$(FILESYS_PRIMARY_ROOT)/APPLICATIONS/DATA/(+)/DATA/ISOLATEDSTORE/Shared/Media/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(SID_MEUX_STANDARD)" AuthorizationIds="FILE_GENERIC_READ, FILE_GENERIC_WRITE, DELETE"></Match>
+    </Authorize>
+    <Stop>
+      <!-- Everybody else is denied acess -->
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <!-- ACLs the \Applications\data\(+)\data\ShellContent directory can be created by livetokenken -->
+  <Rule Action="CreateNew" Description="ACL the Application data\ShellContent directory to be created for livetoken " ResourceIri="$(FILESYS_PRIMARY_ROOT)/APPLICATIONS/DATA/(+)/DATA/ShellContent" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(SID_LIVE_TOKEN)" AuthorizationIds="FILE_GENERIC_WRITE"></Match>
+    </Authorize>
+    <Stop>
+      <!-- Everybody else is denied acess -->
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <!-- ACLs the \Applications\data\(+)\data\NPART.jpg file to be read accessible for Media client -->
+  <Rule Action="CreateNew" Description="ACL the Application data /NPART.JPG to be read for ME client app " ResourceIri="$(FILESYS_PRIMARY_ROOT)/APPLICATIONS/DATA/(+)/DATA/NPART.JPG" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(SID_MEUX_STANDARD)" AuthorizationIds="FILE_GENERIC_READ"></Match>
+    </Authorize>
+  </Rule>
+  <!-- ACLs the \Applications\data\(+)\data\platformdata\(*) directory to be read/write accessible for photo/camaera choosers -->
+  <Rule Action="CreateNew" Description="ACL the applicaiton data directory to be read/write for photo choosers " ResourceIri="$(FILESYS_PRIMARY_ROOT)/APPLICATIONS/DATA/(+)/DATA/PLATFORMDATA/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(SID_MEUX_STANDARD)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <!-- Everybody else is denied acess -->
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <!--PacmanInstaller will be routed to TCB -->
+  
+<!--Begin Generated accounts and routing/authz rules for $(SYSTEM_USER_NAME) -->
+
+<!--Begin Generated routing/authz rules for PACMANINSTALLER.EXE -->
+<Rule Description="Route PACMANINSTALLER.EXE" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/PACMANINSTALLER.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize PACMANINSTALLER.EXE be loadable to $(SYSTEM_USER_NAME) and  chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/PACMANINSTALLER.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for PACMANINSTALLER.EXE -->
+<!--End Generated accounts and routing/authz rules for $(SYSTEM_USER_NAME) -->
+
+  <!--PacmanInstaller cannot be launched if you are not in TCB yourself -->
+  <Rule Description="Only TCB can launch into this chamber" ResourceIri="$(LOADERVERIFIER_ACCOUNT_CAN_LAUNCH_INROM_ROOT)/WINDOWS/PACMANINSTALLER.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Description="ZMF service needs full access to live token application" ResourceIri="$(RESOURCES)/$(SID_LIVE_TOKEN)/KERNEL/OPENPROCESS" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match AccountId="$(SID_MEUX_STANDARD)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <Rule Description="Prevent all non-TCB apps from reading/writing to the AIM hive" ResourceIri="$(HKLM)/SYSTEM/AIM/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  <!-- ACLs for AIM Proxy PSL APIs-->
+  <Rule Action="CreateNew" Description="Restrict callers of the AIM Proxy PSL APIs (IAIMProxy)" ResourceIri="$(GLOBAL_RESOURCES)/AIM/BACKGROUNDSERVICEAPI" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(STANDARD_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="GENERIC_ALL"></Match>
+    </Authorize>
+    <Stop>
+      <!-- Everybody else is denied acess -->
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+  
+<!--Begin Generated accounts and routing/authz rules for $(SYSTEM_USER_NAME) -->
+
+<!--Begin Generated routing/authz rules for 969eb155-55ff-4884-9ecb-241c8a4b6e09.exe -->
+<Rule Description="Route 969eb155-55ff-4884-9ecb-241c8a4b6e09.exe" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/PRIMARY/WINDOWS/969EB155-55FF-4884-9ECB-241C8A4B6E09.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_LOW">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE" />
+</Authorize>
+</Rule>
+<Rule Description="Authorize 969eb155-55ff-4884-9ecb-241c8a4b6e09.exe be loadable to $(SYSTEM_USER_NAME) and  chambers" ResourceIri="$(LOADERVERIFIER_EXE_AUTHZ_INROM_ROOT)/WINDOWS/969EB155-55FF-4884-9ECB-241C8A4B6E09.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+<Authorize>
+<Match AccountId="$(SYSTEM_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE,LV_ACCESS_LOAD" />
+</Authorize>
+</Rule>
+<!--End Generated routing/authz rules for 969eb155-55ff-4884-9ecb-241c8a4b6e09.exe -->
+<!--End Generated accounts and routing/authz rules for $(SYSTEM_USER_NAME) -->
+
+</CeSecurityPolicyFile>

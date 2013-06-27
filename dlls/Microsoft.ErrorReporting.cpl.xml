@@ -1,0 +1,14 @@
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<wap-provisioningdoc>
+    <characteristic type="Registry">
+        <characteristic type="HKLM\System\DeviceFeedback2">
+            <parm-query name="UploadEnabled" itemId="200"/>
+        </characteristic>
+    </characteristic>
+    <characteristic type="DeviceInformation">
+        <parm-query name="WatsonInfo"/>
+        <parm-query name="WatsonLink" itemId="100"/>
+    </characteristic>
+</wap-provisioningdoc>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<CeSecurityPolicyFile Description="Security policy for tooling binaries" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.4.9876" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">
+
+  <!-- Policy rules for CoreCon binaries -->
+  <Macro Id="CORECON_USER_NAME" Description="SID for corecon binaries" Value="S-1-5-112-0-0X11-0X0000000A"></Macro>
+
+  <Macro Id="CORECON_DEPLOY_LOCATION" Description="Location where corecon binaries are deployed" Value="PRIMARY/APPLICATION%20DATA/PHONE%20TOOLS/10.0/CORECON/BIN"></Macro>
+
+  <Macro Id="PE_AUTHZ_PREFIX" Value="policy:/LOADERVERIFIER/GLOBAL/AUTHORIZATION/PE_AUTHZ/(+)/(+)"></Macro>
+
+  <!-- Define chamber for corecon binaries -->
+  <Account Id="$(CORECON_USER_NAME)" FriendlyName="SID for corecon binaries" Description="SID for corecon binaries" Type="User">
+    <MemberOfGroup GroupAccountId="$(SELF_ISOLATED_ELEVATED_RIGHTS_CHAMBER_GROUP_NAME)"></MemberOfGroup>
+  </Account>
+
+  <!-- Map CoreCon executables to CORECON_USER_NAME account -->
+  <Rule PriorityCategoryId="PRIORITY_LOW" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/$(CORECON_DEPLOY_LOCATION)/CMACCEPT3.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" Description="Route CMACCEPT3.EXE">
+    <Authorize>
+      <Match AccountId="$(CORECON_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule PriorityCategoryId="PRIORITY_STANDARD" ResourceIri="$(PE_AUTHZ_PREFIX)/$(CORECON_DEPLOY_LOCATION)/CMACCEPT3.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" Description="Authorize CMACCEPT3.EXE be loadable to $(CORECON_USER_NAME) and  chambers">
+    <Authorize>
+      <Match AccountId="$(CORECON_USER_NAME)" AuthorizationIds="LV_ACCESS_LOAD, LV_ACCESS_EXECUTE"></Match>
+    </Authorize>
+  </Rule>
+
+
+  <Rule PriorityCategoryId="PRIORITY_LOW" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/$(CORECON_DEPLOY_LOCATION)/CONMANCLIENT3.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" Description="Route CONMANCLIENT3.EXE">
+    <Authorize>
+      <Match AccountId="$(CORECON_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule PriorityCategoryId="PRIORITY_STANDARD" ResourceIri="$(PE_AUTHZ_PREFIX)/$(CORECON_DEPLOY_LOCATION)/CONMANCLIENT3.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" Description="Authorize CONMANCLIENT3.EXE be loadable to $(CORECON_USER_NAME) and  chambers">
+    <Authorize>
+      <Match AccountId="$(CORECON_USER_NAME)" AuthorizationIds="LV_ACCESS_LOAD, LV_ACCESS_EXECUTE"></Match>
+    </Authorize>
+  </Rule>
+
+
+  <Rule PriorityCategoryId="PRIORITY_LOW" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/$(CORECON_DEPLOY_LOCATION)/CLIENTSHUTDOWN3.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" Description="Route CLIENTSHUTDOWN3.EXE">
+    <Authorize>
+      <Match AccountId="$(CORECON_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule PriorityCategoryId="PRIORITY_STANDARD" ResourceIri="$(PE_AUTHZ_PREFIX)/$(CORECON_DEPLOY_LOCATION)/CLIENTSHUTDOWN3.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" Description="Authorize CLIENTSHUTDOWN3.EXE be loadable to $(CORECON_USER_NAME) and  chambers">
+    <Authorize>
+      <Match AccountId="$(CORECON_USER_NAME)" AuthorizationIds="LV_ACCESS_LOAD, LV_ACCESS_EXECUTE"></Match>
+    </Authorize>
+  </Rule>
+
+
+  <Rule PriorityCategoryId="PRIORITY_LOW" ResourceIri="$(LOADERVERIFIER_ROUTE_BY_NAME)/$(CORECON_DEPLOY_LOCATION)/EDM3.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" Description="Route EDM3.EXE">
+    <Authorize>
+      <Match AccountId="$(CORECON_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule PriorityCategoryId="PRIORITY_STANDARD" ResourceIri="$(PE_AUTHZ_PREFIX)/$(CORECON_DEPLOY_LOCATION)/EDM3.EXE" SpeakerAccountId="$(SYSTEM_USER_NAME)" Description="Authorize EDM3.EXE be loadable to $(CORECON_USER_NAME) and  chambers">
+    <Authorize>
+      <Match AccountId="$(CORECON_USER_NAME)" AuthorizationIds="LV_ACCESS_LOAD, LV_ACCESS_EXECUTE"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- "\Application Data\Phone Tools" is application folder for CoreCon -->
+  <!-- Corecon EXEs are deployed to "\Application Data\Phone Tools\10.0\CoreCon\bin" -->
+  <!-- Corecon DLLs are deployed to "\Application Data\Phone Tools\10.0\CoreCon\lib" -->
+  <!-- Corecon copied XAPs to "\Application Data\Phone Tools\10.0\CoreCon\Install\" for installation -->
+  <Rule Description="CORECON_USER_NAME has complete access to \Application Data\Phone tools" ResourceIri="$(FILESYS_PRIMARY_ROOT)/APPLICATION%20DATA/PHONE%20TOOLS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(CORECON_USER_NAME)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- "\Application Data\Phone Tools\10.0\CoreCon\logs\" can be used to collect Corecon logs -->
+  <!-- Corecon DLLs loaded in LPC debugee application can write logs to this folder -->
+  <Rule Description="\Application Data\Phone tools\10.0\CoreCon\Logs is folder that can be used to collect CoreCon diagnostic logs" ResourceIri="$(FILESYS_PRIMARY_ROOT)/APPLICATION%20DATA/PHONE%20TOOLS/10.0/CORECON/LOGS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <!-- Kernel objects access provisioning -->
+  <Rule Description="Debugger needs acess to handle of debugee process" ResourceIri="$(RESOURCES)/(CHAMBER-IN-GROUP:$(LEAST_PRIVILEGE_IDENTITY_GROUP_NAME))/KERNEL/OPENPROCESS" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+      <Authorize>
+        <Match AccountId="$(CORECON_USER_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+      </Authorize>
+  </Rule>
+
+  <Rule Description="Debugger needs acess to handle of debugee process thread" ResourceIri="$(RESOURCES)/(CHAMBER-IN-GROUP:$(LEAST_PRIVILEGE_IDENTITY_GROUP_NAME))/KERNEL/OPENTHREAD" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+      <Authorize>
+        <Match AccountId="$(CORECON_USER_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+      </Authorize>
+  </Rule>
+
+  <!-- Apart from CoreCon binaries no other ERC/SRC application shall have access to these named events -->
+  <Rule Description="Allow access to corecon specific named events" ResourceIri="policy:/KERNEL/EVENT/$(CORECON_USER_NAME)/CORECON/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(CORECON_USER_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule>
+
+  <Rule Description="Microsoft Mobile Device VSD PCA is honored by CORECON_USER_NAME" ResourceIri="policy:/LOADERVERIFIER/GLOBAL/CERTIFICATES/HASH/SHA1/91B318116F8897D2860733FDF757B93345373574" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+      <Authorize>
+        <Match AccountId="$(CORECON_USER_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE"></Match>
+      </Authorize>
+  </Rule>
+
+  <Rule Description="Microsoft Mobile Device VSD PCA is honored by LPCs as Trusted PCA" ResourceIri="policy:/LOADERVERIFIER/GLOBAL/CERTIFICATES/HASH/SHA1/91B318116F8897D2860733FDF757B93345373574" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+      <Authorize>
+        <Match AccountId="$(LEAST_PRIVILEGE_IDENTITY_GROUP_NAME)" AuthorizationIds="LV_ACCESS_EXECUTE"></Match>
+      </Authorize>
+  </Rule>
+
+</CeSecurityPolicyFile>

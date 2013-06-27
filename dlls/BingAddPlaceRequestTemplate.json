@@ -1,0 +1,1 @@
+{ "ClientData": "client_cookie", "ClientVersion": "v1", "Credentials": {"AppKey": "%1", "UserAuthToken": "%2", "UserAuthType": "liveid"}, "Culture": "%3", "QueryContext": {"AdditionalProperties": [ {"Key":"FacebookAuthToken", "Value":"%4"} ] }, "Entities": [ {"Address": {%5}, "GeoLocation": {"Latitude": %6, "Longitude": %7}, "Id": "", "PhoneNumber": "%8", "Title": "%9"} ] }

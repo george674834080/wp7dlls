@@ -1,0 +1,2 @@
+{"ClientData":"client_cookie","ClientVersion":"v1","Credentials":{"AppKey":"%1","UserAuthToken":"%2","UserAuthType":"liveid"},"Culture":"%3","Facebook":{"AccessKeys":"%4","Message":"%8"},"LocationSignal":{"UtcTimestamp":"%5","Latitude":%6,"Longitude":%7},"Message":"%8","Place":{"Address":{%9},"Name":"%10","GeoLocation":{"Latitude":%11,"Longitude":%12},"Id":"%13","Phone":"%14","PlaceType":%15,"PlaceEntityProvidersReferences":%16},"SearchContext":{"%17"},"UtcOffset":%18}
+

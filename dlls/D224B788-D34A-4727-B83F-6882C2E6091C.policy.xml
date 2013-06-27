@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<CeSecurityPolicyFile Description="MTP service security policy" Vendor="Microsoft" RequiredOSVersion="7.00" FileVersion="7.00" xmlns="urn:Microsoft.PlatformBuilder/CeSecurityPolicy">
+  <Rule Action="CreateOrReplace" Description="Give ZNet service IOCTL access to elevated rights group and ZMF service chamber" ResourceIri="$(DEVICEMANAGER_DEVICE)/ZNE/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+      <Match Action="Add" AccountId="$(SID_MEUX_STANDARD)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Action="CreateOrReplace" Description="Policy for Znet registry keys" ResourceIri="$(HKLM)/Services/Znet/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match Action="Add" AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+
+    <!-- Give READ access to ZMF service standard chamber group -->
+
+      <Match Action="Add" AccountId="$(SID_MEUX_STANDARD)" AuthorizationIds="KEY_READ"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Prevent unauthorized access of MTP related events" ResourceIri="policy:/KERNEL/EVENT/SYSTEM/MTP/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_HIGH">
+    <Authorize>
+      <Match Action="Add" AccountId="$(ELEVATED_RIGHTS_RESOURCE_GROUP_NAME)" AuthorizationIds="ALL_ACCESS"></Match>
+    </Authorize>
+    <Stop>
+      <Match AccountId="$(EVERYONE_GROUP_NAME)"></Match>
+    </Stop>
+  </Rule> 
+
+  <Rule Description="Allow media apps to create entries for ringtones in CustomProtectedRingtones and CustomRingtones keys under Sounds Registry key" ResourceIri="$(HKCU)/CONTROLPANEL/SOUNDS/(*)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(SID_MEUX_STANDARD)" AuthorizationIds="KEY_ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Allow media apps to read/write into the Forward Locked Ringtones Directory" ResourceIri="$(FILESYS_PRIMARY_ROOT)/MY%20DOCUMENTS/MY%20RINGTONES/(+)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(SID_MEUX_STANDARD)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+
+  <Rule Description="Allow media apps to read/write into the Ringtones Directory" ResourceIri="$(FILESYS_PRIMARY_ROOT)/MY%20DOCUMENTS/RINGTONES/(+)" SpeakerAccountId="$(SYSTEM_USER_NAME)" PriorityCategoryId="PRIORITY_STANDARD">
+    <Authorize>
+      <Match AccountId="$(SID_MEUX_STANDARD)" AuthorizationIds="FILE_ALL_ACCESS"></Match>
+    </Authorize>
+  </Rule>
+  
+</CeSecurityPolicyFile>
